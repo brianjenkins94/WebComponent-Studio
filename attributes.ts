@@ -704,7 +704,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 *
 	 * Omitting `alt` altogether indicates that the image is a key part of the content and no
 	 * textual equivalent is available. Setting this attribute to an empty string (`alt=""`)
-	 * indicates that this image is *not* a key part of the content (it’s decoration or a tracking
+	 * indicates that this image is *not* a key part of the content (it's decoration or a tracking
 	 * pixel), and that non-visual browsers may omit it from rendering. Visual browsers will also
 	 * hide the broken image icon if the `alt` is empty and the image failed to display.
 	 *
@@ -794,7 +794,8 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 */
 	referrerpolicy: "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url";
 	/**
-	 * One or more strings separated by commas, indicating a set of source sizes. Each source size consists of:
+	 * One or more strings separated by commas, indicating a set of source sizes. Each source size
+	 * consists of:
 	 *
 	 *      1.  A media condition. This must be omitted for the last item in the list.
 	 *      2.  A source size value.
@@ -806,7 +807,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * Source size values specify the intended display size of the image. User agents use the
 	 * current source size to select one of the sources supplied by the `srcset` attribute, when
 	 * those sources are described using width (`w`) descriptors. The selected source size affects
-	 * the intrinsic size of the image (the image’s display size if no CSS styling is applied). If
+	 * the intrinsic size of the image (the image's display size if no CSS styling is applied). If
 	 * the `srcset` attribute is absent, or contains no values with a width descriptor, then the
 	 * `sizes` attribute has no effect.
 	 */
@@ -819,7 +820,8 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 */
 	src: string;
 	/**
-	 * One or more strings separated by commas, indicating possible image sources for the user agent to use. Each string is composed of:
+	 * One or more strings separated by commas, indicating possible image sources for the user agent
+	 * to use. Each string is composed of:
 	 *
 	 *      1.  A URL to an image
 	 *      2.  Optionally, whitespace followed by one of:
@@ -860,12 +862,11 @@ interface HTMLInputElementAttributes extends HTMLElementAttributes {
 	value
 }
 
-export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-
-}
+export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
 export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
 	checked
+	indeterminate
 	required
 }
 
@@ -906,9 +907,7 @@ export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputEl
 	required
 }
 
-export interface HTMLHiddenInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-
-}
+export interface HTMLHiddenInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
 export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
 	alt
@@ -962,9 +961,7 @@ export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputE
 	step
 }
 
-export interface HTMLResetInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-
-}
+export interface HTMLResetInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
 export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
 	dirname
@@ -1109,7 +1106,7 @@ export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
 
 export interface HTMLOListElementAttributes extends HTMLElementAttributes {
 	/**
-	 * This Boolean attribute specifies that the list’s items are in reverse order. Items will be
+	 * This Boolean attribute specifies that the list's items are in reverse order. Items will be
 	 * numbered from high to low.
 	 */
 	reversed: boolean;
@@ -1320,7 +1317,11 @@ export interface HTMLTableDataCellElementAttributes extends HTMLElementAttribute
 
 export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	/**
-	 * This is a non-standard attribute supported by WebKit on iOS (therefore nearly all browsers running on iOS, including Safari, Firefox, and Chrome), which controls whether and how the text value should be automatically capitalized as it is entered/edited by the user. The non-deprecated values are available in iOS 5 and later. Possible values are:
+	 * This is a non-standard attribute supported by WebKit on iOS (therefore nearly all browsers
+	 * running on iOS, including Safari, Firefox, and Chrome), which controls whether and how the
+	 * text value should be automatically capitalized as it is entered/edited by the user. The
+	 * non-deprecated values are available in iOS 5 and later. Possible values are:
+	 *
 	 *      -   `none`: Completely disables automatic capitalization.
 	 *      -   `sentences`: Automatically capitalize the first letter of sentences.
 	 *      -   `words`: Automatically capitalize the first letter of words.
@@ -1428,39 +1429,250 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttributes {
-	abbr
-	colspan
-	headers
-	rowspan
-	scope
+	/**
+	 * This attribute contains a short abbreviated description of the cell's content. Some
+	 * user-agents, such as speech readers, may present this description before the content itself.
+	 */
+	abbr: string;
+	/**
+	 * This attribute contains a non-negative integer value that indicates for how many columns the
+	 * cell extends. Its default value is `1`. Values higher than 1000 will be considered as
+	 * incorrect and will be set to the default value (1).
+	 */
+	colspan: number;
+	/**
+	 * This attribute contains a list of space-separated strings, each corresponding to the **id**
+	 * attribute of the `<th>` elements that apply to this element.
+	 */
+	headers: string;
+	/**
+	 * This attribute contains a non-negative integer value that indicates for how many rows the
+	 * cell extends. Its default value is `1`; if its value is set to `0`, it extends until the end
+	 * of the table section (`<thead>`, `<tbody>`, `<tfoot>`, even if implicitly defined), that the
+	 * cell belongs to. Values higher than 65534 are clipped down to 65534.
+	 */
+	rowspan: number;
+	/**
+	 * This enumerated attribute defines the cells that the header (defined in the `<th>`) element
+	 * relates to. It may have the following values:
+	 *
+	 *      -   `row`: The header relates to all cells of the row it belongs to.
+	 *      -   `col`: The header relates to all cells of the column it belongs to.
+	 *      -   `rowgroup`: The header belongs to a rowgroup and relates to all of its cells. These
+	 *          cells can be placed to the right or the left of the header, depending on the value
+	 *          of the `dir` attribute in the `<table>` element.
+	 *      -   `colgroup`: The header belongs to a colgroup and relates to all of its cells.
+	 *      -   `auto`
+	 *
+	 * The default value when this attribute is not specified is `auto`.
+	 */
+	scope: "row" | "col" | "rowgroup" | "colgroup" | "auto";
 }
 
 export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
-	default
-	kind
-	label
-	src
-	srclang
+	/**
+	 * This attribute indicates that the track should be enabled unless the user's preferences
+	 * indicate that another track is more appropriate. This may only be used on one `track` element
+	 * per media element.
+	 */
+	default: boolean;
+	/**
+	 * How the text track is meant to be used. If omitted the default kind is `subtitles`. If the
+	 * attribute contains an invalid value, it will use `metadata` (Versions of Chrome earlier than
+	 * 52 treated an invalid value as `subtitles`). The following keywords are allowed:
+	 *      -   `subtitles`
+	 *          -   Subtitles provide translation of content that cannot be understood by the
+	 *              viewer. For example dialogue or text that is not English in an English language
+	 *              film.
+	 *          -   Subtitles may contain additional content, usually extra background information.
+	 *              For example the text at the beginning of the Star Wars films, or the date, time,
+	 *              and location of a scene.
+	 *      -   `captions`
+	 *          -   Closed captions provide a transcription and possibly a translation of audio.
+	 *          -   It may include important non-verbal information such as music cues or sound
+	 *              effects. It may indicate the cue's source (e.g. music, text, character).
+	 *          -   Suitable for users who are deaf or when the sound is muted.
+	 *      -   `descriptions`
+	 *          -   Textual description of the video content.
+	 *          -   Suitable for users who are blind or where the video cannot be seen.
+	 *      -   `chapters`
+	 *          -   Chapter titles are intended to be used when the user is navigating the media
+	 *              resource.
+	 *      -   `metadata`
+	 *          -   Tracks used by scripts. Not visible to the user.
+	 */
+	kind: "subtitles" | "captions" | "descriptions" | "characters" | "metadata";
+	/**
+	 * A user-readable title of the text track which is used by the browser when listing available
+	 * text tracks.
+	 */
+	label: string;
+	/**
+	 * Address of the track (`.vtt` file). Must be a valid URL. This attribute must be specified and
+	 * its URL value must have the same origin as the document -- unless the `<audio>` or `<video>`
+	 * parent element of the `track` element has a `crossorigin` attribute.
+	 */
+	src: string;
+	/**
+	 * Language of the track text data. It must be a valid BCP 47 language tag. If the `kind`
+	 * attribute is set to `subtitles`, then `srclang` must be defined.
+	 */
+	srclang: string;
 }
 
 export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
-	autoplay
-	autoPictureInPicture
-	buffered
+	/**
+	 * A Boolean attribute; if specified, the video automatically begins to play back as soon as it
+	 * can do so without stopping to finish loading the data.
+	 *
+	 * To disable video autoplay, `autoplay="false"` will not work; the video will autoplay if the
+	 * attribute is there in the `<video>` tag at all. To remove autoplay, the attribute needs to be
+	 * removed altogether.
+	 *
+	 * In some browsers (e.g. Chrome 70.0) autoplay doesn't work if no `muted` attribute is present.
+	 */
+	autoplay: boolean;
+	/**
+	 * A Boolean attribute which if `true` indicates that the element should automatically toggle
+	 * picture-in-picture mode when the user switches back and forth between this document and
+	 * another document or application.
+	 */
+	autoPictureInPicture: string;
+	/**
+	 * An attribute you can read to determine the time ranges of the buffered media. This attribute
+	 * contains a `TimeRanges` object.
+	 */
+	buffered: string;
+	/**
+	 * If this attribute is present, the browser will offer controls to allow the user to control
+	 * video playback, including volume, seeking, and pause/resume playback.
+	 */
 	controls
-	controlslist
-	crossorigin
-	currentTime
-	disablePictureInPicture
-	disableRemotePlayback
-	duration
-	height
-	intrinsicsize
-	loop
-	muted
-	playsinline
-	poster
+	/**
+	 * The `controlslist` attribute, when specified, helps the browser select what controls to show
+	 * on the media element whenever the browser shows its own set of controls (e.g. when the
+	 * `controls` attribute is specified).
+	 *
+	 * The allowed values are `nodownload`, `nofullscreen` and `noremoteplayback`.
+	 *
+	 * Use the `disablePictureInPicture` attribute if you want to disable the Picture-In-Picture
+	 * mode (and the control).
+	 */
+	controlslist: "nodownload" | "nofullscreen" | "noremoteplayback";
+	/**
+	 * This enumerated attribute indicates whether to use CORS to fetch the related image.
+	 * CORS-enabled resources can be reused in the `<canvas>` element without being *tainted*. The
+	 * allowed values are:
+	 *
+	 *      -   anonymous
+	 *          -   Sends a cross-origin request without a credential. In other words, it sends the
+	 *              `Origin:` HTTP header without a cookie, X.509 certificate, or performing HTTP
+	 *              Basic authentication. If the server does not give credentials to the origin site
+	 *              (by not setting the `Access-Control-Allow-Origin:` HTTP header), the image will
+	 *              be *tainted*, and its usage restricted.
+	 *      -   use-credentials
+	 *          -   Sends a cross-origin request with a credential. In other words, it sends the
+	 *              `Origin:` HTTP header with a cookie, a certificate, or performing HTTP Basic
+	 *              authentication. If the server does not give credentials to the origin site
+	 *              (through `Access-Control-Allow-Credentials:` HTTP header), the image will be
+	 *              *tainted* and its usage restricted.
+	 *
+	 * When not present, the resource is fetched without a CORS request (i.e. without sending the
+	 * `Origin:` HTTP header), preventing its non-tainted used in `<canvas>` elements. If invalid,
+	 * it is handled as if the enumerated keyword `anonymous` was used. See CORS settings attributes
+	 * for additional information.
+	 */
+	crossorigin: "anonymous" | "use-credentials";
+	/**
+	 * Reading `currentTime` returns a double-precision floating-point value indicating the current
+	 * playback position of the media specified in seconds. If the media has not started playing
+	 * yet, the time offset at which it will begin is returned. Setting `currentTime` sets the
+	 * current playback position to the given time and seeks the media to that position if the media
+	 * is currently loaded.
+	 *
+	 * If the media is being streamed, it's possible that the user agent may not be able to obtain
+	 * some parts of the resource if that data has expired from the media buffer. Other media may
+	 * have a media timeline that doesn't start at 0 seconds, so setting `currentTime` to a time
+	 * before that would fail. The `getStartDate()` method can be used to determine the beginning
+	 * point of the media timeline's reference frame.
+	 */
+	currentTime: number;
+	/**
+	 * Prevents the browser from suggesting a Picture-in-Picture context menu or to request
+	 * Picture-in-Picture automatically in some cases.
+	 */
+	disablePictureInPicture: boolean;
+	/**
+	 * A Boolean attribute used to disable the capability of remote playback in devices that are
+	 * attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA,
+	 * AirPlay, etc).
+	 *
+	 * In Safari, you can use `x-webkit-airplay="deny"` as a fallback.
+	 */
+	disableRemotePlayback: boolean;
+	/**
+	 * A double-precision floating-point value which indicates the duration (total length) of the
+	 * media in seconds, on the media's timeline. If no media is present on the element, or the
+	 * media is not valid, the returned value is `NaN`. If the media has no known end (such as for
+	 * live streams of unknown duration, web radio, media incoming from WebRTC, and so forth), this
+	 * value is `+Infinity`.
+	 */
+	duration: number;
+	/**
+	 * The height of the video's display area, in CSS pixels (absolute values only; no percentages.)
+	 */
+	height: number;
+	/**
+	 * This attribute tells the browser to ignore the actual intrinsic size of the image and pretend
+	 * it's the size specified in the attribute. Specifically, the image would raster at these
+	 * dimensions and `naturalWidth`/`naturalHeight` on images would return the values specified in
+	 * this attribute. Explainer, examples
+	 */
+	intrinsicsize: boolean;
+	/**
+	 * A Boolean attribute; if specified, the browser will automatically seek back to the start upon
+	 * reaching the end of the video.
+	 */
+	loop: boolean;
+	/**
+	 * A Boolean attribute that indicates the default setting of the audio contained in the video.
+	 * If set, the audio will be initially silenced. Its default value is `false`, meaning that the
+	 * audio will be played when the video is played.
+	 */
+	muted: boolean;
+	/**
+	 * A Boolean attribute indicating that the video is to be played "inline", that is within the
+	 * element's playback area. Note that the absence of this attribute *does not* imply that the
+	 * video will always be played in fullscreen.
+	 */
+	playsinline: boolean;
+	/**
+	 * A URL for an image to be shown while the video is downloading. If this attribute isn't
+	 * specified, nothing is displayed until the first frame is available, then the first frame is
+	 * shown as the poster frame.
+	 */
+	poster: string;
+	/**
+	 * This enumerated attribute is intended to provide a hint to the browser about what the author
+	 * thinks will lead to the best user experience with regards to what content is loaded before
+	 * the video is played. It may have one of the following values:
+	 *
+	 *      -   `none`: Indicates that the video should not be preloaded.
+	 *      -   `metadata`: Indicates that only video metadata (e.g. length) is fetched.
+	 *      -   `auto`: Indicates that the whole video file can be downloaded, even if the user is
+	 *          not expected to use it.
+	 *      -   *empty string*: Synonym of the `auto` value.
+	 *
+	 * The default value is different for each browser. The spec advises it to be set to `metadata`.
+	 */
 	preload
+	/**
+	 * The URL of the video to embed. This is optional; you may instead use the `<source>` element
+	 * within the video block to specify the video to embed.
+	 */
 	src
+	/**
+	 * The width of the video's display area, in CSS pixels (absolute values only; no percentages).
+	 */
 	width
 }
