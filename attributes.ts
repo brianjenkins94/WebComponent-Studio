@@ -810,11 +810,44 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * the `srcset` attribute is absent, or contains no values with a width descriptor, then the
 	 * `sizes` attribute has no effect.
 	 */
-	sizes
-	src
-	srcset
-	width
-	usemap
+	sizes: string[] | string;
+	/**
+	 * The image URL. Mandatory for the `<img>` element. On browsers supporting `srcset`, `src` is
+	 * treated like a candidate image with a pixel density descriptor `1x`, unless an image with
+	 * this pixel density descriptor is already defined in `srcset`, or unless `srcset` contains `w`
+	 * descriptors.
+	 */
+	src: string;
+	/**
+	 * One or more strings separated by commas, indicating possible image sources for the user agent to use. Each string is composed of:
+	 *
+	 *      1.  A URL to an image
+	 *      2.  Optionally, whitespace followed by one of:
+	 *          -   A width descriptor (a positive integer directly followed by `w`). The width
+	 *              descriptor is divided by the source size given in the `sizes` attribute to
+	 *              calculate the effective pixel density.
+	 *          -   A pixel density descriptor (a positive floating point number directly followed
+	 *              by `x`).
+	 *
+	 * If no descriptor is specified, the source is assigned the default descriptor of `1x`.
+	 *
+	 * It is incorrect to mix width descriptors and pixel density descriptors in the same `srcset`
+	 * attribute. Duplicate descriptors (for instance, two sources in the same `srcset` which are
+	 * both described with `2x`) are also invalid.
+	 *
+	 * The user agent selects any of the available sources at its discretion. This provides them
+	 * with significant leeway to tailor their selection based on things like user preferences or
+	 * bandwidth conditions. See our Responsive images tutorial for an example.
+	 */
+	srcset: string;
+	/**
+	 * The intrinsic width of the image in pixels. Must be an integer without a unit.
+	 */
+	width: number;
+	/**
+	 * The partial URL (starting with `#`) of an image map associated with the element.
+	 */
+	usemap: string;
 }
 
 interface HTMLInputElementAttributes extends HTMLElementAttributes {
@@ -1000,90 +1033,398 @@ export interface HTMLWeekInputElement extends HTMLElementAttributes, HTMLInputEl
 }
 
 export interface HTMLLabelElementAttributes extends HTMLElementAttributes {
-	for
+	/**
+	 * The `id` of a labelable form-related element in the same document as the `<label>` element.
+	 * The first element in the document with an `id` matching the value of the `for` attribute is
+	 * the *labeled control* for this label element if it is a labelable element. If it is not
+	 * labelable then the `for` attribute has no effect. If there are other elements that also match
+	 * the `id` value, later in the document, they are not considered.
+	 */
+	for: string;
 }
 
 export interface HTMLLIElementAttributes extends HTMLElementAttributes {
-	value
+	/**
+	 * This integer attribute indicates the current ordinal value of the list item as defined by the
+	 * `<ol>` element. The only allowed value for this attribute is a number, even if the list is
+	 * displayed with Roman numerals or letters. List items that follow this one continue numbering
+	 * from the value set. The **value** attribute has no meaning for unordered lists (`<ul>`) or
+	 * for menus (`<menu>`).
+	 */
+	value: number;
 }
 
 export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
-	value
-	min
-	max
-	low
-	high
-	optimum
-	form
+	/**
+	 * The current numeric value. This must be between the minimum and maximum values (`min`
+	 * attribute and `max` attribute) if they are specified. If unspecified or malformed, the value
+	 * is `0`. If specified, but not within the range given by the `min` attribute and `max`
+	 * attribute, the value is equal to the nearest end of the range.
+	 */
+	value: number;
+	/**
+	 * The lower numeric bound of the measured range. This must be less than the maximum value
+	 * (`max` attribute), if specified. If unspecified, the minimum value is `0`.
+	 */
+	min: number;
+	/**
+	 * The upper numeric bound of the measured range. This must be greater than the minimum value
+	 * (`min` attribute), if specified. If unspecified, the maximum value is `1`.
+	 */
+	max: number;
+	/**
+	 * The upper numeric bound of the low end of the measured range. This must be greater than the
+	 * minimum value (`min` attribute), and it also must be less than the high value and maximum
+	 * value (`high` attribute and `max` attribute, respectively), if any are specified. If
+	 * unspecified, or if less than the minimum value, the `low` value is equal to the minimum
+	 * value.
+	 */
+	low: number;
+	/**
+	 * The lower numeric bound of the high end of the measured range. This must be less than the
+	 * maximum value (`max` attribute), and it also must be greater than the low value and minimum
+	 * value (`low` attribute and `min` attribute, respectively), if any are specified. If
+	 * unspecified, or if greater than the maximum value, the `high` value is equal to the maximum
+	 * value.
+	 */
+	high: number;
+	/**
+	 * This attribute indicates the optimal numeric value. It must be within the range (as defined
+	 * by the `min` attribute and `max` attribute). When used with the `low` attribute and `high`
+	 * attribute, it gives an indication where along the range is considered preferable. For
+	 * example, if it is between the `min` attribute and the `low` attribute, then the lower range
+	 * is considered preferred. The browser may color the meter's bar differently depending on
+	 * whether the value is less than or equal to the optimum value.
+	 */
+	optimum: number;
+	/**
+	 * The `<form>` element to associate the `<meter>` element with (its *form owner*). The value of
+	 * this attribute must be the `id` of a `<form>` in the same document. If this attribute is not
+	 * set, the `<meter>` is associated with its ancestor `<form>` element, if any. This attribute
+	 * is only used if the `<meter>` element is being used as a form-associated element, such as one
+	 * displaying a range corresponding to an `<input type="number">`.
+	 */
+	form: string;
 }
 
 export interface HTMLOListElementAttributes extends HTMLElementAttributes {
-	reversed
-	start
+	/**
+	 * This Boolean attribute specifies that the list’s items are in reverse order. Items will be
+	 * numbered from high to low.
+	 */
+	reversed: boolean;
+	/**
+	 * An integer to start counting from for the list items. Always an Arabic numeral (1, 2, 3,
+	 * etc.), even when the numbering `type` is letters or Roman numerals. For example, to start
+	 * numbering elements from the letter "d" or the Roman numeral "iv," use `start="4"`.
+	 */
+	start: number;
 }
 
 export interface HTMLOptGroupElementAttributes extends HTMLElementAttributes {
-	disabled
-	label
+	/**
+	 * If this Boolean attribute is set, none of the items in this option group is selectable. Often
+	 * browsers grey out such control and it won't receive any browsing events, like mouse clicks or
+	 * focus-related ones.
+	 */
+	disabled: string;
+	/**
+	 * The name of the group of options, which the browser can use when labeling the options in the
+	 * user interface. This attribute is mandatory if this element is used.
+	 */
+	label: string;
 }
 
 export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
-	disabled
-	label
-	selected
-	value
+	/**
+	 * If this Boolean attribute is set, this option is not checkable. Often browsers grey out such
+	 * control and it won't receive any browsing event, like mouse clicks or focus-related ones. If
+	 * this attribute is not set, the element can still be disabled if one of its ancestors is a
+	 * disabled `<optgroup>` element.
+	 */
+	disabled: boolean;
+	/**
+	 * This attribute is text for the label indicating the meaning of the option. If the `label`
+	 * attribute isn't defined, its value is that of the element text content.
+	 */
+	label: string;
+	/**
+	 * If present, this Boolean attribute indicates that the option is initially selected. If the
+	 * `<option>` element is the descendant of a `<select>` element whose `multiple` attribute is
+	 * not set, only one single `<option>` of this `<select>` element may have the `selected`
+	 * attribute.
+	 */
+	selected: boolean;
+	/**
+	 * The content of this attribute represents the value to be submitted with the form, should this
+	 * option be selected. If this attribute is omitted, the value is taken from the text content of
+	 * the option element.
+	 */
+	value: string;
 }
 
 export interface HTMLProgressElementAttributes extends HTMLElementAttributes {
-	max
-	value
+	/**
+	 * This attribute describes how much work the task indicated by the `progress` element requires.
+	 * The `max` attribute, if present, must have a value greater than `0` and be a valid floating
+	 * point number. The default value is `1`.
+	 */
+	max: number;
+	/**
+	 * This attribute specifies how much of the task that has been completed. It must be a valid
+	 * floating point number between `0` and `max`, or between `0` and `1` if `max` is omitted. If
+	 * there is no `value` attribute, the progress bar is indeterminate; this indicates that an
+	 * activity is ongoing with no indication of how long it is expected to take.
+	 */
+	value: number;
 }
 
 export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
-	cite
+	/**
+	 * The value of this attribute is a URL that designates a source document or message for the
+	 * information quoted. This attribute is intended to point to information explaining the context
+	 * or the reference for the quote.
+	 */
+	cite: string;
 }
 
 export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
-	autocomplete
-	autofocus
-	disabled
-	form
-	multiple
-	name
-	required
-	size
+	/**
+	 * A `DOMString` providing a hint for a user agent's autocomplete feature. See The HTML
+	 * autocomplete attribute for a complete list of values and details on how to use autocomplete.
+	 */
+	autocomplete: string;
+	/**
+	 * This Boolean attribute lets you specify that a form control should have input focus when the
+	 * page loads. Only one form element in a document can have the `autofocus` attribute.
+	 */
+	autofocus: boolean;
+	/**
+	 * This Boolean attribute indicates that the user cannot interact with the control. If this
+	 * attribute is not specified, the control inherits its setting from the containing element, for
+	 * example `<fieldset>`; if there is no containing element with the `disabled` attribute set,
+	 * then the control is enabled.
+	 */
+	disabled: boolean;
+	/**
+	 * The `<form>` element to associate the `<select>` with (its *form owner*). The value of this
+	 * attribute must be the `id` of a `<form>` in the same document. (If this attribute is not set,
+	 * the `<select>` is associated with its ancestor `<form>` element, if any.)
+	 *
+	 * This attribute lets you associate `<select>` elements to `<form>`s anywhere in the document,
+	 * not just inside a `<form>`. It can also override an ancestor `<form>` element.
+	 */
+	form: string;
+	/**
+	 * This Boolean attribute indicates that multiple options can be selected in the list. If it is
+	 * not specified, then only one option can be selected at a time. When `multiple` is specified,
+	 * most browsers will show a scrolling list box instead of a single line dropdown.
+	 */
+	multiple: boolean
+	/**
+	 * This attribute is used to specify the name of the control.
+	 */
+	name: string;
+	/**
+	 * A Boolean attribute indicating that an option with a non-empty string value must be selected.
+	 */
+	required: boolean;
+	/**
+	 * If the control is presented as a scrolling list box (e.g. when `multiple` is specified), this
+	 * attribute represents the number of rows in the list that should be visible at one time.
+	 * Browsers are not required to present a select element as a scrolled list box. The default
+	 * value is `0`.
+	 */
+	size: number;
 }
 
 export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
-	media
-	sizes
-	src
-	srcset
-	type
+	/**
+	 * Media query of the resource's intended media; this should be used only in a `<picture>`
+	 * element.
+	 */
+	media: string;
+	/**
+	 * Is a list of source sizes that describes the final rendered width of the image represented by
+	 * the source. Each source size consists of a comma-separated list of media condition-length
+	 * pairs. This information is used by the browser to determine, before laying the page out,
+	 * which image defined in `srcset` to use. Please note that `sizes` will have its effect only if
+	 * width dimension descriptors are provided with `srcset` instead of pixel ratio values (200w
+	 * instead of 2x for example).
+	 *
+	 * The `sizes` attribute has an effect only when the `<source>` element is the direct child of a
+	 * `<picture>` element.
+	 */
+	sizes: string;
+	/**
+	 * Required for `<audio>` and `<video>`, address of the media resource. The value of this
+	 * attribute is ignored when the `<source>` element is placed inside a `<picture>` element.
+	 */
+	src: string;
+	/**
+	 * A list of one or more strings separated by commas indicating a set of possible images
+	 * represented by the source for the browser to use. Each string is composed of:
+	 *
+	 *      1.  One URL specifying an image.
+	 *      2.  A width descriptor, which consists of a string containing a positive integer
+	 *          directly followed by `"w"`, such as `300w`. The default value, if missing, is the
+	 *          infinity.
+	 *      3.  A pixel density descriptor, that is a positive floating number directly followed by
+	 *          `"x"`. The default value, if missing, is `1x`.
+	 *
+	 * Each string in the list must have at least a width descriptor or a pixel density descriptor
+	 * to be valid. Among the list, there must be only one string containing the same tuple of width
+	 * descriptor and pixel density descriptor. The browser chooses the most adequate image to
+	 * display at a given point of time.
+	 *
+	 * The `srcset` attribute has an effect only when the `<source>` element is the direct child of
+	 * a `<picture>` element.
+	 */
+	srcset: string;
+	/**
+	 * The MIME media type of the resource, optionally with a `codecs` parameter.
+	 *
+	 * If the `type` attribute isn't specified, the media's type is retrieved from the server and
+	 * checked to see if the user agent can handle it; if it can't be rendered, the next `<source>`
+	 * is checked. If the `type` attribute is specified, it's compared against the types the user
+	 * agent can present, and if it's not recognized, the server doesn't even get queried; instead,
+	 * the next `<source>` element is checked at once.
+	 *
+	 * When used in the context of a `<picture>` element, the browser will fall back to using the
+	 * image specified by the `<picture>` element's `<img>` child if it is unable to find a suitable
+	 * image to use after examining every provided `<source>`.
+	 */
+	type: string;
 }
 
 export interface HTMLTableDataCellElementAttributes extends HTMLElementAttributes {
-	colspan
-	headers
-	rowspan
+	/**
+	 * This attribute contains a non-negative integer value that indicates for how many columns the
+	 * cell extends. Its default value is `1`. Values higher than 1000 will be considered as
+	 * incorrect and will be set to the default value (1).
+	 */
+	colspan: number;
+	/**
+	 * This attribute contains a list of space-separated strings, each corresponding to the **id**
+	 * attribute of the `<th>` elements that apply to this element.
+	 */
+	headers: string;
+	/**
+	 * This attribute contains a non-negative integer value that indicates for how many rows the
+	 * cell extends. Its default value is `1`; if its value is set to `0`, it extends until the end
+	 * of the table section (`<thead>`, `<tbody>`, `<tfoot>`, even if implicitly defined), that the
+	 * cell belongs to. Values higher than 65534 are clipped down to 65534.
+	 */
+	rowspan: number;
 }
 
 export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
-	autocapitalize
-	autocomplete
-	autofocus
-	cols
-	disabled
-	form
-	maxlength
-	minlength
-	name
-	placeholder
-	readonly
-	required
-	rows
-	spellcheck
-	wrap
+	/**
+	 * This is a non-standard attribute supported by WebKit on iOS (therefore nearly all browsers running on iOS, including Safari, Firefox, and Chrome), which controls whether and how the text value should be automatically capitalized as it is entered/edited by the user. The non-deprecated values are available in iOS 5 and later. Possible values are:
+	 *      -   `none`: Completely disables automatic capitalization.
+	 *      -   `sentences`: Automatically capitalize the first letter of sentences.
+	 *      -   `words`: Automatically capitalize the first letter of words.
+	 *      -   `characters`: Automatically capitalize all characters.
+	 */
+	autocapitalize: "none" | "sentences" | "words" | "characters";
+	/**
+	 * This attribute indicates whether the value of the control can be automatically completed by
+	 * the browser. Possible values are:
+	 *
+	 *      -   `off`: The user must explicitly enter a value into this field for every use, or the
+	 *          document provides its own auto-completion method; the browser does not automatically
+	 *          complete the entry.
+	 *      -   `on`: The browser can automatically complete the value based on values that the user
+	 *          has entered during previous uses.
+	 *
+	 * If the `autocomplete` attribute is not specified on a `<textarea>` element, then the browser
+	 * uses the `autocomplete` attribute value of the `<textarea>` element's form owner. The form
+	 * owner is either the `<form>` element that this `<textarea>` element is a descendant of or the
+	 * form element whose `id` is specified by the `form` attribute of the input element. For more
+	 * information, see the `autocomplete` attribute in `<form>`.
+	 */
+	autocomplete: boolean;
+	/**
+	 * This Boolean attribute lets you specify that a form control should have input focus when the
+	 * page loads. Only one form-associated element in a document can have this attribute specified.
+	 */
+	autofocus: boolean
+	/**
+	 * The visible width of the text control, in average character widths. If it is specified, it
+	 * must be a positive integer. If it is not specified, the default value is `20`.
+	 */
+	cols: number;
+	/**
+	 * This Boolean attribute indicates that the user cannot interact with the control. If this
+	 * attribute is not specified, the control inherits its setting from the containing element, for
+	 * example `<fieldset>`; if there is no containing element when the `disabled` attribute is set,
+	 * the control is enabled.
+	 */
+	disabled: boolean;
+	/**
+	 * The form element that the `<textarea>` element is associated with (its "form owner"). The
+	 * value of the attribute must be the `id` of a form element in the same document. If this
+	 * attribute is not specified, the `<textarea>` element must be a descendant of a form element.
+	 * This attribute enables you to place `<textarea>` elements anywhere within a document, not
+	 * just as descendants of form elements.
+	 */
+	form: string;
+	/**
+	 * The maximum number of characters (UTF-16 code units) that the user can enter. If this value
+	 * isn't specified, the user can enter an unlimited number of characters.
+	 */
+	maxlength: number;
+	/**
+	 * The minimum number of characters (UTF-16 code units) required that the user should enter.
+	 */
+	minlength: number;
+	/**
+	 * The name of the control.
+	 */
+	name: string;
+	/**
+	 * A hint to the user of what can be entered in the control. Carriage returns or line-feeds
+	 * within the placeholder text must be treated as line breaks when rendering the hint.
+	 */
+	placeholder: string;
+	/**
+	 * This Boolean attribute indicates that the user cannot modify the value of the control. Unlike
+	 * the `disabled` attribute, the `readonly` attribute does not prevent the user from clicking or
+	 * selecting in the control. The value of a read-only control is still submitted with the form.
+	 */
+	readonly: boolean;
+	/**
+	 * This attribute specifies that the user must fill in a value before submitting a form.
+	 */
+	required: string;
+	/**
+	 * The number of visible text lines for the control.
+	 */
+	rows: number;
+	/**
+	 * Specifies whether the `<textarea>` is subject to spell checking by the underlying browser/OS.
+	 * The value can be:
+	 *
+	 *      -   `true`: Indicates that the element needs to have its spelling and grammar checked.
+	 *      -   `default`: Indicates that the element is to act according to a default behavior,
+	 *          possibly based on the parent element's own `spellcheck` value.
+	 *      -   `false`: Indicates that the element should not be spell checked.
+	 */
+	spellcheck: "true" | "default" | "false";
+	/**
+	 * Indicates how the control wraps text. Possible values are:
+	 *      -   `hard`: The browser automatically inserts line breaks (CR+LF) so that each line has
+	 *          no more than the width of the control; the `cols` attribute must also be specified
+	 *          for this to take effect.
+	 *      -   `soft`: The browser ensures that all line breaks in the value consist of a CR+LF
+	 *          pair, but does not insert any additional line breaks.
+	 *      -   `off`: Like `soft` but changes appearance to `white-space: pre` so line segments
+	 *          exceeding `cols` are not wrapped and the `<textarea>` becomes horizontally
+	 *          scrollable.
+	 *
+	 * If this attribute is not specified, `soft` is its default value.
+	 */
+	wrap: "hard" | "soft" | "off";
 }
 
 export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttributes {
