@@ -1,6 +1,6 @@
 /* eslint-disable lines-around-comment */
 
-export interface GlobalElementAttributes {
+interface HTMLElementAttributes {
 	/**
 	 * Provides a hint for generating a keyboard shortcut for the current element. This attribute
 	 * consists of a space-separated list of characters. The browser should use the first one that
@@ -151,7 +151,7 @@ export interface GlobalElementAttributes {
 	translate: boolean;
 }
 
-export interface HTMLAnchorElementAttributes {
+export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Prompts the user to save the linked URL instead of navigating to it. Can be used with or
 	 * without a value:
@@ -217,7 +217,7 @@ export interface HTMLAnchorElementAttributes {
 	type: string;
 }
 
-export interface HTMLAudioElementAttributes {
+export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	/**
 	 * A Boolean attribute: if specified, the audio will automatically begin playback as soon as it
 	 * can do so, without waiting for the entire audio file to finish downloading.
@@ -313,7 +313,7 @@ export interface HTMLAudioElementAttributes {
 	src: string;
 }
 
-export interface HTMLQuoteElementAttributes {
+export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
 	/**
 	 * A URL that designates a source document or message for the information quoted. This attribute
 	 * is intended to point to information explaining the context or the reference for the quote.
@@ -321,7 +321,7 @@ export interface HTMLQuoteElementAttributes {
 	cite: string;
 }
 
-export interface HTMLButtonElementAttributes {
+export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	/**
 	 * This Boolean attribute specifies that the button should have input focus when the page loads.
 	 * **Only one element in a document can have this attribute.**
@@ -435,7 +435,7 @@ export interface HTMLButtonElementAttributes {
 	value: string;
 }
 
-export interface HTMLCanvasElementAttributes {
+export interface HTMLCanvasElementAttributes extends HTMLElementAttributes {
 	/**
 	 * The height of the coordinate space in CSS pixels. Defaults to 150.
 	 */
@@ -446,7 +446,7 @@ export interface HTMLCanvasElementAttributes {
 	width: number;
 }
 
-export interface HTMLTableColElementAttributes {
+export interface HTMLTableColElementAttributes extends HTMLElementAttributes {
 	/**
 	 * This attribute contains a positive integer indicating the number of consecutive columns the
 	 * `<col>` element spans. If not present, its default value is `1`.
@@ -454,7 +454,7 @@ export interface HTMLTableColElementAttributes {
 	span: number;
 }
 
-export interface HTMLModElementAttributes {
+export interface HTMLModElementAttributes extends HTMLElementAttributes {
 	/**
 	 * A URI for a resource that explains the change (for example, meeting minutes).
 	 */
@@ -469,7 +469,7 @@ export interface HTMLModElementAttributes {
 	datetime: Date | string;
 }
 
-export interface HTMLDetailsElementAttributes {
+export interface HTMLDetailsElementAttributes extends HTMLElementAttributes {
 	/**
 	 * This Boolean attribute indicates whether or not the details -- that is, the contents of the
 	 * `<details>` element -- are currently visible. The default, `false`, means the details are
@@ -478,7 +478,7 @@ export interface HTMLDetailsElementAttributes {
 	open: boolean;
 }
 
-export interface HTMLFieldSetElementAttributes {
+export interface HTMLFieldSetElementAttributes extends HTMLElementAttributes {
 	/**
 	 * If this Boolean attribute is set, all form controls that are descendants of the `<fieldset>`,
 	 * are disabled, meaning they are not editable and won't be submitted along with the `<form>`.
@@ -502,7 +502,7 @@ export interface HTMLFieldSetElementAttributes {
 	name: string;
 }
 
-export interface HTMLFormElementAttributes {
+export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Space-separated character encodings the server accepts. The browser uses them in the order in
 	 * which they are listed. The default value means the same encoding as the page. (In previous
@@ -590,7 +590,7 @@ export interface HTMLFormElementAttributes {
 	target: "_self" | "_blank" | "_parent" | "_top";
 }
 
-export interface HTMLIFrameElementAttributes {
+export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Specifies a feature policy for the `<iframe>`. The policy defines what features are available
 	 * to the `<iframe>` based on the origin of the request (e.g. access to the microphone, camera,
@@ -698,7 +698,7 @@ export interface HTMLIFrameElementAttributes {
 	width: number;
 }
 
-export interface HTMLImageElementAttributes {
+export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Defines an alternative text description of the image.
 	 *
@@ -743,7 +743,7 @@ export interface HTMLImageElementAttributes {
 	 * If the attribute has an invalid value, browsers handle it as if the `anonymous` value was
 	 * used. See CORS settings attributes for additional information.
 	 */
-	crossorigin
+	crossorigin: "anonymous" | "use-credentials";
 	/**
 	 * Provides an image decoding hint to the browser. Allowed values:
 	 *
@@ -776,7 +776,7 @@ export interface HTMLImageElementAttributes {
 	 *          needed. This generally improves the performance of the content in most typical use
 	 *          cases.
 	 */
-	loading
+	loading: "eager" | "lazy";
 	/**
 	 * A string indicating which referrer to use when fetching the resource:
 	 *
@@ -817,17 +817,197 @@ export interface HTMLImageElementAttributes {
 	usemap
 }
 
-// input
-
-export interface HTMLLabelElementAttributes {
-	for
-}
-
-export interface HTMLLIElementAttributes {
+interface HTMLInputElementAttributes extends HTMLElementAttributes {
+	type
+	autocomplete
+	autofocus
+	disabled
+	form
+	name
 	value
 }
 
-export interface HTMLMeterElementAttributes {
+export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+}
+
+export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	checked
+	required
+}
+
+export interface HTMLColorInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+}
+
+export interface HTMLDateInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	max
+	min
+	readonly
+	required
+	step
+}
+
+export interface HTMLDatetimeLocalInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	max
+	min
+	readonly
+	required
+	step
+}
+
+export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	multiple
+	readonly
+	required
+	size
+}
+
+export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	accept
+	capture
+	multiple
+	required
+}
+
+export interface HTMLHiddenInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+}
+
+export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	alt
+	formaction
+	formenctype
+	formmethod
+	formnovalidate
+	formtarget
+	height
+	src
+	width
+}
+
+export interface HTMLMonthInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	max
+	min
+	readonly
+	required
+	step
+}
+
+export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	max
+	min
+	readonly
+	required
+	step
+}
+
+export interface HTMLPasswordInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	maxlength
+	minlength
+	pattern
+	placeholder
+	readonly
+	required
+	size
+}
+
+export interface HTMLRadioInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	checked
+	required
+}
+
+export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	max
+	min
+	step
+}
+
+export interface HTMLResetInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+}
+
+export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	dirname
+	list
+	maxlength
+	minlength
+	placeholder
+	readonly
+	required
+}
+
+export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	formaction
+	formenctype
+	formmethod
+	formnovalidate
+	formtarget
+}
+
+export interface HTMLTelInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	maxlength
+	minlength
+	pattern
+	placeholder
+	readonly
+	required
+	size
+}
+
+export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	dirname
+	list
+	maxlength
+	minlength
+	pattern
+	placeholder
+	readonly
+	required
+	size
+}
+
+export interface HTMLTimeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	max
+	min
+	readonly
+	required
+	step
+}
+
+export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	maxlength
+	minlength
+	placeholder
+	readonly
+	required
+}
+
+export interface HTMLWeekInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+	list
+	max
+	min
+	step
+}
+
+export interface HTMLLabelElementAttributes extends HTMLElementAttributes {
+	for
+}
+
+export interface HTMLLIElementAttributes extends HTMLElementAttributes {
+	value
+}
+
+export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
 	value
 	min
 	max
@@ -837,33 +1017,33 @@ export interface HTMLMeterElementAttributes {
 	form
 }
 
-export interface HTMLOListElementAttributes {
+export interface HTMLOListElementAttributes extends HTMLElementAttributes {
 	reversed
 	start
 }
 
-export interface HTMLOptGroupElementAttributes {
+export interface HTMLOptGroupElementAttributes extends HTMLElementAttributes {
 	disabled
 	label
 }
 
-export interface HTMLOptionElementAttributes {
+export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
 	disabled
 	label
 	selected
 	value
 }
 
-export interface HTMLProgressElementAttributes {
+export interface HTMLProgressElementAttributes extends HTMLElementAttributes {
 	max
 	value
 }
 
-export interface HTMLQuoteElementAttributes {
+export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
 	cite
 }
 
-export interface HTMLSelectElementAttributes {
+export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
 	autocomplete
 	autofocus
 	disabled
@@ -874,7 +1054,7 @@ export interface HTMLSelectElementAttributes {
 	size
 }
 
-export interface HTMLSourceElementAttributes {
+export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
 	media
 	sizes
 	src
@@ -882,13 +1062,13 @@ export interface HTMLSourceElementAttributes {
 	type
 }
 
-export interface HTMLTableDataCellElementAttributes {
+export interface HTMLTableDataCellElementAttributes extends HTMLElementAttributes {
 	colspan
 	headers
 	rowspan
 }
 
-export interface HTMLTextAreaElementAttributes {
+export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	autocapitalize
 	autocomplete
 	autofocus
@@ -906,7 +1086,7 @@ export interface HTMLTextAreaElementAttributes {
 	wrap
 }
 
-export interface HTMLTableHeaderCellElementAttributes {
+export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttributes {
 	abbr
 	colspan
 	headers
@@ -914,7 +1094,7 @@ export interface HTMLTableHeaderCellElementAttributes {
 	scope
 }
 
-export interface HTMLTrackElementAttributes {
+export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
 	default
 	kind
 	label
@@ -922,7 +1102,7 @@ export interface HTMLTrackElementAttributes {
 	srclang
 }
 
-export interface HTMLVideoElementAttributes {
+export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	autoplay
 	autoPictureInPicture
 	buffered
