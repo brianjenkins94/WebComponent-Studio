@@ -1,12 +1,12 @@
-/* eslint-disable lines-around-comment */
-
 interface HTMLElementAttributes {
+
 	/**
 	 * Provides a hint for generating a keyboard shortcut for the current element. This attribute
 	 * consists of a space-separated list of characters. The browser should use the first one that
 	 * exists on the computer keyboard layout.
 	 */
 	accesskey: string;
+
 	/**
 	 * Controls whether and how text input is automatically capitalized as it is entered/edited by
 	 * the user. It can have the following values:
@@ -19,12 +19,14 @@ interface HTMLElementAttributes {
 	 *      -   `characters`, all letters should default to uppercase
 	 */
 	autocaptialize: "off" | "none" | "on" | "sentences" | "words" | "characters";
+
 	/**
 	 * A space-separated list of the classes of the element. Classes allows CSS and JavaScript to
 	 * select and access specific elements via the class selectors or functions like the method
 	 * `Document.getElementsByClassName()`.
 	 */
 	class: string;
+
 	/**
 	 * An enumerated attribute indicating if the element should be editable by the user. If so, the
 	 * browser modifies its widget to allow editing. The attribute must take one of the following
@@ -34,6 +36,7 @@ interface HTMLElementAttributes {
 	 *      -   `false`, which indicates that the element must not be editable.
 	 */
 	contenteditable: boolean;
+
 	/**
 	 * Forms a class of attributes, called custom data attributes, that allow proprietary
 	 * information to be exchanged between the HTML and its DOM representation that may be used by
@@ -41,6 +44,7 @@ interface HTMLElementAttributes {
 	 * attribute is set on. The `HTMLElement.dataset` property gives access to them.
 	 */
 	data: string[] | string | object;
+
 	/**
 	 * An enumerated attribute indicating the directionality of the element's text. It can have the
 	 * following values:
@@ -54,6 +58,7 @@ interface HTMLElementAttributes {
 	 *          directionality, then it applies that directionality to the whole element.
 	 */
 	dir: "ltr" | "rtl" | "auto";
+
 	/**
 	 * An enumerated attribute indicating whether the element can be dragged, using the Drag and
 	 * Drop API. It can have the following values:
@@ -62,6 +67,7 @@ interface HTMLElementAttributes {
 	 *      -   `false`, which indicates that the element may not be dragged.
 	 */
 	draggable: boolean;
+
 	/**
 	 * A Boolean attribute indicates that the element is not yet, or is no longer, *relevant*. For
 	 * example, it can be used to hide elements of the page that can't be used until the login
@@ -69,23 +75,27 @@ interface HTMLElementAttributes {
 	 * be used to hide content that could legitimately be shown.
 	 */
 	hidden: boolean;
+
 	/**
 	 * Defines a unique identifier (ID) which must be unique in the whole document. Its purpose is
 	 * to identify the element when linking (using a fragment identifier), scripting, or styling
 	 * (with CSS).
 	 */
 	id: string;
+
 	/**
 	 * Provides a hint to browsers as to the type of virtual keyboard configuration to use when
 	 * editing this element or its contents. Used primarily on `<input>` elements, but is usable on
 	 * any element while in `contenteditable` mode.
 	 */
 	inputmode: "none" | "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url";
+
 	/**
 	 * Allows you to specify that a standard HTML element should behave like a registered custom
 	 * built-in element (see Using custom elements for more details).
 	 */
 	is: string;
+
 	/**
 	 * Helps define the language of an element: the language that non-editable elements are in, or
 	 * the language that editable elements should be written in by the user. The attribute contains
@@ -93,17 +103,20 @@ interface HTMLElementAttributes {
 	 * *Tags for Identifying Languages (BCP47)*. **xml:lang** has priority over it.
 	 */
 	lang: string;
+
 	/**
 	 * A space-separated list of the part names of the element. Part names allows CSS to select and
 	 * style specific elements in a shadow tree via the `::part` pseudo-element.
 	 */
 	part: string;
+
 	/**
 	 * Assigns a slot in a shadow DOM shadow tree to an element: An element with a `slot` attribute
 	 * is assigned to the slot created by the `<slot>` element whose `name` attribute's value
 	 * matches that `slot` attribute's value.
 	 */
 	slot: string;
+
 	/**
 	 * An enumerated attribute defines whether the element may be checked for spelling errors. It
 	 * may have the following values:
@@ -113,6 +126,7 @@ interface HTMLElementAttributes {
 	 *      -   `false`, which indicates that the element should not be checked for spelling errors.
 	 */
 	spellcheck: boolean;
+
 	/**
 	 * Contains CSS styling declarations to be applied to the element. Note that it is recommended
 	 * for styles to be defined in a separate file or files. This attribute and the `<style>`
@@ -120,6 +134,7 @@ interface HTMLElementAttributes {
 	 * purposes.
 	 */
 	style: string;
+
 	/**
 	 * An integer attribute indicating if the element can take input focus (is *focusable*), if it
 	 * should participate to sequential keyboard navigation, and if so, at what position. It can
@@ -135,11 +150,13 @@ interface HTMLElementAttributes {
 	 *          relative order follows their relative positions in the document.
 	 */
 	tabindex: number;
+
 	/**
 	 * Contains a text representing advisory information related to the element it belongs to. Such
 	 * information can typically, but not necessarily, be presented to the user as a tooltip.
 	 */
 	title: string;
+
 	/**
 	 * An enumerated attribute that is used to specify whether an element's attribute values and the
 	 * values of its `Text` node children are to be translated when the page is localized, or
@@ -152,6 +169,7 @@ interface HTMLElementAttributes {
 }
 
 export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * Prompts the user to save the linked URL instead of navigating to it. Can be used with or
 	 * without a value:
@@ -167,6 +185,7 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	 *          browsers will adjust the suggested name if necessary.
 	 */
 	download: string;
+
 	/**
 	 * The URL that the hyperlink points to. Links are not restricted to HTTP-based URLs -- they can
 	 * use any URL scheme supported by browsers:
@@ -179,25 +198,30 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	 *          `registerProtocolHandler()`
 	 */
 	href: string;
+
 	/**
 	 * Hints at the human language of the linked URL. No built-in functionality. Allowed values are
 	 * the same as the global `lang` attribute.
 	 */
 	hreflang: string;
+
 	/**
 	 * A space-separated list of URLs. When the link is followed, the browser will send `POST`
 	 * requests with the body `PING` to the URLs. Typically for tracking.
 	 */
 	ping: string[] | string;
+
 	/**
 	 * How much of the referrer to send when following the link. See `Referrer-Policy` for possible
 	 * values and their effects.
 	 */
 	referrerpolicy: string;
+
 	/**
 	 * The relationship of the linked URL as space-separated link types.
 	 */
 	rel: string;
+
 	/**
 	 * Where to display the linked URL, as the name for a *browsing context* (a tab, window, or
 	 * `<iframe>`). The following keywords have special meanings for where to load the URL:
@@ -211,6 +235,7 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	 *          the current one). If no ancestors, behaves as `_self`.
 	 */
 	target: "_self" | "_blank" | "_parent" | "_top";
+
 	/**
 	 * Hints at the linked URL's format with a MIME type. No built-in functionality.
 	 */
@@ -218,16 +243,19 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * A Boolean attribute: if specified, the audio will automatically begin playback as soon as it
 	 * can do so, without waiting for the entire audio file to finish downloading.
 	 */
 	autoplay: boolean;
+
 	/**
 	 * If this attribute is present, the browser will offer controls to allow the user to control
 	 * audio playback, including volume, seeking, and pause/resume playback.
 	 */
 	controls: boolean;
+
 	/**
 	 * This enumerated attribute indicates whether to use CORS to fetch the related audio file.
 	 * CORS-enabled resources can be reused in the `<canvas>` element without being *tainted*. The
@@ -252,13 +280,14 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	 * attributes for additional information.
 	 */
 	crossorigin: "anonymous" | "use-credentials";
+
 	/**
 	 * Reading `currentTime` returns a double-precision floating-point value indicating the current
 	 * playback position, in seconds, of the audio. If the audio's metadata isn't available yet--
 	 * thereby preventing you from knowing the media's start time or duration--`currentTime` instead
 	 * indicates, and can be used to change, the time at which playback will begin. Otherwise,
-	 * setting `currentTime` sets the current playback position to the given time and seeks the media
-	 * to that position if the media is currently loaded.
+	 * setting `currentTime` sets the current playback position to the given time and seeks the
+	 * media to that position if the media is currently loaded.
 	 *
 	 * If the audio is being streamed, it's possible that the user agent may not be able to obtain
 	 * some parts of the resource if that data has expired from the media buffer. Other audio may
@@ -269,12 +298,14 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	 * determine the beginning point of the media timeline's reference frame.
 	 */
 	currentTime: number;
+
 	/**
 	 * A Boolean attribute used to disable the capability of remote playback in devices that are
 	 * attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA,
 	 * AirPlay, etc). See this proposed specification for more information.
 	 */
 	disableRemotePlayback: boolean;
+
 	/**
 	 * A double-precision floating-point value which indicates the duration (total length) of the
 	 * audio in seconds, on the media's timeline. If no media is present on the element, or the
@@ -283,16 +314,19 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	 * value is `+Infinity`.
 	 */
 	duration: number;
+
 	/**
 	 * A Boolean attribute: if specified, the audio player will automatically seek back to the start
 	 * upon reaching the end of the audio.
 	 */
 	loop: boolean;
+
 	/**
 	 * A Boolean attribute that indicates whether the audio will be initially silenced. Its default
 	 * value is `false`.
 	 */
-	muted
+	muted: boolean;
+
 	/**
 	 * This enumerated attribute is intended to provide a hint to the browser about what the author
 	 * thinks will lead to the best user experience. It may have one of the following values:
@@ -306,6 +340,7 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	 * The default value is different for each browser. The spec advises it to be set to `metadata`.
 	 */
 	preload: "none" | "metadata" | "auto" | "";
+
 	/**
 	 * The URL of the audio to embed. This is subject to HTTP access controls. This is optional; you
 	 * may instead use the `<source>` element within the audio block to specify the audio to embed.
@@ -314,6 +349,7 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * A URL that designates a source document or message for the information quoted. This attribute
 	 * is intended to point to information explaining the context or the reference for the quote.
@@ -322,17 +358,20 @@ export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
-	/**
-	 * This Boolean attribute specifies that the button should have input focus when the page loads.
-	 * **Only one element in a document can have this attribute.**
-	 */
-	autofocus: boolean;
+
 	/**
 	 * This attribute on a `<button>` is nonstandard and Firefox-specific. Unlike other browsers,
 	 * Firefox persists the dynamic disabled state of a `<button>` across page loads. Setting
 	 * `autocomplete="off"` on the button disables this feature; see bug 654072.
 	 */
 	autocomplete: string;
+
+	/**
+	 * This Boolean attribute specifies that the button should have input focus when the page loads.
+	 * **Only one element in a document can have this attribute.**
+	 */
+	autofocus: boolean;
+
 	/**
 	 * This Boolean attribute prevents the user from interacting with the button: it cannot be
 	 * pressed or focused.
@@ -341,6 +380,7 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * page loads. Use the `autocomplete` attribute to control this feature.
 	 */
 	disabled: boolean;
+
 	/**
 	 * The `<form>` element to associate the button with (its *form* owner). The value of this
 	 * attribute must be the `id` of a `<form>` in the same document. (If this attribute is not set,
@@ -350,11 +390,13 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * not just inside a `<form>`. It can also override an ancestor `<form>` element.
 	 */
 	form: string;
+
 	/**
 	 * The URL that processes the information submitted by the button. Overrides the `action`
 	 * attribute of the button's form owner. Does nothing if there is no form owner.
 	 */
 	formaction: string;
+
 	/**
 	 * If the button is a submit button (it's inside/associated with a `<form>` and doesn't have
 	 * `type="button"`), specifies how to encode the form data that is submitted. Possible values:
@@ -369,6 +411,7 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * owner.
 	 */
 	formenctype: "application/x-www-form-urlencoded" | "multipart/form-data" | "text/plain";
+
 	/**
 	 * If the button is a submit button (it's inside/associated with a `<form>` and doesn't have
 	 * `type="button"`), this attribute specifies the HTTP method used to submit the form. Possible
@@ -384,6 +427,7 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * If specified, this attribute overrides the `method` attribute of the button's form owner.
 	 */
 	formmethod: "post" | "get";
+
 	/**
 	 * If the button is a submit button, this Boolean attribute specifies that the form is not to be
 	 * validated when it is submitted. If this attribute is specified, it overrides the `novalidate`
@@ -392,6 +436,7 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * This attribute is also available on `<input type="image">` and `<input type="submit">` elements.
 	 */
 	formnovalidate: boolean | string;
+
 	/**
 	 * If the button is a submit button, this attribute is a author-defined name or standardized,
 	 * underscore-prefixed keyword indicating where to display the response from submitting the
@@ -410,11 +455,13 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 *          parent, this option behaves the same way as `_self`.
 	 */
 	formtarget: "_self" | "_blank" | "_parent" | "_top";
+
 	/**
 	 * The name of the button, submitted as a pair with the button's `value` as part of the form
 	 * data.
 	 */
 	name: string;
+
 	/**
 	 * The default behavior of the button. Possible values are:
 	 *
@@ -428,6 +475,7 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 *          triggered when the events occur.
 	 */
 	type: "submit" | "reset" | "button";
+
 	/**
 	 * Defines the value associated with the button's `name` when it's submitted with the form data.
 	 * This value is passed to the server in params when the form is submitted.
@@ -436,10 +484,12 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLCanvasElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * The height of the coordinate space in CSS pixels. Defaults to 150.
 	 */
 	height: number;
+
 	/**
 	 * The width of the coordinate space in CSS pixels. Defaults to 300.
 	 */
@@ -447,6 +497,7 @@ export interface HTMLCanvasElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLTableColElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This attribute contains a positive integer indicating the number of consecutive columns the
 	 * `<col>` element spans. If not present, its default value is `1`.
@@ -455,10 +506,12 @@ export interface HTMLTableColElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLModElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * A URI for a resource that explains the change (for example, meeting minutes).
 	 */
 	cite: string;
+
 	/**
 	 * This attribute indicates the time and date of the change and must be a valid date string with
 	 * an optional time. If the value cannot be parsed as a date with an optional time string, the
@@ -470,6 +523,7 @@ export interface HTMLModElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLDetailsElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This Boolean attribute indicates whether or not the details -- that is, the contents of the
 	 * `<details>` element -- are currently visible. The default, `false`, means the details are
@@ -479,6 +533,7 @@ export interface HTMLDetailsElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLFieldSetElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * If this Boolean attribute is set, all form controls that are descendants of the `<fieldset>`,
 	 * are disabled, meaning they are not editable and won't be submitted along with the `<form>`.
@@ -487,6 +542,7 @@ export interface HTMLFieldSetElementAttributes extends HTMLElementAttributes {
 	 * element won't be disabled.
 	 */
 	disabled: boolean;
+
 	/**
 	 * This attribute takes the value of the `id` attribute of a `<form>` element you want the
 	 * `<fieldset>` to be part of, even if it is not inside the form. Please note that usage of this
@@ -496,6 +552,7 @@ export interface HTMLFieldSetElementAttributes extends HTMLElementAttributes {
 	 * `HTMLFormElement.elements`.
 	 */
 	form: string;
+
 	/**
 	 * The name associated with the group.
 	 */
@@ -503,12 +560,20 @@ export interface HTMLFieldSetElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLFormElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * Space-separated character encodings the server accepts. The browser uses them in the order in
 	 * which they are listed. The default value means the same encoding as the page. (In previous
 	 * versions of HTML, character encodings could also be delimited by commas.)
 	 */
 	"accept-charset": string[] | string;
+
+	/**
+	 * The URL that processes the form submission. This value can be overridden by a `formaction`
+	 * attribute on a `<button>`, `<input type="submit">`, or `<input type="image">` element.
+	 */
+	action: string;
+
 	/**
 	 * A nonstandard attribute used by iOS Safari that controls how textual form elements should be
 	 * automatically capitalized. `autocapitalize` attributes on a form elements override it on
@@ -520,6 +585,7 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 *      -   `characters`: Capitalize all characters -- that is, uppercase.
 	 */
 	autocapitalize: "none" | "sentences" | "words" | "characters";
+
 	/**
 	 * Indicates whether input elements can by default have their values automatically completed by
 	 * the browser. autocomplete attributes on form elements override it on <form>. Possible values:
@@ -529,16 +595,7 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 *      -   `on`: The browser may automatically complete entries.
 	 */
 	autocomplete: boolean;
-	/**
-	 * Creates a hyperlink or annotation depending on the value, see the **`rel`** attribute for
-	 * details.
-	 */
-	rel: string;
-	/**
-	 * The URL that processes the form submission. This value can be overridden by a `formaction`
-	 * attribute on a `<button>`, `<input type="submit">`, or `<input type="image">` element.
-	 */
-	action: string;
+
 	/**
 	 * If the value of the `method` attribute is `post`, `enctype` is the MIME type of the form
 	 * submission. Possible values:
@@ -552,6 +609,7 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 * `<input type="submit">`, or `<input type="image">` elements.
 	 */
 	enctype: "application/x-www-form-urlencoded" | "multipart/form-data" | "text/plain";
+
 	/**
 	 * The HTTP method to submit the form with. Possible (case insensitive) values:
 	 *
@@ -564,6 +622,7 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 * or `<input type="image">` elements.
 	 */
 	method: "post" | "get" | "dialog";
+
 	/**
 	 * This Boolean attribute indicates that the form shouldn't be validated when submitted. If this
 	 * attribute is not set (and therefore the form ***is*** validated), it can be overridden by a
@@ -571,6 +630,13 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 * `<input type="image">` element belonging to the form.
 	 */
 	novalidate: boolean;
+
+	/**
+	 * Creates a hyperlink or annotation depending on the value, see the **`rel`** attribute for
+	 * details.
+	 */
+	rel: string;
+
 	/**
 	 * Indicates where to display the response after submitting the form. In HTML 4, this is the
 	 * name/keyword for a frame. In HTML5, it is a name/keyword for a *browsing context* (for
@@ -591,6 +657,7 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * Specifies a feature policy for the `<iframe>`. The policy defines what features are available
 	 * to the `<iframe>` based on the origin of the request (e.g. access to the microphone, camera,
@@ -599,15 +666,18 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	 * For more information and examples see: Using Feature Policy > The iframe allow attribute.
 	 */
 	allow: string;
+
 	/**
 	 * A Content Security Policy enforced for the embedded resource. See `HTMLIFrameElement.csp`
 	 * for details.
 	 */
 	csp: string;
+
 	/**
 	 * The height of the frame in CSS pixels. Default is `150`.
 	 */
 	height: number;
+
 	/**
 	 * Indicates how the browser should load the iframe:
 	 *
@@ -617,6 +687,7 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	 *          viewport, as defined by the browser.
 	 */
 	loading: "eager" | "lazy";
+
 	/**
 	 * A targetable name for the embedded browsing context. This can be used in the `target`
 	 * attribute of the `<a>`, `<form>`, or `<base>` elements; the `formtarget` attribute of the
@@ -624,6 +695,7 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	 * method.
 	 */
 	name: string;
+
 	/**
 	 * Indicates which referrer to send when fetching the frame's resource:
 	 *
@@ -648,6 +720,7 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	 *          and paths from TLS-protected resources to insecure origins.
 	 */
 	referrerpolicy: "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "same-origin" | "strict-origin" | "strict-origin-when-cross-origin" | "unsafe-url";
+
 	/**
 	 * Applies extra restrictions to the content in the frame. The value of the attribute can either
 	 * be empty to apply all restrictions, or space-separated tokens to lift particular
@@ -680,6 +753,7 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	 *          browsing context, but only if initiated by a user gesture.
 	 */
 	sandbox: "allow-downloads-without-user-activation" | "allow-downloads" | "allow-forms" | "allow-modals" | "allow-orientation-lock" | "allow-pointer-lock" | "allow-popups" | "allow-popups-to-escape-sandbox" | "allow-presentation" | "allow-same-origin" | "allow-scripts" | "allow-storage-access-by-user-activation" | "allow-top-navigation" | "allow-top-navigation-by-user-activation";
+
 	/**
 	 * The URL of the page to embed. Use a value of `about:blank` to embed an empty page that
 	 * conforms to the same-origin policy. Also note that programatically removing an `<iframe>`'s
@@ -687,11 +761,13 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	 * frame in Firefox (from version 65), Chromium-based browsers, and Safari/iOS.
 	 */
 	src: string;
+
 	/**
 	 * Inline HTML to embed, overriding the `src` attribute. If a browser does not support the
 	 * `srcdoc` attribute, it will fall back to the URL in the `src` attribute.
 	 */
 	srcdoc: string;
+
 	/**
 	 * The width of the frame in CSS pixels. Default is `300`.
 	 */
@@ -699,6 +775,7 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLImageElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * Defines an alternative text description of the image.
 	 *
@@ -712,6 +789,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * image to a bookmark.
 	 */
 	alt: string;
+
 	/**
 	 * Indicates if the fetching of the image must be done using a CORS request. Image data from a
 	 * CORS-enabled image returned from a CORS request can be reused in the `<canvas>` element
@@ -744,6 +822,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * used. See CORS settings attributes for additional information.
 	 */
 	crossorigin: "anonymous" | "use-credentials";
+
 	/**
 	 * Provides an image decoding hint to the browser. Allowed values:
 	 *
@@ -756,15 +835,18 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 *              for the user.
 	 */
 	decoding: "sync" | "async" | "auto";
+
 	/**
 	 * The intrinsic height of the image, in pixels. Must be an integer without a unit.
 	 */
-	height: number
+	height: number;
+
 	/**
 	 * This Boolean attribute indicates that the image is part of a server-side map. If so, the
 	 * coordinates where the user clicked on the image are sent to the server.
 	 */
 	ismap: boolean;
+
 	/**
 	 * Indicates how the browser should load the image:
 	 *
@@ -777,6 +859,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 *          cases.
 	 */
 	loading: "eager" | "lazy";
+
 	/**
 	 * A string indicating which referrer to use when fetching the resource:
 	 *
@@ -793,6 +876,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 *          can leak information from TLS-protected resources to insecure origins.
 	 */
 	referrerpolicy: "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url";
+
 	/**
 	 * One or more strings separated by commas, indicating a set of source sizes. Each source size
 	 * consists of:
@@ -812,6 +896,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * `sizes` attribute has no effect.
 	 */
 	sizes: string[] | string;
+
 	/**
 	 * The image URL. Mandatory for the `<img>` element. On browsers supporting `srcset`, `src` is
 	 * treated like a candidate image with a pixel density descriptor `1x`, unless an image with
@@ -819,6 +904,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * descriptors.
 	 */
 	src: string;
+
 	/**
 	 * One or more strings separated by commas, indicating possible image sources for the user agent
 	 * to use. Each string is composed of:
@@ -842,194 +928,22 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * bandwidth conditions. See our Responsive images tutorial for an example.
 	 */
 	srcset: string;
-	/**
-	 * The intrinsic width of the image in pixels. Must be an integer without a unit.
-	 */
-	width: number;
+
 	/**
 	 * The partial URL (starting with `#`) of an image map associated with the element.
 	 */
 	usemap: string;
+
+	/**
+	 * The intrinsic width of the image in pixels. Must be an integer without a unit.
+	 */
+	width: number;
 }
 
-interface HTMLInputElementAttributes extends HTMLElementAttributes {
-	type
-	autocomplete
-	autofocus
-	disabled
-	form
-	name
-	value
-}
-
-export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
-
-export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	checked
-	indeterminate
-	required
-}
-
-export interface HTMLColorInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-}
-
-export interface HTMLDateInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	max
-	min
-	readonly
-	required
-	step
-}
-
-export interface HTMLDatetimeLocalInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	max
-	min
-	readonly
-	required
-	step
-}
-
-export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	multiple
-	readonly
-	required
-	size
-}
-
-export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	accept
-	capture
-	multiple
-	required
-}
-
-export interface HTMLHiddenInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
-
-export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	alt
-	formaction
-	formenctype
-	formmethod
-	formnovalidate
-	formtarget
-	height
-	src
-	width
-}
-
-export interface HTMLMonthInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	max
-	min
-	readonly
-	required
-	step
-}
-
-export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	max
-	min
-	readonly
-	required
-	step
-}
-
-export interface HTMLPasswordInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	maxlength
-	minlength
-	pattern
-	placeholder
-	readonly
-	required
-	size
-}
-
-export interface HTMLRadioInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	checked
-	required
-}
-
-export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	max
-	min
-	step
-}
-
-export interface HTMLResetInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
-
-export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	dirname
-	list
-	maxlength
-	minlength
-	placeholder
-	readonly
-	required
-}
-
-export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	formaction
-	formenctype
-	formmethod
-	formnovalidate
-	formtarget
-}
-
-export interface HTMLTelInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	maxlength
-	minlength
-	pattern
-	placeholder
-	readonly
-	required
-	size
-}
-
-export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	dirname
-	list
-	maxlength
-	minlength
-	pattern
-	placeholder
-	readonly
-	required
-	size
-}
-
-export interface HTMLTimeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	max
-	min
-	readonly
-	required
-	step
-}
-
-export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	maxlength
-	minlength
-	placeholder
-	readonly
-	required
-}
-
-export interface HTMLWeekInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
-	list
-	max
-	min
-	step
-}
+/* HTMLInputElementAttributes */
 
 export interface HTMLLabelElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * The `id` of a labelable form-related element in the same document as the `<label>` element.
 	 * The first element in the document with an `id` matching the value of the `for` attribute is
@@ -1041,6 +955,7 @@ export interface HTMLLabelElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLLIElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This integer attribute indicates the current ordinal value of the list item as defined by the
 	 * `<ol>` element. The only allowed value for this attribute is a number, even if the list is
@@ -1052,31 +967,16 @@ export interface HTMLLIElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
+
 	/**
-	 * The current numeric value. This must be between the minimum and maximum values (`min`
-	 * attribute and `max` attribute) if they are specified. If unspecified or malformed, the value
-	 * is `0`. If specified, but not within the range given by the `min` attribute and `max`
-	 * attribute, the value is equal to the nearest end of the range.
+	 * The `<form>` element to associate the `<meter>` element with (its *form owner*). The value of
+	 * this attribute must be the `id` of a `<form>` in the same document. If this attribute is not
+	 * set, the `<meter>` is associated with its ancestor `<form>` element, if any. This attribute
+	 * is only used if the `<meter>` element is being used as a form-associated element, such as one
+	 * displaying a range corresponding to an `<input type="number">`.
 	 */
-	value: number;
-	/**
-	 * The lower numeric bound of the measured range. This must be less than the maximum value
-	 * (`max` attribute), if specified. If unspecified, the minimum value is `0`.
-	 */
-	min: number;
-	/**
-	 * The upper numeric bound of the measured range. This must be greater than the minimum value
-	 * (`min` attribute), if specified. If unspecified, the maximum value is `1`.
-	 */
-	max: number;
-	/**
-	 * The upper numeric bound of the low end of the measured range. This must be greater than the
-	 * minimum value (`min` attribute), and it also must be less than the high value and maximum
-	 * value (`high` attribute and `max` attribute, respectively), if any are specified. If
-	 * unspecified, or if less than the minimum value, the `low` value is equal to the minimum
-	 * value.
-	 */
-	low: number;
+	form: string;
+
 	/**
 	 * The lower numeric bound of the high end of the measured range. This must be less than the
 	 * maximum value (`max` attribute), and it also must be greater than the low value and minimum
@@ -1085,6 +985,28 @@ export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
 	 * value.
 	 */
 	high: number;
+
+	/**
+	 * The upper numeric bound of the low end of the measured range. This must be greater than the
+	 * minimum value (`min` attribute), and it also must be less than the high value and maximum
+	 * value (`high` attribute and `max` attribute, respectively), if any are specified. If
+	 * unspecified, or if less than the minimum value, the `low` value is equal to the minimum
+	 * value.
+	 */
+	low: number;
+
+	/**
+	 * The upper numeric bound of the measured range. This must be greater than the minimum value
+	 * (`min` attribute), if specified. If unspecified, the maximum value is `1`.
+	 */
+	max: number;
+
+	/**
+	 * The lower numeric bound of the measured range. This must be less than the maximum value
+	 * (`max` attribute), if specified. If unspecified, the minimum value is `0`.
+	 */
+	min: number;
+
 	/**
 	 * This attribute indicates the optimal numeric value. It must be within the range (as defined
 	 * by the `min` attribute and `max` attribute). When used with the `low` attribute and `high`
@@ -1094,22 +1016,24 @@ export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
 	 * whether the value is less than or equal to the optimum value.
 	 */
 	optimum: number;
+
 	/**
-	 * The `<form>` element to associate the `<meter>` element with (its *form owner*). The value of
-	 * this attribute must be the `id` of a `<form>` in the same document. If this attribute is not
-	 * set, the `<meter>` is associated with its ancestor `<form>` element, if any. This attribute
-	 * is only used if the `<meter>` element is being used as a form-associated element, such as one
-	 * displaying a range corresponding to an `<input type="number">`.
+	 * The current numeric value. This must be between the minimum and maximum values (`min`
+	 * attribute and `max` attribute) if they are specified. If unspecified or malformed, the value
+	 * is `0`. If specified, but not within the range given by the `min` attribute and `max`
+	 * attribute, the value is equal to the nearest end of the range.
 	 */
-	form: string;
+	value: number;
 }
 
 export interface HTMLOListElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This Boolean attribute specifies that the list's items are in reverse order. Items will be
 	 * numbered from high to low.
 	 */
 	reversed: boolean;
+
 	/**
 	 * An integer to start counting from for the list items. Always an Arabic numeral (1, 2, 3,
 	 * etc.), even when the numbering `type` is letters or Roman numerals. For example, to start
@@ -1119,12 +1043,14 @@ export interface HTMLOListElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLOptGroupElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * If this Boolean attribute is set, none of the items in this option group is selectable. Often
 	 * browsers grey out such control and it won't receive any browsing events, like mouse clicks or
 	 * focus-related ones.
 	 */
 	disabled: string;
+
 	/**
 	 * The name of the group of options, which the browser can use when labeling the options in the
 	 * user interface. This attribute is mandatory if this element is used.
@@ -1133,6 +1059,7 @@ export interface HTMLOptGroupElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * If this Boolean attribute is set, this option is not checkable. Often browsers grey out such
 	 * control and it won't receive any browsing event, like mouse clicks or focus-related ones. If
@@ -1140,11 +1067,13 @@ export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
 	 * disabled `<optgroup>` element.
 	 */
 	disabled: boolean;
+
 	/**
 	 * This attribute is text for the label indicating the meaning of the option. If the `label`
 	 * attribute isn't defined, its value is that of the element text content.
 	 */
 	label: string;
+
 	/**
 	 * If present, this Boolean attribute indicates that the option is initially selected. If the
 	 * `<option>` element is the descendant of a `<select>` element whose `multiple` attribute is
@@ -1152,6 +1081,7 @@ export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
 	 * attribute.
 	 */
 	selected: boolean;
+
 	/**
 	 * The content of this attribute represents the value to be submitted with the form, should this
 	 * option be selected. If this attribute is omitted, the value is taken from the text content of
@@ -1161,12 +1091,14 @@ export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLProgressElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This attribute describes how much work the task indicated by the `progress` element requires.
 	 * The `max` attribute, if present, must have a value greater than `0` and be a valid floating
 	 * point number. The default value is `1`.
 	 */
 	max: number;
+
 	/**
 	 * This attribute specifies how much of the task that has been completed. It must be a valid
 	 * floating point number between `0` and `max`, or between `0` and `1` if `max` is omitted. If
@@ -1177,6 +1109,7 @@ export interface HTMLProgressElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * The value of this attribute is a URL that designates a source document or message for the
 	 * information quoted. This attribute is intended to point to information explaining the context
@@ -1186,16 +1119,19 @@ export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * A `DOMString` providing a hint for a user agent's autocomplete feature. See The HTML
 	 * autocomplete attribute for a complete list of values and details on how to use autocomplete.
 	 */
 	autocomplete: string;
+
 	/**
 	 * This Boolean attribute lets you specify that a form control should have input focus when the
 	 * page loads. Only one form element in a document can have the `autofocus` attribute.
 	 */
 	autofocus: boolean;
+
 	/**
 	 * This Boolean attribute indicates that the user cannot interact with the control. If this
 	 * attribute is not specified, the control inherits its setting from the containing element, for
@@ -1203,6 +1139,7 @@ export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
 	 * then the control is enabled.
 	 */
 	disabled: boolean;
+
 	/**
 	 * The `<form>` element to associate the `<select>` with (its *form owner*). The value of this
 	 * attribute must be the `id` of a `<form>` in the same document. (If this attribute is not set,
@@ -1212,20 +1149,24 @@ export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
 	 * not just inside a `<form>`. It can also override an ancestor `<form>` element.
 	 */
 	form: string;
+
 	/**
 	 * This Boolean attribute indicates that multiple options can be selected in the list. If it is
 	 * not specified, then only one option can be selected at a time. When `multiple` is specified,
 	 * most browsers will show a scrolling list box instead of a single line dropdown.
 	 */
-	multiple: boolean
+	multiple: boolean;
+
 	/**
 	 * This attribute is used to specify the name of the control.
 	 */
 	name: string;
+
 	/**
 	 * A Boolean attribute indicating that an option with a non-empty string value must be selected.
 	 */
 	required: boolean;
+
 	/**
 	 * If the control is presented as a scrolling list box (e.g. when `multiple` is specified), this
 	 * attribute represents the number of rows in the list that should be visible at one time.
@@ -1236,11 +1177,13 @@ export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * Media query of the resource's intended media; this should be used only in a `<picture>`
 	 * element.
 	 */
 	media: string;
+
 	/**
 	 * Is a list of source sizes that describes the final rendered width of the image represented by
 	 * the source. Each source size consists of a comma-separated list of media condition-length
@@ -1253,11 +1196,13 @@ export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
 	 * `<picture>` element.
 	 */
 	sizes: string;
+
 	/**
 	 * Required for `<audio>` and `<video>`, address of the media resource. The value of this
 	 * attribute is ignored when the `<source>` element is placed inside a `<picture>` element.
 	 */
 	src: string;
+
 	/**
 	 * A list of one or more strings separated by commas indicating a set of possible images
 	 * represented by the source for the browser to use. Each string is composed of:
@@ -1278,6 +1223,7 @@ export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
 	 * a `<picture>` element.
 	 */
 	srcset: string;
+
 	/**
 	 * The MIME media type of the resource, optionally with a `codecs` parameter.
 	 *
@@ -1295,17 +1241,20 @@ export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLTableDataCellElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This attribute contains a non-negative integer value that indicates for how many columns the
 	 * cell extends. Its default value is `1`. Values higher than 1000 will be considered as
 	 * incorrect and will be set to the default value (1).
 	 */
 	colspan: number;
+
 	/**
 	 * This attribute contains a list of space-separated strings, each corresponding to the **id**
 	 * attribute of the `<th>` elements that apply to this element.
 	 */
 	headers: string;
+
 	/**
 	 * This attribute contains a non-negative integer value that indicates for how many rows the
 	 * cell extends. Its default value is `1`; if its value is set to `0`, it extends until the end
@@ -1316,6 +1265,7 @@ export interface HTMLTableDataCellElementAttributes extends HTMLElementAttribute
 }
 
 export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This is a non-standard attribute supported by WebKit on iOS (therefore nearly all browsers
 	 * running on iOS, including Safari, Firefox, and Chrome), which controls whether and how the
@@ -1328,6 +1278,7 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 *      -   `characters`: Automatically capitalize all characters.
 	 */
 	autocapitalize: "none" | "sentences" | "words" | "characters";
+
 	/**
 	 * This attribute indicates whether the value of the control can be automatically completed by
 	 * the browser. Possible values are:
@@ -1345,16 +1296,19 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 * information, see the `autocomplete` attribute in `<form>`.
 	 */
 	autocomplete: boolean;
+
 	/**
 	 * This Boolean attribute lets you specify that a form control should have input focus when the
 	 * page loads. Only one form-associated element in a document can have this attribute specified.
 	 */
-	autofocus: boolean
+	autofocus: boolean;
+
 	/**
 	 * The visible width of the text control, in average character widths. If it is specified, it
 	 * must be a positive integer. If it is not specified, the default value is `20`.
 	 */
 	cols: number;
+
 	/**
 	 * This Boolean attribute indicates that the user cannot interact with the control. If this
 	 * attribute is not specified, the control inherits its setting from the containing element, for
@@ -1362,6 +1316,7 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 * the control is enabled.
 	 */
 	disabled: boolean;
+
 	/**
 	 * The form element that the `<textarea>` element is associated with (its "form owner"). The
 	 * value of the attribute must be the `id` of a form element in the same document. If this
@@ -1370,38 +1325,46 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 * just as descendants of form elements.
 	 */
 	form: string;
+
 	/**
 	 * The maximum number of characters (UTF-16 code units) that the user can enter. If this value
 	 * isn't specified, the user can enter an unlimited number of characters.
 	 */
 	maxlength: number;
+
 	/**
 	 * The minimum number of characters (UTF-16 code units) required that the user should enter.
 	 */
 	minlength: number;
+
 	/**
 	 * The name of the control.
 	 */
 	name: string;
+
 	/**
 	 * A hint to the user of what can be entered in the control. Carriage returns or line-feeds
 	 * within the placeholder text must be treated as line breaks when rendering the hint.
 	 */
 	placeholder: string;
+
 	/**
 	 * This Boolean attribute indicates that the user cannot modify the value of the control. Unlike
 	 * the `disabled` attribute, the `readonly` attribute does not prevent the user from clicking or
 	 * selecting in the control. The value of a read-only control is still submitted with the form.
 	 */
 	readonly: boolean;
+
 	/**
 	 * This attribute specifies that the user must fill in a value before submitting a form.
 	 */
 	required: string;
+
 	/**
 	 * The number of visible text lines for the control.
 	 */
 	rows: number;
+
 	/**
 	 * Specifies whether the `<textarea>` is subject to spell checking by the underlying browser/OS.
 	 * The value can be:
@@ -1412,6 +1375,7 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 *      -   `false`: Indicates that the element should not be spell checked.
 	 */
 	spellcheck: "true" | "default" | "false";
+
 	/**
 	 * Indicates how the control wraps text. Possible values are:
 	 *      -   `hard`: The browser automatically inserts line breaks (CR+LF) so that each line has
@@ -1429,22 +1393,26 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This attribute contains a short abbreviated description of the cell's content. Some
 	 * user-agents, such as speech readers, may present this description before the content itself.
 	 */
 	abbr: string;
+
 	/**
 	 * This attribute contains a non-negative integer value that indicates for how many columns the
 	 * cell extends. Its default value is `1`. Values higher than 1000 will be considered as
 	 * incorrect and will be set to the default value (1).
 	 */
 	colspan: number;
+
 	/**
 	 * This attribute contains a list of space-separated strings, each corresponding to the **id**
 	 * attribute of the `<th>` elements that apply to this element.
 	 */
 	headers: string;
+
 	/**
 	 * This attribute contains a non-negative integer value that indicates for how many rows the
 	 * cell extends. Its default value is `1`; if its value is set to `0`, it extends until the end
@@ -1452,6 +1420,7 @@ export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttribu
 	 * cell belongs to. Values higher than 65534 are clipped down to 65534.
 	 */
 	rowspan: number;
+
 	/**
 	 * This enumerated attribute defines the cells that the header (defined in the `<th>`) element
 	 * relates to. It may have the following values:
@@ -1470,12 +1439,14 @@ export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttribu
 }
 
 export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
+
 	/**
 	 * This attribute indicates that the track should be enabled unless the user's preferences
 	 * indicate that another track is more appropriate. This may only be used on one `track` element
 	 * per media element.
 	 */
 	default: boolean;
+
 	/**
 	 * How the text track is meant to be used. If omitted the default kind is `subtitles`. If the
 	 * attribute contains an invalid value, it will use `metadata` (Versions of Chrome earlier than
@@ -1502,17 +1473,20 @@ export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
 	 *          -   Tracks used by scripts. Not visible to the user.
 	 */
 	kind: "subtitles" | "captions" | "descriptions" | "characters" | "metadata";
+
 	/**
 	 * A user-readable title of the text track which is used by the browser when listing available
 	 * text tracks.
 	 */
 	label: string;
+
 	/**
 	 * Address of the track (`.vtt` file). Must be a valid URL. This attribute must be specified and
 	 * its URL value must have the same origin as the document -- unless the `<audio>` or `<video>`
 	 * parent element of the `track` element has a `crossorigin` attribute.
 	 */
 	src: string;
+
 	/**
 	 * Language of the track text data. It must be a valid BCP 47 language tag. If the `kind`
 	 * attribute is set to `subtitles`, then `srclang` must be defined.
@@ -1521,6 +1495,14 @@ export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
 }
 
 export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
+
+	/**
+	 * A Boolean attribute which if `true` indicates that the element should automatically toggle
+	 * picture-in-picture mode when the user switches back and forth between this document and
+	 * another document or application.
+	 */
+	autoPictureInPicture: string;
+
 	/**
 	 * A Boolean attribute; if specified, the video automatically begins to play back as soon as it
 	 * can do so without stopping to finish loading the data.
@@ -1532,22 +1514,19 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * In some browsers (e.g. Chrome 70.0) autoplay doesn't work if no `muted` attribute is present.
 	 */
 	autoplay: boolean;
-	/**
-	 * A Boolean attribute which if `true` indicates that the element should automatically toggle
-	 * picture-in-picture mode when the user switches back and forth between this document and
-	 * another document or application.
-	 */
-	autoPictureInPicture: string;
+
 	/**
 	 * An attribute you can read to determine the time ranges of the buffered media. This attribute
 	 * contains a `TimeRanges` object.
 	 */
 	buffered: string;
+
 	/**
 	 * If this attribute is present, the browser will offer controls to allow the user to control
 	 * video playback, including volume, seeking, and pause/resume playback.
 	 */
-	controls
+	controls: boolean;
+
 	/**
 	 * The `controlslist` attribute, when specified, helps the browser select what controls to show
 	 * on the media element whenever the browser shows its own set of controls (e.g. when the
@@ -1559,6 +1538,7 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * mode (and the control).
 	 */
 	controlslist: "nodownload" | "nofullscreen" | "noremoteplayback";
+
 	/**
 	 * This enumerated attribute indicates whether to use CORS to fetch the related image.
 	 * CORS-enabled resources can be reused in the `<canvas>` element without being *tainted*. The
@@ -1583,6 +1563,7 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * for additional information.
 	 */
 	crossorigin: "anonymous" | "use-credentials";
+
 	/**
 	 * Reading `currentTime` returns a double-precision floating-point value indicating the current
 	 * playback position of the media specified in seconds. If the media has not started playing
@@ -1597,11 +1578,13 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * point of the media timeline's reference frame.
 	 */
 	currentTime: number;
+
 	/**
 	 * Prevents the browser from suggesting a Picture-in-Picture context menu or to request
 	 * Picture-in-Picture automatically in some cases.
 	 */
 	disablePictureInPicture: boolean;
+
 	/**
 	 * A Boolean attribute used to disable the capability of remote playback in devices that are
 	 * attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA,
@@ -1610,6 +1593,7 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * In Safari, you can use `x-webkit-airplay="deny"` as a fallback.
 	 */
 	disableRemotePlayback: boolean;
+
 	/**
 	 * A double-precision floating-point value which indicates the duration (total length) of the
 	 * media in seconds, on the media's timeline. If no media is present on the element, or the
@@ -1618,10 +1602,12 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * value is `+Infinity`.
 	 */
 	duration: number;
+
 	/**
 	 * The height of the video's display area, in CSS pixels (absolute values only; no percentages.)
 	 */
 	height: number;
+
 	/**
 	 * This attribute tells the browser to ignore the actual intrinsic size of the image and pretend
 	 * it's the size specified in the attribute. Specifically, the image would raster at these
@@ -1629,29 +1615,34 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * this attribute. Explainer, examples
 	 */
 	intrinsicsize: boolean;
+
 	/**
 	 * A Boolean attribute; if specified, the browser will automatically seek back to the start upon
 	 * reaching the end of the video.
 	 */
 	loop: boolean;
+
 	/**
 	 * A Boolean attribute that indicates the default setting of the audio contained in the video.
 	 * If set, the audio will be initially silenced. Its default value is `false`, meaning that the
 	 * audio will be played when the video is played.
 	 */
 	muted: boolean;
+
 	/**
 	 * A Boolean attribute indicating that the video is to be played "inline", that is within the
 	 * element's playback area. Note that the absence of this attribute *does not* imply that the
 	 * video will always be played in fullscreen.
 	 */
 	playsinline: boolean;
+
 	/**
 	 * A URL for an image to be shown while the video is downloading. If this attribute isn't
 	 * specified, nothing is displayed until the first frame is available, then the first frame is
 	 * shown as the poster frame.
 	 */
 	poster: string;
+
 	/**
 	 * This enumerated attribute is intended to provide a hint to the browser about what the author
 	 * thinks will lead to the best user experience with regards to what content is loaded before
@@ -1665,14 +1656,16 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 *
 	 * The default value is different for each browser. The spec advises it to be set to `metadata`.
 	 */
-	preload
+	preload: "none" | "metadata" | "auto" | "";
+
 	/**
 	 * The URL of the video to embed. This is optional; you may instead use the `<source>` element
 	 * within the video block to specify the video to embed.
 	 */
-	src
+	src: number;
+
 	/**
 	 * The width of the video's display area, in CSS pixels (absolute values only; no percentages).
 	 */
-	width
+	width: number;
 }
