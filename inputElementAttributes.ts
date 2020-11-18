@@ -36,10 +36,6 @@ interface HTMLInputElementAttributes extends HTMLElementAttributes {
 	 * TODO
 	 */
 	value: any;
-
-	/**
-	 * TODO
-	 */
 }
 
 export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
@@ -201,6 +197,10 @@ export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputE
 }
 
 export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * TODO
+	 */
 	accept: any;
 
 	/**
@@ -211,7 +211,7 @@ export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputEl
 	/**
 	 * TODO
 	 */
-	files
+	files: any;
 
 	/**
 	 * TODO
@@ -227,6 +227,10 @@ export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputEl
 export interface HTMLHiddenInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
 export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * TODO
+	 */
 	alt: any;
 
 	/**
@@ -350,6 +354,10 @@ export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInput
 }
 
 export interface HTMLPasswordInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * TODO
+	 */
 	maxlength: any;
 
 	/**
@@ -384,16 +392,16 @@ export interface HTMLPasswordInputElement extends HTMLElementAttributes, HTMLInp
 }
 
 export interface HTMLRadioInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * TODO
+	 */
 	checked: any;
 
 	/**
 	 * TODO
 	 */
 	required: any;
-
-	/**
-	 * TODO
-	 */
 }
 
 export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
@@ -426,6 +434,10 @@ export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputE
 export interface HTMLResetInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
 export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * TODO
+	 */
 	dirname: any;
 
 	/**
@@ -480,6 +492,10 @@ export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInput
 }
 
 export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * TODO
+	 */
 	formaction: any;
 
 	/**
