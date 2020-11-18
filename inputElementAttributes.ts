@@ -766,13 +766,10 @@ export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputEle
 	 * specifics related to the use of `spellcheck` on `<input>` elements. The permitted values for
 	 * `spellcheck` are:
 	 *
-	 *      -   `false`
-	 *          -   Disable spell checking for this element.
-	 *      -   `true`
-	 *          -   Enable spell checking for this element.
-	 *      -   "" (empty string) or no value
-	 *          -   Follow the element's default behavior for spell checking. This may be based upon
-	 *              a parent's `spellcheck` setting or other factors.
+	 *  -   `false`
+	 *      -   Disable spell checking for this element.
+	 *  -   `true`
+	 *      -   Enable spell checking for this element.
 	 *
 	 * An input field can have spell checking enabled if it doesn't have the readonly attribute set
 	 * and is not disabled.
@@ -780,7 +777,7 @@ export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputEle
 	 * The value returned by reading `spellcheck` may not reflect the actual state of spell checking
 	 * within a control, if the user agent's preferences override the setting.
 	 */
-	spellcheck: "false" | "true" | "";
+	spellcheck: boolean;
 }
 
 export interface HTMLWeekInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {

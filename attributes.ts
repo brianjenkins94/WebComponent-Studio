@@ -13,12 +13,12 @@ interface HTMLElementAttributes {
 	 * Controls whether and how text input is automatically capitalized as it is entered/edited by
 	 * the user. It can have the following values:
 	 *
-	 *      -   `off` or `none`, no autocapitalization is applied (all letters default to lowercase)
-	 *      -   `on` or `sentences`, the first letter of each sentence defaults to a capital letter;
-	 *          all other letters default to lowercase
-	 *      -   `words`, the first letter of each word defaults to a capital letter; all other
-	 *          letters default to lowercase
-	 *      -   `characters`, all letters should default to uppercase
+	 *  -   `off` or `none`, no autocapitalization is applied (all letters default to lowercase)
+	 *  -   `on` or `sentences`, the first letter of each sentence defaults to a capital letter; all
+	 *      other letters default to lowercase
+	 *  -   `words`, the first letter of each word defaults to a capital letter; all other letters
+	 *      default to lowercase
+	 *  -   `characters`, all letters should default to uppercase
 	 */
 	autocaptialize: "off" | "none" | "on" | "sentences" | "words" | "characters";
 
@@ -34,8 +34,8 @@ interface HTMLElementAttributes {
 	 * browser modifies its widget to allow editing. The attribute must take one of the following
 	 * values:
 	 *
-	 *      -   `true` or the *empty string*, which indicates that the element must be editable;
-	 *      -   `false`, which indicates that the element must not be editable.
+	 *  -   `true` or the *empty string*, which indicates that the element must be editable;
+	 *  -   `false`, which indicates that the element must not be editable.
 	 */
 	contenteditable: boolean;
 
@@ -51,13 +51,13 @@ interface HTMLElementAttributes {
 	 * An enumerated attribute indicating the directionality of the element's text. It can have the
 	 * following values:
 	 *
-	 *      -   `ltr`, which means left to right and is to be used for languages that are written
-	 *          from the left to the right (like English);
-	 *      -   `rtl`, which means right to left and is to be used for languages that are written
-	 *          from the right to the left (like Arabic);
-	 *      -   `auto`, which lets the user agent decide. It uses a basic algorithm as it parses the
-	 *          characters inside the element until it finds a character with a strong
-	 *          directionality, then it applies that directionality to the whole element.
+	 *  -   `ltr`, which means left to right and is to be used for languages that are written from
+	 *      the left to the right (like English);
+	 *  -   `rtl`, which means right to left and is to be used for languages that are written from
+	 *      the right to the left (like Arabic);
+	 *  -   `auto`, which lets the user agent decide. It uses a basic algorithm as it parses the
+	 *      characters inside the element until it finds a character with a strong directionality,
+	 *      then it applies that directionality to the whole element.
 	 */
 	dir: "ltr" | "rtl" | "auto";
 
@@ -65,8 +65,8 @@ interface HTMLElementAttributes {
 	 * An enumerated attribute indicating whether the element can be dragged, using the Drag and
 	 * Drop API. It can have the following values:
 	 *
-	 *      -   `true`, which indicates that the element may be dragged
-	 *      -   `false`, which indicates that the element may not be dragged.
+	 *  -   `true`, which indicates that the element may be dragged
+	 *  -   `false`, which indicates that the element may not be dragged.
 	 */
 	draggable: boolean;
 
@@ -123,9 +123,9 @@ interface HTMLElementAttributes {
 	 * An enumerated attribute defines whether the element may be checked for spelling errors. It
 	 * may have the following values:
 	 *
-	 *      -   `true`, which indicates that the element should be, if possible, checked for
-	 *          spelling errors;
-	 *      -   `false`, which indicates that the element should not be checked for spelling errors.
+	 *  -   `true`, which indicates that the element should be, if possible, checked for spelling
+	 *      errors;
+	 *  -   `false`, which indicates that the element should not be checked for spelling errors.
 	 */
 	spellcheck: boolean;
 
@@ -142,14 +142,14 @@ interface HTMLElementAttributes {
 	 * should participate to sequential keyboard navigation, and if so, at what position. It can
 	 * take several values:
 	 *
-	 *      -   a *negative value* means that the element should be focusable, but should not be
-	 *          reachable via sequential keyboard navigation;
-	 *      -   `0` means that the element should be focusable and reachable via sequential keyboard
-	 *          navigation, but its relative order is defined by the platform convention;
-	 *      -   a *positive value* means that the element should be focusable and reachable via
-	 *          sequential keyboard navigation; the order in which the elements are focused is the
-	 *          increasing value of the tabindex. If several elements share the same tabindex, their
-	 *          relative order follows their relative positions in the document.
+	 *  -   a *negative value* means that the element should be focusable, but should not be
+	 *      reachable via sequential keyboard navigation;
+	 *  -   `0` means that the element should be focusable and reachable via sequential keyboard
+	 *      navigation, but its relative order is defined by the platform convention;
+	 *  -   a *positive value* means that the element should be focusable and reachable via
+	 *      sequential keyboard navigation; the order in which the elements are focused is the
+	 *      increasing value of the tabindex. If several elements share the same tabindex, their
+	 *      relative order follows their relative positions in the document.
 	 */
 	tabindex: number;
 
@@ -164,8 +164,8 @@ interface HTMLElementAttributes {
 	 * values of its `Text` node children are to be translated when the page is localized, or
 	 * whether to leave them unchanged. It can have the following values:
 	 *
-	 *      -   empty string and `yes`, which indicates that the element will be translated.
-	 *      -   `no`, which indicates that the element will not be translated.
+	 *  -   empty string and `yes`, which indicates that the element will be translated.
+	 *  -   `no`, which indicates that the element will not be translated.
 	 */
 	translate: boolean;
 }
@@ -176,15 +176,15 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	 * Prompts the user to save the linked URL instead of navigating to it. Can be used with or
 	 * without a value:
 	 *
-	 *      -   Without a value, the browser will suggest a filename/extension, generated from
-	 *          various sources:
-	 *          -   The `Content-Disposition` HTTP header
-	 *          -   The final segment in the URL path
-	 *          -   The media type (from the (`Content-Type` header, the start of a `data:` URL, or
-	 *              `Blob.type` for a `blob:` URL)
-	 *      -   Defining a value suggests it as the filename. `/` and `\` characters are converted
-	 *          to underscores (`_`). Filesystems may forbid other characters in filenames, so
-	 *          browsers will adjust the suggested name if necessary.
+	 *  -   Without a value, the browser will suggest a filename/extension, generated from various
+	 *      sources:
+	 *      -   The `Content-Disposition` HTTP header
+	 *      -   The final segment in the URL path
+	 *      -   The media type (from the (`Content-Type` header, the start of a `data:` URL, or
+	 *          `Blob.type` for a `blob:` URL)
+	 *  -   Defining a value suggests it as the filename. `/` and `\` characters are converted to
+	 *      underscores (`_`). Filesystems may forbid other characters in filenames, so browsers
+	 *      will adjust the suggested name if necessary.
 	 */
 	download: string;
 
@@ -192,12 +192,12 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	 * The URL that the hyperlink points to. Links are not restricted to HTTP-based URLs -- they can
 	 * use any URL scheme supported by browsers:
 	 *
-	 *      -   Sections of a page with fragment URLs
-	 *      -   Pieces of media files with media fragments
-	 *      -   Telephone numbers with `tel:` URLs
-	 *      -   Email addresses with `mailto:` URLs
-	 *      -   While web browsers may not support other URL schemes, web sites can with
-	 *          `registerProtocolHandler()`
+	 *  -   Sections of a page with fragment URLs
+	 *  -   Pieces of media files with media fragments
+	 *  -   Telephone numbers with `tel:` URLs
+	 *  -   Email addresses with `mailto:` URLs
+	 *  -   While web browsers may not support other URL schemes, web sites can with
+	 *      `registerProtocolHandler()`
 	 */
 	href: string;
 
@@ -228,13 +228,13 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	 * Where to display the linked URL, as the name for a *browsing context* (a tab, window, or
 	 * `<iframe>`). The following keywords have special meanings for where to load the URL:
 	 *
-	 *      -   `_self`: the current browsing context. (Default)
-	 *      -   `_blank`: usually a new tab, but users can configure browsers to open a new window
-	 *          instead.
-	 *      -   `_parent`: the parent browsing context of the current one. If no parent, behaves as
-	 *          `_self`.
-	 *      -   `_top`: the topmost browsing context (the "highest" context that's an ancestor of
-	 *          the current one). If no ancestors, behaves as `_self`.
+	 *  -   `_self`: the current browsing context. (Default)
+	 *  -   `_blank`: usually a new tab, but users can configure browsers to open a new window
+	 *      instead.
+	 *  -   `_parent`: the parent browsing context of the current one. If no parent, behaves as
+	 *      `_self`.
+	 *  -   `_top`: the topmost browsing context (the "highest" context that's an ancestor of the
+	 *      current one). If no ancestors, behaves as `_self`.
 	 */
 	target: "_self" | "_blank" | "_parent" | "_top";
 
@@ -263,18 +263,18 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	 * CORS-enabled resources can be reused in the `<canvas>` element without being *tainted*. The
 	 * allowed values are:
 	 *
-	 *      -   anonymous
-	 *          -   Sends a cross-origin request without a credential. In other words, it sends the
-	 *              `Origin:` HTTP header without a cookie, X.509 certificate, or performing HTTP
-	 *              Basic authentication. If the server does not give credentials to the origin site
-	 *              (by not setting the `Access-Control-Allow-Origin:` HTTP header), the image will
-	 *              be *tainted*, and its usage restricted.
-	 *      -   use-credentials
-	 *          -   Sends a cross-origin request with a credential. In other words, it sends the
-	 *              `Origin:` HTTP header with a cookie, a certificate, or performing HTTP Basic
-	 *              authentication. If the server does not give credentials to the origin site
-	 *              (through `Access-Control-Allow-Credentials:` HTTP header), the image will be
-	 *              *tainted* and its usage restricted.
+	 *  -   anonymous
+	 *      -   Sends a cross-origin request without a credential. In other words, it sends the
+	 *          `Origin:` HTTP header without a cookie, X.509 certificate, or performing HTTP Basic
+	 *          authentication. If the server does not give credentials to the origin site (by not
+	 *          setting the `Access-Control-Allow-Origin:` HTTP header), the image will be
+	 *          *tainted*, and its usage restricted.
+	 *  -   use-credentials
+	 *      -   Sends a cross-origin request with a credential. In other words, it sends the
+	 *          `Origin:` HTTP header with a cookie, a certificate, or performing HTTP Basic
+	 *          authentication. If the server does not give credentials to the origin site (through
+	 *          `Access-Control-Allow-Credentials:` HTTP header), the image will be *tainted* and
+	 *          its usage restricted.
 	 *
 	 * When not present, the resource is fetched without a CORS request (i.e. without sending the
 	 * `Origin:` HTTP header), preventing its non-tainted used in `<canvas>` elements. If invalid,
@@ -333,11 +333,11 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	 * This enumerated attribute is intended to provide a hint to the browser about what the author
 	 * thinks will lead to the best user experience. It may have one of the following values:
 	 *
-	 *      -   `none`: Indicates that the audio should not be preloaded.
-	 *      -   `metadata`: Indicates that only audio metadata (e.g. length) is fetched.
-	 *      -   `auto`: Indicates that the whole audio file can be downloaded, even if the user is
-	 *          not expected to use it.
-	 *      -   *empty string*: A synonym of the `auto` value.
+	 *  -   `none`: Indicates that the audio should not be preloaded.
+	 *  -   `metadata`: Indicates that only audio metadata (e.g. length) is fetched.
+	 *  -   `auto`: Indicates that the whole audio file can be downloaded, even if the user is not
+	 *      expected to use it.
+	 *  -   *empty string*: A synonym of the `auto` value.
 	 *
 	 * The default value is different for each browser. The spec advises it to be set to `metadata`.
 	 */
@@ -403,11 +403,10 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * If the button is a submit button (it's inside/associated with a `<form>` and doesn't have
 	 * `type="button"`), specifies how to encode the form data that is submitted. Possible values:
 	 *
-	 *      -   `application/x-www-form-urlencoded`: The default if the attribute is not used.
-	 *      -   `multipart/form-data`: Use to submit `<input>` elements with their `type` attributes
-	 *          set to `file`.
-	 *      -   `text/plain`: Specified as a debugging aid; shouldn't be used for real form
-	 *          submission.
+	 *  -   `application/x-www-form-urlencoded`: The default if the attribute is not used.
+	 *  -   `multipart/form-data`: Use to submit `<input>` elements with their `type` attributes set
+	 *      to `file`.
+	 *  -   `text/plain`: Specified as a debugging aid; shouldn't be used for real form submission.
 	 *
 	 * If this attribute is specified, it overrides the `enctype` attribute of the button's form
 	 * owner.
@@ -419,12 +418,12 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * `type="button"`), this attribute specifies the HTTP method used to submit the form. Possible
 	 * values:
 	 *
-	 *      -   `post`: The data from the form are included in the body of the HTTP request when
-	 *          sent to the server. Use when the form contains information that shouldn't be public,
-	 *          like login credentials.
-	 *      -   `get`: The form data are appended to the form's `action` URL, with a `?` as a
-	 *          separator, and the resulting URL is sent to the server. Use this method when the
-	 *          form has no side effects, like search forms.
+	 *  -   `post`: The data from the form are included in the body of the HTTP request when sent to
+	 *      the server. Use when the form contains information that shouldn't be public, like login
+	 *      credentials.
+	 *  -   `get`: The form data are appended to the form's `action` URL, with a `?` as a separator,
+	 *      and the resulting URL is sent to the server. Use this method when the form has no side
+	 *      effects, like search forms.
 	 *
 	 * If specified, this attribute overrides the `method` attribute of the button's form owner.
 	 */
@@ -446,15 +445,15 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * `<iframe>`). If this attribute is specified, it overrides the `target` attribute of the
 	 * button's form owner. The following keywords have special meanings:
 	 *
-	 *      -   _self: Load the response into the same browsing context as the current one. This is
-	 *          the default if the attribute is not specified.
-	 *      -   _blank: Load the response into a new unnamed browsing context -- usually a new tab
-	 *          or window, depending on the user's browser settings.
-	 *      -   _parent: Load the response into the parent browsing context of the current one. If
-	 *          there is no parent, this option behaves the same way as `_self`.
-	 *      -   _top: Load the response into the top-level browsing context (that is, the browsing
-	 *          context that is an ancestor of the current one, and has no parent). If there is no
-	 *          parent, this option behaves the same way as `_self`.
+	 *  -   _self: Load the response into the same browsing context as the current one. This is the
+	 *      default if the attribute is not specified.
+	 *  -   _blank: Load the response into a new unnamed browsing context -- usually a new tab or
+	 *      window, depending on the user's browser settings.
+	 *  -   _parent: Load the response into the parent browsing context of the current one. If there
+	 *      is no parent, this option behaves the same way as `_self`.
+	 *  -   _top: Load the response into the top-level browsing context (that is, the browsing
+	 *      context that is an ancestor of the current one, and has no parent). If there is no
+	 *      parent, this option behaves the same way as `_self`.
 	 */
 	formtarget: "_self" | "_blank" | "_parent" | "_top";
 
@@ -467,14 +466,14 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	/**
 	 * The default behavior of the button. Possible values are:
 	 *
-	 *      -   `submit`: The button submits the form data to the server. This is the default if the
-	 *          attribute is not specified for buttons associated with a `<form>`, or if the
-	 *          attribute is an empty or invalid value.
-	 *      -   `reset`: The button resets all the controls to their initial values, like
-	 *          <input type="reset">. (This behavior tends to annoy users.)
-	 *      -   `button`: The button has no default behavior, and does nothing when pressed by
-	 *          default. It can have client-side scripts listen to the element's events, which are
-	 *          triggered when the events occur.
+	 *  -   `submit`: The button submits the form data to the server. This is the default if the
+	 *      attribute is not specified for buttons associated with a `<form>`, or if the attribute
+	 *      is an empty or invalid value.
+	 *  -   `reset`: The button resets all the controls to their initial values, like
+	 *      <input type="reset">. (This behavior tends to annoy users.)
+	 *  -   `button`: The button has no default behavior, and does nothing when pressed by default.
+	 *      It can have client-side scripts listen to the element's events, which are triggered when
+	 *      the events occur.
 	 */
 	type: "submit" | "reset" | "button";
 
@@ -581,10 +580,10 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 * automatically capitalized. `autocapitalize` attributes on a form elements override it on
 	 * `<form>`. Possible values:
 	 *
-	 *      -   `none`: No automatic capitalization.
-	 *      -   `sentences` (default): Capitalize the first letter of each sentence.
-	 *      -   `words`: Capitalize the first letter of each word.
-	 *      -   `characters`: Capitalize all characters -- that is, uppercase.
+	 *  -   `none`: No automatic capitalization.
+	 *  -   `sentences` (default): Capitalize the first letter of each sentence.
+	 *  -   `words`: Capitalize the first letter of each word.
+	 *  -   `characters`: Capitalize all characters -- that is, uppercase.
 	 */
 	autocapitalize: "none" | "sentences" | "words" | "characters";
 
@@ -592,9 +591,9 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 * Indicates whether input elements can by default have their values automatically completed by
 	 * the browser. autocomplete attributes on form elements override it on <form>. Possible values:
 	 *
-	 *      -   `off`: The browser may not automatically complete entries. (Browsers tend to ignore
-	 *          this for suspected login forms; see The autocomplete attribute and login fields.)
-	 *      -   `on`: The browser may automatically complete entries.
+	 *  -   `off`: The browser may not automatically complete entries. (Browsers tend to ignore this
+	 *      for suspected login forms; see The autocomplete attribute and login fields.)
+	 *  -   `on`: The browser may automatically complete entries.
 	 */
 	autocomplete: boolean;
 
@@ -602,10 +601,10 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 * If the value of the `method` attribute is `post`, `enctype` is the MIME type of the form
 	 * submission. Possible values:
 	 *
-	 *      -   `application/x-www-form-urlencoded`: The default value.
-	 *      -   `multipart/form-data`: Use this if the form contains `<input>` elements with
-	 *          `type=file`.
-	 *      -   `text/plain`: Introduced by HTML5 for debugging purposes.
+	 *  -   `application/x-www-form-urlencoded`: The default value.
+	 *  -   `multipart/form-data`: Use this if the form contains `<input>` elements with
+	 *      `type=file`.
+	 *  -   `text/plain`: Introduced by HTML5 for debugging purposes.
 	 *
 	 * This value can be overridden by `formenctype` attributes on `<button>`,
 	 * `<input type="submit">`, or `<input type="image">` elements.
@@ -615,10 +614,10 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	/**
 	 * The HTTP method to submit the form with. Possible (case insensitive) values:
 	 *
-	 *      -   `post`: The POST method; form data sent as the request body.
-	 *      -   `get`: The GET method; form data appended to the `action` URL with a `?` separator.
-	 *          Use this method when the form has no side-effects.
-	 *      -   `dialog`: When the form is inside a `<dialog>`, closes the dialog on submission.
+	 *  -   `post`: The POST method; form data sent as the request body.
+	 *  -   `get`: The GET method; form data appended to the `action` URL with a `?` separator. Use
+	 *      this method when the form has no side-effects.
+	 *  -   `dialog`: When the form is inside a `<dialog>`, closes the dialog on submission.
 	 *
 	 * This value is overridden by `formmethod` attributes on `<button>`, `<input type="submit">`,
 	 * or `<input type="image">` elements.
@@ -644,13 +643,13 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	 * name/keyword for a frame. In HTML5, it is a name/keyword for a *browsing context* (for
 	 * example, tab, window, or iframe). The following keywords have special meanings:
 	 *
-	 *      -   `_self` (default): Load into the same browsing context as the current one.
-	 *      -   `_blank`: Load into a new unnamed browsing context.
-	 *      -   `_parent`: Load into the parent browsing context of the current one. If no parent,
-	 *          behaves the same as `_self`.
-	 *      -   `_top`: Load into the top-level browsing context (i.e., the browsing context that is
-	 *          an ancestor of the current one and has no parent). If no parent, behaves the same as
-	 *          `_self`.
+	 *  -   `_self` (default): Load into the same browsing context as the current one.
+	 *  -   `_blank`: Load into a new unnamed browsing context.
+	 *  -   `_parent`: Load into the parent browsing context of the current one. If no parent,
+	 *      behaves the same as `_self`.
+	 *  -   `_top`: Load into the top-level browsing context (i.e., the browsing context that is an
+	 *      ancestor of the current one and has no parent). If no parent, behaves the same as
+	 *      `_self`.
 	 *
 	 * This value can be overridden by a `formtarget` attribute on a `<button>`,
 	 * `<input type="submit">`, or `<input type="image">` element.
@@ -683,10 +682,10 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Indicates how the browser should load the iframe:
 	 *
-	 *      -   `eager`: Load the iframe immediately, regardless if it is outside the visible
-	 *          viewport (this is the default value).
-	 *      -   `lazy`: Defer loading of the iframe until it reaches a calculated distance from the
-	 *          viewport, as defined by the browser.
+	 *  -   `eager`: Load the iframe immediately, regardless if it is outside the visible viewport
+	 *      (this is the default value).
+	 *  -   `lazy`: Defer loading of the iframe until it reaches a calculated distance from the
+	 *      viewport, as defined by the browser.
 	 */
 	loading: "eager" | "lazy";
 
@@ -701,25 +700,25 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Indicates which referrer to send when fetching the frame's resource:
 	 *
-	 *      -   `no-referrer`: The `Referer` header will not be sent.
-	 *      -   `no-referrer-when-downgrade` (default): The `Referer` header will not be sent to
-	 *          origins without TLS (HTTPS).
-	 *      -   `origin`: The sent referrer will be limited to the origin of the referring page: its
-	 *          scheme, host, and port.
-	 *      -   `origin-when-cross-origin`: The referrer sent to other origins will be limited to
-	 *          the scheme, the host, and the port. Navigations on the same origin will still
-	 *          include the path.
-	 *      -   `same-origin`: A referrer will be sent for same origin, but cross-origin requests
-	 *          will contain no referrer information.
-	 *      -   `strict-origin`: Only send the origin of the document as the referrer when the
-	 *          protocol security level stays the same (HTTPS→HTTPS), but don't send it to a less
-	 *          secure destination (HTTPS→HTTP).
-	 *      -   `strict-origin-when-cross-origin`: Send a full URL when performing a same-origin
-	 *          request, only send the origin when the protocol security level stays the same
-	 *          (HTTPS→HTTPS), and send no header to a less secure destination (HTTPS→HTTP).
-	 *      -   `unsafe-url`: The referrer will include the origin and the path (but not the
-	 *          fragment, password, or username). **This value is unsafe**, because it leaks origins
-	 *          and paths from TLS-protected resources to insecure origins.
+	 *  -   `no-referrer`: The `Referer` header will not be sent.
+	 *  -   `no-referrer-when-downgrade` (default): The `Referer` header will not be sent to origins
+	 *      without TLS (HTTPS).
+	 *  -   `origin`: The sent referrer will be limited to the origin of the referring page: its
+	 *      scheme, host, and port.
+	 *  -   `origin-when-cross-origin`: The referrer sent to other origins will be limited to the
+	 *      scheme, the host, and the port. Navigations on the same origin will still include the
+	 *      path.
+	 *  -   `same-origin`: A referrer will be sent for same origin, but cross-origin requests will
+	 *      contain no referrer information.
+	 *  -   `strict-origin`: Only send the origin of the document as the referrer when the protocol
+	 *      security level stays the same (HTTPS→HTTPS), but don't send it to a less secure
+	 *      destination (HTTPS→HTTP).
+	 *  -   `strict-origin-when-cross-origin`: Send a full URL when performing a same-origin
+	 *      request, only send the origin when the protocol security level stays the same
+	 *      (HTTPS→HTTPS), and send no header to a less secure destination (HTTPS→HTTP).
+	 *  -   `unsafe-url`: The referrer will include the origin and the path (but not the fragment,
+	 *      password, or username). **This value is unsafe**, because it leaks origins and paths
+	 *      from TLS-protected resources to insecure origins.
 	 */
 	referrerpolicy: "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "same-origin" | "strict-origin" | "strict-origin-when-cross-origin" | "unsafe-url";
 
@@ -728,31 +727,29 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	 * be empty to apply all restrictions, or space-separated tokens to lift particular
 	 * restrictions:
 	 *
-	 *      -   `allow-downloads-without-user-activation`: Allows for downloads to occur without a
-	 *          gesture from the user.
-	 *      -   `allow-downloads`: Allows for downloads to occur with a gesture from the user.
-	 *      -   `allow-forms`: Allows the resource to submit forms. If this keyword is not used,
-	 *          form submission is blocked.
-	 *      -   `allow-modals`: Lets the resource open modal windows.
-	 *      -   `allow-orientation-lock`: Lets the resource lock the screen orientation.
-	 *      -   `allow-pointer-lock`: Lets the resource use the Pointer Lock API.
-	 *      -   `allow-popups`: Allows popups (such as `window.open()`, `target="_blank"`, or
-	 *          `showModalDialog()`). If this keyword is not used, the popup will silently fail to
-	 *          open.
-	 *      -   `allow-popups-to-escape-sandbox`: Lets the sandboxed document open new windows
-	 *          without those windows inheriting the sandboxing. For example, this can safely
-	 *          sandbox an advertisement without forcing the same restrictions upon the page the ad
-	 *          links to.
-	 *      -   `allow-presentation`: Lets the resource start a presentation session.
-	 *      -   `allow-same-origin`: If this token is not used, the resource is treated as being
-	 *          from a special origin that always fails the same-origin policy.
-	 *      -   `allow-scripts`: Lets the resource run scripts (but not create popup windows).
-	 *      -   `allow-storage-access-by-user-activation`: Lets the resource request access to the
-	 *          parent's storage capabilities with the Storage Access API.
-	 *      -   `allow-top-navigation`: Lets the resource navigate the top-level browsing context
-	 *          (the one named `_top`).
-	 *      -   `allow-top-navigation-by-user-activation`: Lets the resource navigate the top-level
-	 *          browsing context, but only if initiated by a user gesture.
+	 *  -   `allow-downloads-without-user-activation`: Allows for downloads to occur without a
+	 *      gesture from the user.
+	 *  -   `allow-downloads`: Allows for downloads to occur with a gesture from the user.
+	 *  -   `allow-forms`: Allows the resource to submit forms. If this keyword is not used, form
+	 *      submission is blocked.
+	 *  -   `allow-modals`: Lets the resource open modal windows.
+	 *  -   `allow-orientation-lock`: Lets the resource lock the screen orientation.
+	 *  -   `allow-pointer-lock`: Lets the resource use the Pointer Lock API.
+	 *  -   `allow-popups`: Allows popups (such as `window.open()`, `target="_blank"`, or
+	 *      `showModalDialog()`). If this keyword is not used, the popup will silently fail to open.
+	 *  -   `allow-popups-to-escape-sandbox`: Lets the sandboxed document open new windows without
+	 *      those windows inheriting the sandboxing. For example, this can safely sandbox an
+	 *      advertisement without forcing the same restrictions upon the page the ad links to.
+	 *  -   `allow-presentation`: Lets the resource start a presentation session.
+	 *  -   `allow-same-origin`: If this token is not used, the resource is treated as being from a
+	 *      special origin that always fails the same-origin policy.
+	 *  -   `allow-scripts`: Lets the resource run scripts (but not create popup windows).
+	 *  -   `allow-storage-access-by-user-activation`: Lets the resource request access to the
+	 *      parent's storage capabilities with the Storage Access API.
+	 *  -   `allow-top-navigation`: Lets the resource navigate the top-level browsing context (the
+	 *      one named `_top`).
+	 *  -   `allow-top-navigation-by-user-activation`: Lets the resource navigate the top-level
+	 *      browsing context, but only if initiated by a user gesture.
 	 */
 	sandbox: "allow-downloads-without-user-activation" | "allow-downloads" | "allow-forms" | "allow-modals" | "allow-orientation-lock" | "allow-pointer-lock" | "allow-popups" | "allow-popups-to-escape-sandbox" | "allow-presentation" | "allow-same-origin" | "allow-scripts" | "allow-storage-access-by-user-activation" | "allow-top-navigation" | "allow-top-navigation-by-user-activation";
 
@@ -810,15 +807,15 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 *
 	 * Allowed values:
 	 *
-	 *      -   anonymous
-	 *          -   A CORS request is sent with credentials omitted (that is, no cookies, X.509
-	 *              certificates, or `Authorization` request header).
-	 *      -   use-credentials
-	 *          -   The CORS request is sent with any credentials included (that is, cookies, X.509
-	 *              certificates, and the `Authorization` request header). If the server does not
-	 *              opt into sharing credentials with the origin site (by sending back the
-	 *              `Access-Control-Allow-Credentials: true` response header), then the browser
-	 *              marks the image as tainted and restricts access to its image data.
+	 *  -   anonymous
+	 *      -   A CORS request is sent with credentials omitted (that is, no cookies, X.509
+	 *          certificates, or `Authorization` request header).
+	 *  -   use-credentials
+	 *      -   The CORS request is sent with any credentials included (that is, cookies, X.509
+	 *          certificates, and the `Authorization` request header). If the server does not opt
+	 *          into sharing credentials with the origin site (by sending back the
+	 *          `Access-Control-Allow-Credentials: true` response header), then the browser marks
+	 *          the image as tainted and restricts access to its image data.
 	 *
 	 * If the attribute has an invalid value, browsers handle it as if the `anonymous` value was
 	 * used. See CORS settings attributes for additional information.
@@ -828,13 +825,13 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Provides an image decoding hint to the browser. Allowed values:
 	 *
-	 *      -   `sync`
-	 *          -   Decode the image synchronously, for atomic presentation with other content.
-	 *      -   `async`
-	 *          -   Decode the image asynchronously, to reduce delay in presenting other content.
-	 *      -   `auto`
-	 *          -   Default: no preference for the decoding mode. The browser decides what is best
-	 *              for the user.
+	 *  -   `sync`
+	 *      -   Decode the image synchronously, for atomic presentation with other content.
+	 *  -   `async`
+	 *      -   Decode the image asynchronously, to reduce delay in presenting other content.
+	 *  -   `auto`
+	 *      -   Default: no preference for the decoding mode. The browser decides what is best for
+	 *          the user.
 	 */
 	decoding: "sync" | "async" | "auto";
 
@@ -852,30 +849,29 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	/**
 	 * Indicates how the browser should load the image:
 	 *
-	 *      -   `eager`: Loads the image immediately, regardless of whether or not the image is
-	 *          currently within the visible viewport (this is the default value).
-	 *      -   `lazy`: Defers loading the image until it reaches a calculated distance from the
-	 *          viewport, as defined by the browser. The intent is to avoid the network and storage
-	 *          bandwidth needed to handle the image until it's reasonably certain that it will be
-	 *          needed. This generally improves the performance of the content in most typical use
-	 *          cases.
+	 *  -   `eager`: Loads the image immediately, regardless of whether or not the image is
+	 *      currently within the visible viewport (this is the default value).
+	 *  -   `lazy`: Defers loading the image until it reaches a calculated distance from the
+	 *      viewport, as defined by the browser. The intent is to avoid the network and storage
+	 *      bandwidth needed to handle the image until it's reasonably certain that it will be
+	 *      needed. This generally improves the performance of the content in most typical use
+	 *      cases.
 	 */
 	loading: "eager" | "lazy";
 
 	/**
 	 * A string indicating which referrer to use when fetching the resource:
 	 *
-	 *      -   `no-referrer`: The `Referer` header will not be sent.
-	 *      -   `no-referrer-when-downgrade`: No `Referer` header is sent when navigating to an
-	 *          origin without HTTPS. This is the default if no policy is otherwise specified.
-	 *      -   `origin`: The `Referer` header will include the page's origin (scheme, host, and
-	 *          port).
-	 *      -   `origin-when-cross-origin`: Navigating to other origins will limit the included
-	 *          referral data to the scheme, host, and port, while navigating from the same origin
-	 *          will include the full path and query string.
-	 *      -   `unsafe-url`: The `Referer` header will always include the origin, path and query
-	 *          string, but not the fragment, password, or username. **This is unsafe** because it
-	 *          can leak information from TLS-protected resources to insecure origins.
+	 *  -   `no-referrer`: The `Referer` header will not be sent.
+	 *  -   `no-referrer-when-downgrade`: No `Referer` header is sent when navigating to an origin
+	 *      without HTTPS. This is the default if no policy is otherwise specified.
+	 *  -   `origin`: The `Referer` header will include the page's origin (scheme, host, and port).
+	 *  -   `origin-when-cross-origin`: Navigating to other origins will limit the included referral
+	 *      data to the scheme, host, and port, while navigating from the same origin will include
+	 *      the full path and query string.
+	 *  -   `unsafe-url`: The `Referer` header will always include the origin, path and query
+	 *      string, but not the fragment, password, or username. **This is unsafe** because it can
+	 *      leak information from TLS-protected resources to insecure origins.
 	 */
 	referrerpolicy: "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url";
 
@@ -883,8 +879,8 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * One or more strings separated by commas, indicating a set of source sizes. Each source size
 	 * consists of:
 	 *
-	 *      1.  A media condition. This must be omitted for the last item in the list.
-	 *      2.  A source size value.
+	 *  1.  A media condition. This must be omitted for the last item in the list.
+	 *  2.  A source size value.
 	 *
 	 * Media Conditions describe properties of the *viewport*, not of the image. For example,
 	 * `(max-height: 500px) 1000px` proposes to use a source of 1000px width, if the *viewport* is
@@ -911,13 +907,13 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	 * One or more strings separated by commas, indicating possible image sources for the user agent
 	 * to use. Each string is composed of:
 	 *
-	 *      1.  A URL to an image
-	 *      2.  Optionally, whitespace followed by one of:
-	 *          -   A width descriptor (a positive integer directly followed by `w`). The width
-	 *              descriptor is divided by the source size given in the `sizes` attribute to
-	 *              calculate the effective pixel density.
-	 *          -   A pixel density descriptor (a positive floating point number directly followed
-	 *              by `x`).
+	 *  1.  A URL to an image
+	 *  2.  Optionally, whitespace followed by one of:
+	 *      -   A width descriptor (a positive integer directly followed by `w`). The width
+	 *          descriptor is divided by the source size given in the `sizes` attribute to calculate
+	 *          the effective pixel density.
+	 *      -   A pixel density descriptor (a positive floating point number directly followed by
+	 *          `x`).
 	 *
 	 * If no descriptor is specified, the source is assigned the default descriptor of `1x`.
 	 *
@@ -1209,12 +1205,11 @@ export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
 	 * A list of one or more strings separated by commas indicating a set of possible images
 	 * represented by the source for the browser to use. Each string is composed of:
 	 *
-	 *      1.  One URL specifying an image.
-	 *      2.  A width descriptor, which consists of a string containing a positive integer
-	 *          directly followed by `"w"`, such as `300w`. The default value, if missing, is the
-	 *          infinity.
-	 *      3.  A pixel density descriptor, that is a positive floating number directly followed by
-	 *          `"x"`. The default value, if missing, is `1x`.
+	 *  1.  One URL specifying an image.
+	 *  2.  A width descriptor, which consists of a string containing a positive integer directly
+	 *      followed by `"w"`, such as `300w`. The default value, if missing, is the infinity.
+	 *  3.  A pixel density descriptor, that is a positive floating number directly followed by
+	 *      `"x"`. The default value, if missing, is `1x`.
 	 *
 	 * Each string in the list must have at least a width descriptor or a pixel density descriptor
 	 * to be valid. Among the list, there must be only one string containing the same tuple of width
@@ -1274,10 +1269,10 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 * text value should be automatically capitalized as it is entered/edited by the user. The
 	 * non-deprecated values are available in iOS 5 and later. Possible values are:
 	 *
-	 *      -   `none`: Completely disables automatic capitalization.
-	 *      -   `sentences`: Automatically capitalize the first letter of sentences.
-	 *      -   `words`: Automatically capitalize the first letter of words.
-	 *      -   `characters`: Automatically capitalize all characters.
+	 *  -   `none`: Completely disables automatic capitalization.
+	 *  -   `sentences`: Automatically capitalize the first letter of sentences.
+	 *  -   `words`: Automatically capitalize the first letter of words.
+	 *  -   `characters`: Automatically capitalize all characters.
 	 */
 	autocapitalize: "none" | "sentences" | "words" | "characters";
 
@@ -1285,11 +1280,11 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 * This attribute indicates whether the value of the control can be automatically completed by
 	 * the browser. Possible values are:
 	 *
-	 *      -   `off`: The user must explicitly enter a value into this field for every use, or the
-	 *          document provides its own auto-completion method; the browser does not automatically
-	 *          complete the entry.
-	 *      -   `on`: The browser can automatically complete the value based on values that the user
-	 *          has entered during previous uses.
+	 *  -   `off`: The user must explicitly enter a value into this field for every use, or the
+	 *      document provides its own auto-completion method; the browser does not automatically
+	 *      complete the entry.
+	 *  -   `on`: The browser can automatically complete the value based on values that the user has
+	 *      entered during previous uses.
 	 *
 	 * If the `autocomplete` attribute is not specified on a `<textarea>` element, then the browser
 	 * uses the `autocomplete` attribute value of the `<textarea>` element's form owner. The form
@@ -1371,21 +1366,20 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 * Specifies whether the `<textarea>` is subject to spell checking by the underlying browser/OS.
 	 * The value can be:
 	 *
-	 *      -   `true`: Indicates that the element needs to have its spelling and grammar checked.
-	 *      -   `false`: Indicates that the element should not be spell checked.
+	 *  -   `true`: Indicates that the element needs to have its spelling and grammar checked.
+	 *  -   `false`: Indicates that the element should not be spell checked.
 	 */
 	spellcheck: boolean;
 
 	/**
 	 * Indicates how the control wraps text. Possible values are:
-	 *      -   `hard`: The browser automatically inserts line breaks (CR+LF) so that each line has
-	 *          no more than the width of the control; the `cols` attribute must also be specified
-	 *          for this to take effect.
-	 *      -   `soft`: The browser ensures that all line breaks in the value consist of a CR+LF
-	 *          pair, but does not insert any additional line breaks.
-	 *      -   `off`: Like `soft` but changes appearance to `white-space: pre` so line segments
-	 *          exceeding `cols` are not wrapped and the `<textarea>` becomes horizontally
-	 *          scrollable.
+	 *  -   `hard`: The browser automatically inserts line breaks (CR+LF) so that each line has no
+	 *      more than the width of the control; the `cols` attribute must also be specified for this
+	 *      to take effect.
+	 *  -   `soft`: The browser ensures that all line breaks in the value consist of a CR+LF pair,
+	 *      but does not insert any additional line breaks.
+	 *  -   `off`: Like `soft` but changes appearance to `white-space: pre` so line segments
+	 *      exceeding `cols` are not wrapped and the `<textarea>` becomes horizontally scrollable.
 	 *
 	 * If this attribute is not specified, `soft` is its default value.
 	 */
@@ -1425,13 +1419,13 @@ export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttribu
 	 * This enumerated attribute defines the cells that the header (defined in the `<th>`) element
 	 * relates to. It may have the following values:
 	 *
-	 *      -   `row`: The header relates to all cells of the row it belongs to.
-	 *      -   `col`: The header relates to all cells of the column it belongs to.
-	 *      -   `rowgroup`: The header belongs to a rowgroup and relates to all of its cells. These
-	 *          cells can be placed to the right or the left of the header, depending on the value
-	 *          of the `dir` attribute in the `<table>` element.
-	 *      -   `colgroup`: The header belongs to a colgroup and relates to all of its cells.
-	 *      -   `auto`
+	 *  -   `row`: The header relates to all cells of the row it belongs to.
+	 *  -   `col`: The header relates to all cells of the column it belongs to.
+	 *  -   `rowgroup`: The header belongs to a rowgroup and relates to all of its cells. These
+	 *      cells can be placed to the right or the left of the header, depending on the value of
+	 *      the `dir` attribute in the `<table>` element.
+	 *  -   `colgroup`: The header belongs to a colgroup and relates to all of its cells.
+	 *  -   `auto`
 	 *
 	 * The default value when this attribute is not specified is `auto`.
 	 */
@@ -1451,26 +1445,25 @@ export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
 	 * How the text track is meant to be used. If omitted the default kind is `subtitles`. If the
 	 * attribute contains an invalid value, it will use `metadata` (Versions of Chrome earlier than
 	 * 52 treated an invalid value as `subtitles`). The following keywords are allowed:
-	 *      -   `subtitles`
-	 *          -   Subtitles provide translation of content that cannot be understood by the
-	 *              viewer. For example dialogue or text that is not English in an English language
-	 *              film.
-	 *          -   Subtitles may contain additional content, usually extra background information.
-	 *              For example the text at the beginning of the Star Wars films, or the date, time,
-	 *              and location of a scene.
-	 *      -   `captions`
-	 *          -   Closed captions provide a transcription and possibly a translation of audio.
-	 *          -   It may include important non-verbal information such as music cues or sound
-	 *              effects. It may indicate the cue's source (e.g. music, text, character).
-	 *          -   Suitable for users who are deaf or when the sound is muted.
-	 *      -   `descriptions`
-	 *          -   Textual description of the video content.
-	 *          -   Suitable for users who are blind or where the video cannot be seen.
-	 *      -   `chapters`
-	 *          -   Chapter titles are intended to be used when the user is navigating the media
-	 *              resource.
-	 *      -   `metadata`
-	 *          -   Tracks used by scripts. Not visible to the user.
+	 *  -   `subtitles`
+	 *      -   Subtitles provide translation of content that cannot be understood by the viewer.
+	 *          For example dialogue or text that is not English in an English language film.
+	 *      -   Subtitles may contain additional content, usually extra background information. For
+	 *          example the text at the beginning of the Star Wars films, or the date, time, and
+	 *          location of a scene.
+	 *  -   `captions`
+	 *      -   Closed captions provide a transcription and possibly a translation of audio.
+	 *      -   It may include important non-verbal information such as music cues or sound effects.
+	 *          It may indicate the cue's source (e.g. music, text, character).
+	 *      -   Suitable for users who are deaf or when the sound is muted.
+	 *  -   `descriptions`
+	 *      -   Textual description of the video content.
+	 *      -   Suitable for users who are blind or where the video cannot be seen.
+	 *  -   `chapters`
+	 *      -   Chapter titles are intended to be used when the user is navigating the media
+	 *          resource.
+	 *  -   `metadata`
+	 *      -   Tracks used by scripts. Not visible to the user.
 	 */
 	kind: "subtitles" | "captions" | "descriptions" | "characters" | "metadata";
 
@@ -1544,18 +1537,18 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * CORS-enabled resources can be reused in the `<canvas>` element without being *tainted*. The
 	 * allowed values are:
 	 *
-	 *      -   anonymous
-	 *          -   Sends a cross-origin request without a credential. In other words, it sends the
-	 *              `Origin:` HTTP header without a cookie, X.509 certificate, or performing HTTP
-	 *              Basic authentication. If the server does not give credentials to the origin site
-	 *              (by not setting the `Access-Control-Allow-Origin:` HTTP header), the image will
-	 *              be *tainted*, and its usage restricted.
-	 *      -   use-credentials
-	 *          -   Sends a cross-origin request with a credential. In other words, it sends the
-	 *              `Origin:` HTTP header with a cookie, a certificate, or performing HTTP Basic
-	 *              authentication. If the server does not give credentials to the origin site
-	 *              (through `Access-Control-Allow-Credentials:` HTTP header), the image will be
-	 *              *tainted* and its usage restricted.
+	 *  -   anonymous
+	 *      -   Sends a cross-origin request without a credential. In other words, it sends the
+	 *          `Origin:` HTTP header without a cookie, X.509 certificate, or performing HTTP Basic
+	 *          authentication. If the server does not give credentials to the origin site (by not
+	 *          setting the `Access-Control-Allow-Origin:` HTTP header), the image will be
+	 *          *tainted*, and its usage restricted.
+	 *  -   use-credentials
+	 *      -   Sends a cross-origin request with a credential. In other words, it sends the
+	 *          `Origin:` HTTP header with a cookie, a certificate, or performing HTTP Basic
+	 *          authentication. If the server does not give credentials to the origin site (through
+	 *          `Access-Control-Allow-Credentials:` HTTP header), the image will be *tainted* and
+	 *          its usage restricted.
 	 *
 	 * When not present, the resource is fetched without a CORS request (i.e. without sending the
 	 * `Origin:` HTTP header), preventing its non-tainted used in `<canvas>` elements. If invalid,
@@ -1648,11 +1641,11 @@ export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
 	 * thinks will lead to the best user experience with regards to what content is loaded before
 	 * the video is played. It may have one of the following values:
 	 *
-	 *      -   `none`: Indicates that the video should not be preloaded.
-	 *      -   `metadata`: Indicates that only video metadata (e.g. length) is fetched.
-	 *      -   `auto`: Indicates that the whole video file can be downloaded, even if the user is
-	 *          not expected to use it.
-	 *      -   *empty string*: Synonym of the `auto` value.
+	 *  -   `none`: Indicates that the video should not be preloaded.
+	 *  -   `metadata`: Indicates that only video metadata (e.g. length) is fetched.
+	 *  -   `auto`: Indicates that the whole video file can be downloaded, even if the user is not
+	 *      expected to use it.
+	 *  -   *empty string*: Synonym of the `auto` value.
 	 *
 	 * The default value is different for each browser. The spec advises it to be set to `metadata`.
 	 */
