@@ -27,6 +27,9 @@ interface HTMLInputElementAttributes extends HTMLElementAttributes {
 	 */
 	name: any;
 
+	/**
+	 * TODO
+	 */
 	type: any;
 
 	/**
@@ -42,6 +45,10 @@ interface HTMLInputElementAttributes extends HTMLElementAttributes {
 export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
 export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * TODO
+	 */
 	checked: any;
 
 	/**
@@ -53,10 +60,6 @@ export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInp
 	 * TODO
 	 */
 	required: any;
-
-	/**
-	 * TODO
-	 */
 }
 
 export interface HTMLColorInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
@@ -164,6 +167,26 @@ export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputE
 	/**
 	 * TODO
 	 */
+	maxlength: any;
+
+	/**
+	 * TODO
+	 */
+	minlength: any;
+
+	/**
+	 * TODO
+	 */
+	pattern: any;
+
+	/**
+	 * TODO
+	 */
+	placeholder: any;
+
+	/**
+	 * TODO
+	 */
 	readonly: any;
 
 	/**
@@ -184,6 +207,11 @@ export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputEl
 	 * TODO
 	 */
 	capture: any;
+
+	/**
+	 * TODO
+	 */
+	files
 
 	/**
 	 * TODO
@@ -303,6 +331,11 @@ export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInput
 	/**
 	 * TODO
 	 */
+	placeholder: any;
+
+	/**
+	 * TODO
+	 */
 	readonly: any;
 
 	/**
@@ -417,6 +450,11 @@ export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInput
 	/**
 	 * TODO
 	 */
+	pattern: any;
+
+	/**
+	 * TODO
+	 */
 	placeholder: any;
 
 	/**
@@ -428,6 +466,17 @@ export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInput
 	 * TODO
 	 */
 	required: any;
+
+	/**
+	 * TODO
+	 */
+
+	size: any;
+
+	/**
+	 * TODO
+	 */
+	spellcheck: any;
 }
 
 export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
@@ -551,6 +600,11 @@ export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputEl
 	 * TODO
 	 */
 	size;
+
+	/**
+	 * TODO
+	 */
+	spellcheck: any;
 }
 
 export interface HTMLTimeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
@@ -741,6 +795,16 @@ export interface HTMLWeekInputElement extends HTMLElementAttributes, HTMLInputEl
 	 * This value must be less than or equal to the value of the `max` attribute.
 	 */
 	min: number;
+
+	/**
+	 * TODO
+	 */
+	readonly: any;
+
+	/**
+	 * TODO
+	 */
+	required: any;
 
 	/**
 	 * The `step` attribute is a number that specifies the granularity that the value must adhere
