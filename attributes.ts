@@ -1,3 +1,5 @@
+/* eslint-enable @typescript-eslint/typedef */
+
 interface HTMLElementAttributes {
 
 	/**
@@ -1370,11 +1372,9 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	 * The value can be:
 	 *
 	 *      -   `true`: Indicates that the element needs to have its spelling and grammar checked.
-	 *      -   `default`: Indicates that the element is to act according to a default behavior,
-	 *          possibly based on the parent element's own `spellcheck` value.
 	 *      -   `false`: Indicates that the element should not be spell checked.
 	 */
-	spellcheck: "true" | "default" | "false";
+	spellcheck: boolean;
 
 	/**
 	 * Indicates how the control wraps text. Possible values are:

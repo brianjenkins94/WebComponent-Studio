@@ -1,3 +1,5 @@
+/* eslint-enable @typescript-eslint/typedef */
+
 interface EditingContent {
 	"del": HTMLModElement;
 	"ins": HTMLModElement;

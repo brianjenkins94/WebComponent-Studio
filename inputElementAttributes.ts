@@ -1,3 +1,5 @@
+/* eslint-enable @typescript-eslint/typedef */
+
 import type { HTMLElementAttributes } from "./attributes";
 
 interface HTMLInputElementAttributes extends HTMLElementAttributes {
@@ -67,7 +69,7 @@ export interface HTMLColorInputElement extends HTMLElementAttributes, HTMLInputE
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 }
 
 export interface HTMLDateInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
@@ -79,7 +81,7 @@ export interface HTMLDateInputElement extends HTMLElementAttributes, HTMLInputEl
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -116,7 +118,7 @@ export interface HTMLDatetimeLocalInputElement extends HTMLElementAttributes, HT
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -153,7 +155,7 @@ export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputE
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -283,7 +285,7 @@ export interface HTMLMonthInputElement extends HTMLElementAttributes, HTMLInputE
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -320,7 +322,7 @@ export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInput
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -413,7 +415,7 @@ export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputE
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -447,7 +449,7 @@ export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInput
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -528,7 +530,7 @@ export interface HTMLTelInputElement extends HTMLElementAttributes, HTMLInputEle
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -580,7 +582,7 @@ export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputEl
 	 * included in the suggested options. The values provided are suggestions, not requirements:
 	 * users can select from this predefined list or provide a different value.
 	 */
-	list: any;
+	list: string;
 
 	/**
 	 * TODO
@@ -615,7 +617,7 @@ export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputEl
 	/**
 	 * TODO
 	 */
-	size;
+	size: any;
 
 	/**
 	 * TODO
