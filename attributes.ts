@@ -434,7 +434,8 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	 * validated when it is submitted. If this attribute is specified, it overrides the `novalidate`
 	 * attribute of the button's form owner.
 	 *
-	 * This attribute is also available on `<input type="image">` and `<input type="submit">` elements.
+	 * This attribute is also available on `<input type="image">` and `<input type="submit">`
+	 * elements.
 	 */
 	formnovalidate: boolean | string;
 
@@ -1295,12 +1296,14 @@ export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputEl
 	capture: string;
 
 	/**
-	 * A `FileList` object that lists every selected file. This list has no more than one member unless the `multiple` attribute is specified.
+	 * A `FileList` object that lists every selected file. This list has no more than one member
+	 * unless the `multiple` attribute is specified.
 	 */
 	files: FileList[];
 
 	/**
-	 * When the `multiple` Boolean attribute is specified, the file input allows the user to select more than one file.
+	 * When the `multiple` Boolean attribute is specified, the file input allows the user to select
+	 * more than one file.
 	 */
 	multiple: boolean;
 
@@ -1428,7 +1431,8 @@ export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputE
 
 	/**
 	 * A string specifying the URL of the image file to display to represent the graphical submit
-	 * button. When the user interacts with the image, the input is handled like any other button input.
+	 * button. When the user interacts with the image, the input is handled like any other button
+	 * input.
 	 */
 	src: string;
 
@@ -1695,7 +1699,8 @@ export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputE
 	 * this, the element fails constraint validation. If a value is specified for `min` that isn't a
 	 * valid number, the input has no minimum value.
 	 *
-	 * This value must be less than or equal to the value of the `max` attribute. See the HTML `min` attribute.
+	 * This value must be less than or equal to the value of the `max` attribute. See the HTML `min`
+	 * attribute.
 	 */
 	min: number;
 
@@ -1858,7 +1863,8 @@ export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInput
 	 *      -   Plain text; mostly useful only for debugging, so you can easily see the data that's
 	 *          to be submitted.
 	 *
-	 * If specified, the value of the `formenctype` attribute overrides the owning form's `action` attribute.
+	 * If specified, the value of the `formenctype` attribute overrides the owning form's `action`
+	 * attribute.
 	 *
 	 * This attribute is also available on `<input type="image">` and `<button>` elements.
 	 */
@@ -2220,7 +2226,8 @@ export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputEle
 	 * that the pattern is treated as a sequence of Unicode code points, instead of as ASCII. No
 	 * forward slashes should be specified around the pattern text.
 	 *
-	 * If the specified pattern is not specified or is invalid, no regular expression is applied and this attribute is ignored completely.
+	 * If the specified pattern is not specified or is invalid, no regular expression is applied and
+	 * this attribute is ignored completely.
 	 */
 	pattern: string;
 
