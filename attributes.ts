@@ -938,7 +938,1412 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	width: number;
 }
 
-/* HTMLInputElementAttributes */
+interface HTMLInputElementAttributes extends HTMLElementAttributes {
+
+	/**
+	 * (**Not** a Boolean attribute!) The `autocomplete` attribute takes as its value a space-
+	 * separated string that describes what, if any, type of autocomplete functionality the input
+	 * should provide. A typical implementation of autocomplete simply recalls previous values
+	 * entered in the same input field, but more complex forms of autocomplete can exist. For
+	 * instance, a browser could integrate with a device's contacts list to autocomplete `email`
+	 * addresses in an email input field.
+	 */
+	autocomplete: "off" | "on" | "name" | "honorific-prefix" | "given-name" | "additional-name" | "family-name" | "honorific-suffix" | "nickname" | "email" | "username" | "new-password" | "current-password" | "one-time-code" | "organization-title" | "organization" | "street-address" | "address-line1" | "address-line2" | "address-line3" | "address-level4" | "address-level3" | "address-level2" | "address-level1" | "country" | "country-name" | "postal-code" | "cc-name" | "cc-given-name" | "cc-additional-name" | "cc-family-name" | "cc-number" | "cc-exp" | "cc-exp-month" | "cc-exp-year" | "cc-csc" | "cc-type" | "transaction-currency" | "transaction-amount" | "language" | "bday" | "bday-day" | "bday-month" | "bday-year" | "sex" | "tel" | "tel-country-code" | "tel-national" | "tel-area-code" | "tel-local" | "tel-extension" | "impp" | "url";
+
+	/**
+	 * A Boolean attribute which, if present, indicates that the input should automatically have
+	 * focus when the page has finished loading (or when the `<dialog>` containing the element has
+	 * been displayed).
+	 *
+	 * No more than one element in the document may have the `autofocus` attribute. If put on more
+	 * than one element, the first one with the attribute receives focus.
+	 */
+	autofocus: boolean;
+
+	/**
+	 * A Boolean attribute which, if present, indicates that the user should not be able to interact
+	 * with the input. Disabled inputs are typically rendered with a dimmer color or using some
+	 * other form of indication that the field is not available for use.
+	 *
+	 * Specifically, disabled inputs do not receive the `click` event, and disabled inputs are not
+	 * submitted with the form.
+	 */
+	disabled: boolean;
+
+	/**
+	 * A string specifying the `<form>` element with which the input is associated (that is, its
+	 * **form owner**). This string's value, if present, must match the `id` of a `<form>` element
+	 * in the same document. If this attribute isn't specified, the `<input>` element is associated
+	 * with the nearest containing form, if any.
+	 *
+	 * The `form` attribute lets you place an input anywhere in the document but have it included
+	 * with a form elsewhere in the document.
+	 */
+	form: string;
+
+	/**
+	 * A string specifying a name for the input control. This name is submitted along with the
+	 * control's value when the form data is submitted.
+	 */
+	name: string;
+
+	/**
+	 * A string specifying the type of control to render. For example, to create a checkbox, a value
+	 * of `checkbox` is used. If omitted (or an unknown value is specified), the input type `text`
+	 * is used, creating a plaintext input field.
+	 */
+	type: "button" | "checkbox" | "color" | "date" | "datetime-local" | "email" | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio" | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time" | "url" | "week";
+
+	/**
+	 * The input control's value. When specified in the HTML, this is the initial value, and from
+	 * then on it can be altered or retrieved at any time using JavaScript to access the respective
+	 * `HTMLInputElement` object's `value` property. The `value` attribute is always optional,
+	 * though should be considered mandatory for `checkbox`, `radio`, and `hidden`.
+	 */
+	value: string;
+}
+
+export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
+
+export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * A Boolean attribute indicating whether or not this checkbox is checked by default (when the
+	 * page loads). It does *not* indicate whether this checkbox is currently checked: if the
+	 * checkbox's state is changed, this content attribute does not reflect the change. (Only the
+	 * `HTMLInputElement`'s `checked` IDL attribute is updated.)
+	 *
+	 * Unlike other browsers, Firefox by default persists the dynamic checked state of an `<input>`
+	 * across page loads. Use the `autocomplete` attribute to control this feature.
+	 */
+	checked: boolean;
+
+	/**
+	 * If the `indeterminate` attribute is present on the `<input>` element defining a checkbox, the
+	 * checkbox's value is neither `true` nor `false`, but is instead **indeterminate**, meaning
+	 * that it's state cannot be determined or stated in pure binary terms. This may happen, for
+	 * instance, if the state of the checkbox depends on multiple other checkboxes, and those
+	 * checkboxes have different values.
+	 *
+	 * Essentially, then, the `indeterminate` attribute adds a third possible state to the checkbox:
+	 * "I don't know." In this state, the browser may draw the checkbox in grey or with a different
+	 * mark inside the checkbox. For instance, browsers on macOS may draw the checkbox with a hyphen
+	 * "-" inside to indicate an unexpected state.
+	 */
+	indeterminate: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+}
+
+export interface HTMLColorInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+}
+
+export interface HTMLDateInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The latest date to accept. If the `value` entered into the element occurs afterward, the
+	 * element fails constraint validation. If the value of the `max` attribute isn't a possible
+	 * date string in the format `yyyy-mm-dd`, then the element has no maximum date value.
+	 *
+	 * If both the `max` and `min` attributes are set, this value must be a date string **later than
+	 * or equal to** the one in the `min` attribute.
+	 */
+	max: number;
+
+	/**
+	 * The earliest date to accept. If the `value` entered into the element occurs beforehand, the
+	 * element fails constraint validation. If the value of the `min` attribute isn't a possible
+	 * date string in the format `yyyy-mm-dd`, then the element has no minimum date value.
+	 *
+	 * If both the `max` and `min` attributes are set, this value must be a date string **earlier
+	 * than or equal to** the one in the `max` attribute.
+	 */
+	min: number;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `step` attribute is a number that specifies the granularity that the value must adhere
+	 * to, or the special value `any`, which is described below. Only values which are equal to the
+	 * basis for stepping (`min` if specified, `value` otherwise, and an appropriate default value
+	 * if neither of those is provided) are valid.
+	 *
+	 * A string value of `any` means that no stepping is implied, and any value is allowed (barring
+	 * other constraints, such as `min` and `max`).
+	 *
+	 * For `date` inputs, the value of `step` is given in days; and is treated as a number of
+	 * milliseconds equal to 86,400,000 times the `step` value (the underlying numeric value is in
+	 * milliseconds). The default value of `step` is 1, indicating 1 day.
+	 */
+	step: number;
+}
+
+export interface HTMLDatetimeLocalInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The latest date and time to accept. If the `value` entered into the element is later than
+	 * this timestamp, the element fails constraint validation. If the value of the `max` attribute
+	 * isn't a valid string which follows the format `yyyy-MM-ddThh:mm`, then the element has no
+	 * maximum value.
+	 *
+	 * This value must specify a date string later than or equal to the one specified by the `min`
+	 * attribute.
+	 */
+	max: string;
+
+	/**
+	 * The earliest date and time to accept; timestamps earlier than this will cause the element to
+	 * fail constraint validation. If the value of the `min` attribute isn't a valid string which
+	 * follows the format `yyyy-MM-ddThh:mm`, then the element has no minimum value.
+	 *
+	 * This value must specify a date string earlier than or equal to the one specified by the `max`
+	 * attribute.
+	 */
+	min: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `step` attribute is a number that specifies the granularity that the value must adhere
+	 * to, or the special value `any`, which is described below. Only values which are equal to the
+	 * basis for stepping (`min` if specified, `value` otherwise, and an appropriate default value
+	 * if neither of those is provided) are valid.
+	 *
+	 * A string value of `any` means that no stepping is implied, and any value is allowed (barring
+	 * other constraints, such as `min` and `max`).
+	 *
+	 * For `datetime-local` inputs, the value of `step` is given in seconds, with a scaling factor
+	 * of 1000 (since the underlying numeric value is in milliseconds). The default value of `step`
+	 * is 60, indicating 60 seconds (or 1 minute, or 60,000 milliseconds).
+	 */
+	step: number;
+}
+
+export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The maximum number of characters (as UTF-16 code units) the user can enter into the `email`
+	 * input. This must be an integer value 0 or higher. If no `maxlength` is specified, or an
+	 * invalid value is specified, the `email` input has no maximum length. This value must also be
+	 * greater than or equal to the value of `minlength`.
+	 *
+	 * The input will fail constraint validation if the length of the text value of the field is
+	 * greater than `maxlength` UTF-16 code units long. Constraint validation is only applied when
+	 * the value is changed by the user.
+	 */
+	maxlength: number;
+
+	/**
+	 * The minimum number of characters (as UTF-16 code units) the user can enter into the `email`
+	 * input. This must be an non-negative integer value smaller than or equal to the value
+	 * specified by `maxlength`. If no `minlength` is specified, or an invalid value is specified,
+	 * the `email` input has no minimum length.
+	 *
+	 * The input will fail constraint validation if the length of the text entered into the field is
+	 * fewer than `minlength` UTF-16 code units long. Constraint validation is only applied when the
+	 * value is changed by the user.
+	 */
+	minlength: number;
+
+	/**
+	 * A Boolean attribute which, if present, indicates that the user can enter a list of multiple
+	 * e-mail addresses, separated by commas and, optionally, whitespace characters. See Allowing
+	 * multiple e-mail addresses for an example, or HTML attribute: multiple for more details.
+	 */
+	multiple: boolean;
+
+	/**
+	 * The `pattern` attribute, when specified, is a regular expression that the input's `value`
+	 * must match in order for the value to pass constraint validation. It must be a valid
+	 * JavaScript regular expression, as used by the `RegExp` type, and as documented in our guide
+	 * on regular expressions; the `'u'` flag is specified when compiling the regular expression, so
+	 * that the pattern is treated as a sequence of Unicode code points, instead of as ASCII. No
+	 * forward slashes should be specified around the pattern text.
+	 *
+	 * If the specified pattern is not specified or is invalid, no regular expression is applied and
+	 * this attribute is ignored completely.
+	 */
+	pattern: string;
+
+	/**
+	 * The `placeholder` attribute is a string that provides a brief hint to the user as to what
+	 * kind of information is expected in the field. It should be a word or short phrase that
+	 * demonstrates the expected type of data, rather than an explanatory message. The text *must
+	 * not* include carriage returns or line feeds.
+	 *
+	 * If the control's content has one directionality (LTR or RTL) but needs to present the
+	 * placeholder in the opposite directionality, you can use Unicode bidirectional algorithm
+	 * formatting characters to override directionality within the placeholder; see Overriding BiDi
+	 * using Unicode control characters in The Unicode Bidirectional Text Algorithm for those
+	 * characters.
+	 */
+	placeholder: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `size` attribute is a numeric value indicating how many characters wide the input field
+	 * should be. The value must be a number greater than zero, and the default value is 20. Since
+	 * character widths vary, this may or may not be exact and should not be relied upon to be so;
+	 * the resulting input may be narrower or wider than the specified number of characters,
+	 * depending on the characters and the font (`font` settings in use).
+	 *
+	 * This does *not* set a limit on how many characters the user can enter into the field. It only
+	 * specifies approximately how many can be seen at a time. To set an upper limit on the length
+	 * of the input data, use the `maxlength` attribute.
+	 */
+	size: number;
+}
+
+export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The `accept` attribute value is a string that defines the file types the file input should
+	 * accept. This string is a comma-separated list of **unique file type specifiers**. Because a
+	 * given file type may be identified in more than one manner, it's useful to provide a thorough
+	 * set of type specifiers when you need files of a given format.
+	 *
+	 * For instance, there are a number of ways Microsoft Word files can be identified, so a site
+	 * that accepts Word files might use an `<input>` like this:
+	 *
+	 *    <input type="file" id="docpicker" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+	 */
+	accept: string;
+
+	/**
+	 * The `capture` attribute value is a string that specifies which camera to use for capture of
+	 * image or video data, if the `accept` attribute indicates that the input should be of one of
+	 * those types. A value of `user` indicates that the user-facing camera and/or microphone should
+	 * be used. A value of `environment` specifies that the outward-facing camera and/or microphone
+	 * should be used. If this attribute is missing, the user agent is free to decide on its own
+	 * what to do. If the requested facing mode isn't available, the user agent may fall back to its
+	 * preferred default mode.
+	 */
+	capture: string;
+
+	/**
+	 * A `FileList` object that lists every selected file. This list has no more than one member unless the `multiple` attribute is specified.
+	 */
+	files: FileList[];
+
+	/**
+	 * When the `multiple` Boolean attribute is specified, the file input allows the user to select more than one file.
+	 */
+	multiple: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+}
+
+export interface HTMLHiddenInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
+
+export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The `alt` attribute provides an alternate string to use as the button's label if the image
+	 * cannot be shown (due to error, a user agent that cannot or is configured not to show images,
+	 * or if the user is using a screen reading device). If provided, it must be a non-empty string
+	 * appropriate as a label for the button.
+	 *
+	 * For example, if you have a graphical button that shows an image with an icon and/or image
+	 * text "Login Now", you should also set the `alt` attribute to something like `Login Now`.
+	 *
+	 * Functionally, the `<input type="image">` `alt` attribute works just like the `alt` attribute
+	 * on `<img>` elements.
+	 */
+	alt: string;
+
+	/**
+	 * A string indicating the URL to which to submit the data. This takes precedence over the
+	 * `action` attribute on the `<form>` element that owns the `<input>`.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formaction: string;
+
+	/**
+	 * A string that identifies the encoding method to use when submitting the form data to the
+	 * server. There are three permitted values:
+	 *
+	 *  -   `application/x-www-form-urlencoded`
+	 *      -   This, the default value, sends the form data as a string after URL encoding the text
+	 *          using an algorithm such as `encodeURI()`.
+	 *  -   `multipart/form-data`
+	 *      -   Uses the `FormData` API to manage the data, allowing for files to be submitted
+	 *          to the server. You *must* use this encoding type if your form includes any `<input>`
+	 *          elements of `type` `file` (`<input type="file">`).
+	 *  -   `text/plain`
+	 *      -   Plain text; mostly useful only for debugging, so you can easily see the data that's
+	 *          to be submitted.
+	 *
+	 * If specified, the value of the `formenctype` attribute overrides the owning form's `action`
+	 * attribute.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formenctype: "application/x-www-form-urlencoded" | "multipart/form-data" | "text/plain";
+
+	/**
+	 * A string indicating the HTTP method to use when submitting the form's data; this value
+	 * overrides any `method` attribute given on the owning form. Permitted values are:
+	 *
+	 *  -   `get`
+	 *      -   A URL is constructed by starting with the URL given by the `formaction` or `action`
+	 *          attribute, appending a question mark ("?") character, then appending the form's
+	 *          data, encoded as described by `formenctype` or the form's enctype attribute. This
+	 *          URL is then sent to the server using an HTTP `get` request. This method works well
+	 *          for simple forms that contain only ASCII characters and have no side effects. This
+	 *          is the default value.
+	 *  -   `post`
+	 *      -   The form's data is included in the body of the request that is sent to the URL given
+	 *          by the `formaction` or `action` attribute using an HTTP `post` request. This method
+	 *          supports complex data and file attachments.
+	 *  -   `dialog`
+	 *      -   This method is used to indicate that the button simply closes the dialog with which
+	 *          the input is associated, and does not transmit the form data at all.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formmethod: "get" | "post" | "dialog";
+
+	/**
+	 * A Boolean attribute which, if present, specifies that the form should not be validated before
+	 * submission to the server. This overrides the value of the `novalidate` attribute on the
+	 * element's owning form.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formnovalidate: boolean;
+
+	/**
+	 * A string which specifies a name or keyword that indicates where to display the response
+	 * received after submitting the form. The string must be the name of a **browsing context**
+	 * (that is, a tab, window, or `<iframe>`. A value specified here overrides any target given by
+	 * the `target` attribute on the `<form>` that owns this input.
+	 *
+	 * In addition to the actual names of tabs, windows, or inline frames, there are a few special
+	 * keywords that can be used:
+	 *
+	 *  -   `_self`
+	 *      -   Loads the response into the same browsing context as the one that contains the form.
+	 *          This will replace the current document with the received data. This is the default
+	 *          value used if none is specified.
+	 *  -   `_blank`
+	 *      -   Loads the response into a new, unnamed, browsing context. This is typically a new
+	 *          tab in the same window as the current document, but may differ depending on the
+	 *          configuration of the user agent.
+	 *  -   `_parent`
+	 *      -   Loads the response into the parent browsing context of the current one. If there is
+	 *          no parent context, this behaves the same as `_self`.
+	 *  -   `_top`
+	 *      -   Loads the response into the top-level browsing context; this is the browsing context
+	 *          that is the topmost ancestor of the current context. If the current context is the
+	 *          topmost context, this behaves the same as `_self`.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formtarget: "_self" | "_blank" | "parent" | "_top";
+
+	/**
+	 * A number specifying the height, in CSS pixels, at which to draw the image specified by the
+	 * `src` attribute.
+	 */
+	height: number;
+
+	/**
+	 * A string specifying the URL of the image file to display to represent the graphical submit
+	 * button. When the user interacts with the image, the input is handled like any other button input.
+	 */
+	src: string;
+
+	/**
+	 * A number indicating the width at which to draw the image, in CSS pixels.
+	 */
+	width: number;
+}
+
+export interface HTMLMonthInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The latest year and month, in the string format discussed in the Value section above, to
+	 * accept. If the `value` entered into the element exceeds this, the element fails constraint
+	 * validation. If the value of the `max` attribute isn't a valid string in "`yyyy-MM`" format,
+	 * then the element has no maximum value.
+	 *
+	 * This value must specify a year-month pairing later than or equal to the one specified by the
+	 * `min` attribute.
+	 */
+	max: string;
+
+	/**
+	 * The latest year and month to accept, in the same "`yyyy-MM`" format described above. If the
+	 * `value` of the element is less than this, the element fails constraint validation. If a value
+	 * is specified for `min` that isn't a valid year and month string, the input has no minimum
+	 * value.
+	 *
+	 * This value must be a year-month pairing which is earlier than or equal to the one specified
+	 * by the `max` attribute.
+	 */
+	min: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `step` attribute is a number that specifies the granularity that the value must adhere
+	 * to, or the special value `any`, which is described below. Only values which are equal to the
+	 * basis for stepping (`min` if specified, `value` otherwise, and an appropriate default value
+	 * if neither of those is provided) are valid.
+	 *
+	 * A string value of `any` means that no stepping is implied, and any value is allowed (barring
+	 * other constraints, such as `min` and `max`).
+	 *
+	 * For `month` inputs, the value of `step` is given in months, with a scaling factor of 1 (since
+	 * the underlying numeric value is also in months). The default value of `step` is 1 month.
+	 */
+	step: number;
+}
+
+export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The maximum value to accept for this input. If the `value` entered into the element exceeds
+	 * this, the element fails constraint validation. If the value of the `max` attribute isn't a
+	 * number, then the element has no maximum value.
+	 *
+	 * This value must be greater than or equal to the value of the `min` attribute.
+	 */
+	max: number;
+
+	/**
+	 * The minimum value to accept for this input. If the `value` of the element is less than this,
+	 * the element fails constraint validation. If a value is specified for `min` that isn't a valid
+	 *number, the input has no minimum value.
+	 *
+	 * This value must be less than or equal to the value of the `max` attribute.
+	 */
+	min: number;
+
+	/**
+	 * The `placeholder` attribute is a string that provides a brief hint to the user as to what
+	 * kind of information is expected in the field. It should be a word or short phrase that
+	 * demonstrates the expected type of data, rather than an explanatory message. The text *must
+	 * not* include carriage returns or line feeds.
+	 *
+	 * If the control's content has one directionality (LTR or RTL) but needs to present the
+	 * placeholder in the opposite directionality, you can use Unicode bidirectional algorithm
+	 * formatting characters to override directionality within the placeholder; see Overriding BiDi
+	 * using Unicode control characters in The Unicode Bidirectional Text Algorithm for those
+	 * characters.
+	 */
+	placeholder: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `step` attribute is a number that specifies the granularity that the value must adhere
+	 * to, or the special value `any`, which is described below. Only values which are equal to the
+	 * basis for stepping (`min` if specified, `value` otherwise, and an appropriate default value
+	 * if neither of those is provided) are valid.
+	 *
+	 * A string value of `any` means that no stepping is implied, and any value is allowed (barring
+	 * other constraints, such as `min` and `max`).
+	 */
+	step: number;
+}
+
+export interface HTMLPasswordInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The maximum number of characters (as UTF-16 code units) the user can enter into the password
+	 * field. This must be an integer value 0 or higher. If no `maxlength` is specified, or an
+	 * invalid value is specified, the password field has no maximum length. This value must also be
+	 * greater than or equal to the value of `minlength`.
+	 *
+	 * The input will fail constraint validation if the length of the text entered into the field is
+	 * greater than `maxlength` UTF-16 code units long.
+	 */
+	maxlength: number;
+
+	/**
+	 * The minimum number of characters (as UTF-16 code units) the user can enter into the password
+	 * entry field. This must be an non-negative integer value smaller than or equal to the value
+	 * specified by `maxlength`. If no `minlength` is specified, or an invalid value is specified,
+	 * the password input has no minimum length.
+	 *
+	 * The input will fail constraint validation if the length of the text entered into the field is
+	 * fewer than `minlength` UTF-16 code units long.
+	 */
+	minlength: number;
+
+	/**
+	 * The `pattern` attribute, when specified, is a regular expression that the input's `value`
+	 * must match in order for the value to pass constraint validation. It must be a valid
+	 * JavaScript regular expression, as used by the `RegExp` type, and as documented in our guide
+	 * on regular expressions; the `'u'` flag is specified when compiling the regular expression, so
+	 * that the pattern is treated as a sequence of Unicode code points, instead of as ASCII. No
+	 * forward slashes should be specified around the pattern text.
+	 *
+	 * If the specified pattern is not specified or is invalid, no regular expression is applied and
+	 * this attribute is ignored completely.
+	 *
+	 * Use of a pattern is strongly recommended for password inputs, in order to help ensure that
+	 * valid passwords using a wide assortment of character classes are selected and used by your
+	 * users. With a pattern, you can mandate case rules, require the use of some number of digits
+	 * and/or punctuation characters, and so forth. See the section Validation for details and an
+	 * example.
+	 */
+	pattern: string;
+
+	/**
+	 * The `placeholder` attribute is a string that provides a brief hint to the user as to what
+	 * kind of information is expected in the field. It should be a word or short phrase that
+	 * demonstrates the expected type of data, rather than an explanatory message. The text *must
+	 * not* include carriage returns or line feeds.
+	 *
+	 * If the control's content has one directionality (LTR or RTL) but needs to present the
+	 * placeholder in the opposite directionality, you can use Unicode bidirectional algorithm
+	 * formatting characters to override directionality within the placeholder; see Overriding BiDi
+	 * using Unicode control characters in The Unicode Bidirectional Text Algorithm for those
+	 * characters.
+	 */
+	placeholder: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `size` attribute is a numeric value indicating how many characters wide the input field
+	 * should be. The value must be a number greater than zero, and the default value is 20. Since
+	 * character widths vary, this may or may not be exact and should not be relied upon to be so;
+	 * the resulting input may be narrower or wider than the specified number of characters,
+	 * depending on the characters and the font (`font` settings in use).
+	 *
+	 * This does not set a limit on how many characters the user can enter into the field. It only
+	 * specifies approximately how many can be seen at a time. To set an upper limit on the length
+	 * of the input data, use the `maxlength` attribute.
+	 */
+	size: number;
+}
+
+export interface HTMLRadioInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * A Boolean attribute which, if present, indicates that this radio button is the default
+	 * selected one in the group.
+	 *
+	 * Unlike other browsers, Firefox by default persists the dynamic checked state of an `<input>`
+	 * across page loads. Use the `autocomplete` attribute to control this feature.
+	 */
+	checked: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+}
+
+export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The greatest value in the range of permitted values. If the `value` entered into the element
+	 * exceeds this, the element fails constraint validation. If the value of the `max` attribute
+	 * isn't a number, then the element has no maximum value.
+	 *
+	 * This value must be greater than or equal to the value of the `min` attribute. See the HTML
+	 * `max` attribute.
+	 */
+	max: number;
+
+	/**
+	 * The lowest value in the range of permitted values. If the `value` of the element is less than
+	 * this, the element fails constraint validation. If a value is specified for `min` that isn't a
+	 * valid number, the input has no minimum value.
+	 *
+	 * This value must be less than or equal to the value of the `max` attribute. See the HTML `min` attribute.
+	 */
+	min: number;
+
+	/**
+	 * The `step` attribute is a number that specifies the granularity that the value must adhere
+	 * to, or the special value `any`, which is described below. Only values which are equal to the
+	 * basis for stepping (`min` if specified, `value` otherwise, and an appropriate default value
+	 * if neither of those is provided) are valid.
+	 *
+	 * A string value of `any` means that no stepping is implied, and any value is allowed (barring
+	 * other constraints, such as `min` and `max`).
+	 *
+	 * The default stepping value for `range` inputs is 1, allowing only integers to be entered,
+	 * *unless* the stepping base is not an integer; for example, if you set `min` to -10 and
+	 * `value` to 1.5, then a `step` of 1 will allow only values such as 1.5, 2.5, 3.5,... in the
+	 * positive direction and -0.5, -1.5, -2.5,... in the negative direction. See the HTML `step`
+	 * attribute.
+	 */
+	step: number;
+}
+
+export interface HTMLResetInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
+
+export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The dirname attribute enables the submission of the directionality of the element. When
+	 * included, the form control will submit with two name/value pairs: the first being the `name`
+	 * and `value`, the second being the value of the `dirname` as the name with the value of `ltr`
+	 * or `rtl` being set by the browser.
+	 */
+	dirname: "ltr" | "rtl";
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The maximum number of characters (as UTF-16 code units) the user can enter into the search
+	 * field. This must be an integer value 0 or higher. If no `maxlength` is specified, or an
+	 * invalid value is specified, the search field has no maximum length. This value must also be
+	 * greater than or equal to the value of `minlength`.
+	 *
+	 * The input will fail constraint validation if the length of the text entered into the field is
+	 * greater than `maxlength` UTF-16 code units long.
+	 */
+	maxlength: number;
+
+	/**
+	 * The minimum number of characters (as UTF-16 code units) the user can enter into the search
+	 * field. This must be a non-negative integer value smaller than or equal to the value specified
+	 * by `maxlength`. If no `minlength` is specified, or an invalid value is specified, the search
+	 * input has no minimum length.
+	 *
+	 * The search field will fail constraint validation if the length of the text entered into the
+	 * field is fewer than `minlength` UTF-16 code units long.
+	 */
+	minlength: number;
+
+	/**
+	 * The `pattern` attribute, when specified, is a regular expression that the input's `value`
+	 * must match in order for the value to pass constraint validation. It must be a valid
+	 * JavaScript regular expression, as used by the `RegExp` type, and as documented in our guide
+	 * on regular expressions; the `'u'` flag is specified when compiling the regular expression, so
+	 * that the pattern is treated as a sequence of Unicode code points, instead of as ASCII. No
+	 * forward slashes should be specified around the pattern text.
+	 *
+	 * If the specified pattern is not specified or is invalid, no regular expression is applied and
+	 * this attribute is ignored completely.
+	 */
+	pattern: string;
+
+	/**
+	 * The `placeholder` attribute is a string that provides a brief hint to the user as to what
+	 * kind of information is expected in the field. It should be a word or short phrase that
+	 * demonstrates the expected type of data, rather than an explanatory message. The text *must
+	 * not* include carriage returns or line feeds.
+	 *
+	 * If the control's content has one directionality (LTR or RTL) but needs to present the
+	 * placeholder in the opposite directionality, you can use Unicode bidirectional algorithm
+	 * formatting characters to override directionality within the placeholder; see Overriding BiDi
+	 * using Unicode control characters in The Unicode Bidirectional Text Algorithm for those
+	 * characters.
+	 */
+	placeholder: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `size` attribute is a numeric value indicating how many characters wide the input field
+	 * should be. The value must be a number greater than zero, and the default value is 20. Since
+	 * character widths vary, this may or may not be exact and should not be relied upon to be so;
+	 * the resulting input may be narrower or wider than the specified number of characters,
+	 * depending on the characters and the font (`font` settings in use).
+	 *
+	 * This does *not* set a limit on how many characters the user can enter into the field. It only
+	 * specifies approximately how many can be seen at a time. To set an upper limit on the length
+	 * of the input data, use the `maxlength` attribute.
+	 */
+	size: number;
+
+	/**
+	 * `spellcheck` is a global attribute which is used to indicate whether or not to enable spell
+	 * checking for an element. It can be used on any editable content, but here we consider
+	 * specifics related to the use of `spellcheck` on `<input>` elements. The permitted values for
+	 * `spellcheck` are:
+	 *
+	 *  -   `false`
+	 *      -   Disable spell checking for this element.
+	 *  -   `true`
+	 *      -   Enable spell checking for this element.
+	 *
+	 * An input field can have spell checking enabled if it doesn't have the readonly attribute set
+	 * and is not disabled.
+	 *
+	 * The value returned by reading `spellcheck` may not reflect the actual state of spell checking
+	 * within a control, if the user agent's preferences override the setting.
+	 */
+	spellcheck: boolean;
+}
+
+export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * A string indicating the URL to which to submit the data. This takes precedence over the
+	 * `action` attribute on the `<form>` element that owns the `<input>`.
+	 *
+	 * This attribute is also available on `<input type="image">` and `<button>` elements.
+	 */
+	formaction: string;
+
+	/**
+	 * A string that identifies the encoding method to use when submitting the form data to the
+	 * server. There are three permitted values:
+	 *
+	 *  -   `application/x-www-form-urlencoded`
+	 *      -   This, the default value, sends the form data as a string after URL encoding the text
+	 *          using an algorithm such as `encodeURI()`.
+	 *  -   `multipart/form-data`
+	 *      -   Uses the `FormData` API to manage the data, allowing for files to be submitted to
+	 *          the server. You *must* use this encoding type if your form includes any `<input>`
+	 *          elements of `type` `file` (`<input type="file">`).
+	 *  -   `text/plain`
+	 *      -   Plain text; mostly useful only for debugging, so you can easily see the data that's
+	 *          to be submitted.
+	 *
+	 * If specified, the value of the `formenctype` attribute overrides the owning form's `action` attribute.
+	 *
+	 * This attribute is also available on `<input type="image">` and `<button>` elements.
+	 */
+	formenctype: "application/x-www-form-urlencoded" | "multipart/form-data" | "text/plain";
+
+	/**
+	 * A string indicating the HTTP method to use when submitting the form's data; this value
+	 * overrides any `method` attribute given on the owning form. Permitted values are:
+	 *
+	 *  -   `get`
+	 *      -   A URL is constructed by starting with the URL given by the `formaction` or `action`
+	 *          attribute, appending a question mark ("?") character, then appending the form's
+	 *          data, encoded as described by `formenctype` or the form's enctype attribute. This
+	 *          URL is then sent to the server using an HTTP `get` request. This method works well
+	 *          for simple forms that contain only ASCII characters and have no side effects. This
+	 *          is the default value.
+	 *  -   `post`
+	 *      -   The form's data is included in the body of the request that is sent to the URL given
+	 *          by the `formaction` or `action` attribute using an HTTP `post` request. This method
+	 *          supports complex data and file attachments.
+	 *  -   `dialog`
+	 *      -   This method is used to indicate that the button simply closes the dialog with which
+	 *          the input is associated, and does not transmit the form data at all.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formmethod: "get" | "post" | "dialog";
+
+	/**
+	 * A Boolean attribute which, if present, specifies that the form should not be validated before
+	 * submission to the server. This overrides the value of the `novalidate` attribute on the
+	 * element's owning form.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formnovalidate: boolean;
+
+	/**
+	 * A string which specifies a name or keyword that indicates where to display the response
+	 * received after submitting the form. The string must be the name of a **browsing context**
+	 * (that is, a tab, window, or `<iframe>`. A value specified here overrides any target given by
+	 * the `target` attribute on the `<form>` that owns this input.
+	 *
+	 * In addition to the actual names of tabs, windows, or inline frames, there are a few special
+	 * keywords that can be used:
+	 *
+	 *  -   `_self`
+	 *      -   Loads the response into the same browsing context as the one that contains the form.
+	 *          This will replace the current document with the received data. This is the default
+	 *          value used if none is specified.
+	 *  -   `_blank`
+	 *      -   Loads the response into a new, unnamed, browsing context. This is typically a new
+	 *          tab in the same window as the current document, but may differ depending on the
+	 *          configuration of the user agent.
+	 *  -   `_parent`
+	 *      -   Loads the response into the parent browsing context of the current one. If there is
+	 *          no parent context, this behaves the same as `_self`.
+	 *  -   `_top`
+	 *      -   Loads the response into the top-level browsing context; this is the browsing context
+	 *          that is the topmost ancestor of the current context. If the current context is the
+	 *          topmost context, this behaves the same as `_self`.
+	 *
+	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
+	 */
+	formtarget: "_self" | "_blank" | "parent" | "_top";
+}
+
+export interface HTMLTelInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The maximum number of characters (as UTF-16 code units) the user can enter into the telephone
+	 * number field. This must be an integer value 0 or higher. If no `maxlength` is specified, or
+	 * an invalid value is specified, the telephone number field has no maximum length. This value
+	 * must also be greater than or equal to the value of `minlength`.
+	 *
+	 * The input will fail constraint validation if the length of the text entered into the field is
+	 * greater than `maxlength` UTF-16 code units long.
+	 */
+	maxlength: number;
+
+	/**
+	 * The minimum number of characters (as UTF-16 code units) the user can enter into the telephone
+	 * number field. This must be an non-negative integer value smaller than or equal to the value
+	 * specified by `maxlength`. If no `minlength` is specified, or an invalid value is specified,
+	 * the telephone number input has no minimum length.
+	 *
+	 * The telephone number field will fail constraint validation if the length of the text entered
+	 * into the field is fewer than `minlength` UTF-16 code units long.
+	 */
+	minlength: number;
+
+	/**
+	 * The `pattern` attribute, when specified, is a regular expression that the input's `value`
+	 * must match in order for the value to pass constraint validation. It must be a valid
+	 * JavaScript regular expression, as used by the `RegExp` type, and as documented in our guide
+	 * on regular expressions; the `'u'` flag is specified when compiling the regular expression, so
+	 * that the pattern is treated as a sequence of Unicode code points, instead of as ASCII. No
+	 * forward slashes should be specified around the pattern text.
+	 *
+	 * If the specified pattern is not specified or is invalid, no regular expression is applied and
+	 * this attribute is ignored completely.
+	 */
+	pattern: string;
+
+	/**
+	 * The `placeholder` attribute is a string that provides a brief hint to the user as to what
+	 * kind of information is expected in the field. It should be a word or short phrase that
+	 * demonstrates the expected type of data, rather than an explanatory message. The text *must*
+	 * not include carriage returns or line feeds.
+	 *
+	 * If the control's content has one directionality (LTR or RTL) but needs to present the
+	 * placeholder in the opposite directionality, you can use Unicode bidirectional algorithm
+	 * formatting characters to override directionality within the placeholder; see Overriding BiDi
+	 * using Unicode control characters in The Unicode Bidirectional Text Algorithm for those
+	 * characters.
+	 */
+	placeholder: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `size` attribute is a numeric value indicating how many characters wide the input field
+	 * should be. The value must be a number greater than zero, and the default value is 20. Since
+	 * character widths vary, this may or may not be exact and should not be relied upon to be so;
+	 * the resulting input may be narrower or wider than the specified number of characters,
+	 * depending on the characters and the font (`font` settings in use).
+	 *
+	 * This does *not* set a limit on how many characters the user can enter into the field. It only
+	 * specifies approximately how many can be seen at a time. To set an upper limit on the length
+	 * of the input data, use the `maxlength` attribute.
+	 */
+	size: number;
+}
+
+export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The dirname attribute enables the submission of the directionality of the element. When
+	 * included, the form control will submit with two name/value pairs: the first being the `name`
+	 * and `value`, the second being the value of the `dirname` as the name with the value of `ltr`
+	 * or `rtl` being set by the browser.
+	 */
+	dirname: "ltr" | "rtl";
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The maximum number of characters (as UTF-16 code units) the user can enter into the `text`
+	 * input. This must be an integer value 0 or higher. If no `maxlength` is specified, or an
+	 * invalid value is specified, the `text` input has no maximum length. This value must also be
+	 * greater than or equal to the value of `minlength`.
+	 *
+	 * The input will fail constraint validation if the length of the text value of the field is
+	 * greater than `maxlength` UTF-16 code units long. Constraint validation is only applied when
+	 * the value is changed by the user.
+	 */
+	maxlength: number;
+
+	/**
+	 * The minimum number of characters (as UTF-16 code units) the user can enter into the `text`
+	 * input. This must be an non-negative integer value smaller than or equal to the value
+	 * specified by `maxlength`. If no `minlength` is specified, or an invalid value is specified,
+	 * the `text` input has no minimum length.
+	 *
+	 * The input will fail constraint validation if the length of the text entered into the field is
+	 * fewer than `minlength` UTF-16 code units long. Constraint validation is only applied when the
+	 * value is changed by the user.
+	 */
+	minlength: number;
+
+	/**
+	 * The `pattern` attribute, when specified, is a regular expression that the input's `value`
+	 * must match in order for the value to pass constraint validation. It must be a valid
+	 * JavaScript regular expression, as used by the `RegExp` type, and as documented in our guide
+	 * on regular expressions; the `'u'` flag is specified when compiling the regular expression, so
+	 * that the pattern is treated as a sequence of Unicode code points, instead of as ASCII. No
+	 * forward slashes should be specified around the pattern text.
+	 *
+	 * If the specified pattern is not specified or is invalid, no regular expression is applied and
+	 * this attribute is ignored completely.
+	 */
+	pattern: string;
+
+	/**
+	 * The `placeholder` attribute is a string that provides a brief hint to the user as to what
+	 * kind of information is expected in the field. It should be a word or short phrase that
+	 * demonstrates the expected type of data, rather than an explanatory message. The text *must
+	 * not* include carriage returns or line feeds.
+	 *
+	 * If the control's content has one directionality (LTR or RTL) but needs to present the
+	 * placeholder in the opposite directionality, you can use Unicode bidirectional algorithm
+	 * formatting characters to override directionality within the placeholder; see Overriding BiDi
+	 * using Unicode control characters in The Unicode Bidirectional Text Algorithm for those
+	 * characters.
+	 */
+	placeholder: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `size` attribute is a numeric value indicating how many characters wide the input field
+	 * should be. The value must be a number greater than zero, and the default value is 20. Since
+	 * character widths vary, this may or may not be exact and should not be relied upon to be so;
+	 * the resulting input may be narrower or wider than the specified number of characters,
+	 * depending on the characters and the font (`font` settings in use).
+	 *
+	 * This does *not* set a limit on how many characters the user can enter into the field. It only
+	 * specifies approximately how many can be seen at a time. To set an upper limit on the length
+	 * of the input data, use the `maxlength` attribute.
+	 */
+	size: number;
+
+	/**
+	 * `spellcheck` is a global attribute which is used to indicate whether or not to enable spell
+	 * checking for an element. It can be used on any editable content, but here we consider
+	 * specifics related to the use of `spellcheck` on `<input>` elements. The permitted values for
+	 * `spellcheck` are:
+	 *
+	 *  -   `false`
+	 *      -   Disable spell checking for this element.
+	 *  -   `true`
+	 *      -   Enable spell checking for this element.
+	 *
+	 * An input field can have spell checking enabled if it doesn't have the readonly attribute set
+	 * and is not disabled.
+	 *
+	 * The value returned by reading `spellcheck` may not reflect the actual state of spell checking
+	 * within a control, if the user agent's preferences override the setting.
+	 */
+	spellcheck: boolean;
+}
+
+export interface HTMLTimeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * A string indicating the latest time to accept, specified in the same time value format as
+	 * described above. If the specified string isn't a valid time, no maximum value is set.
+	 */
+	max: number;
+
+	/**
+	 * A string specifying the earliest time to accept, given in the time value format described
+	 * previously. If the value specified isn't a valid time string, no minimum value is set.
+	 */
+	min: number;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `step` attribute is a number that specifies the granularity that the value must adhere
+	 * to, or the special value `any`, which is described below. Only values which are equal to the
+	 * basis for stepping (`min` if specified, `value` otherwise, and an appropriate default value
+	 * if neither of those is provided) are valid.
+	 *
+	 * A string value of `any` means that no stepping is implied, and any value is allowed (barring
+	 * other constraints, such as `min` and `max`).
+	 */
+	step: number;
+}
+
+export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The maximum number of characters (as UTF-16 code units) the user can enter into the `url`
+	 * input. This must be an integer value 0 or higher. If no `maxlength` is specified, or an
+	 * invalid value is specified, the `url` input has no maximum length. This value must also be
+	 * greater than or equal to the value of `minlength`.
+	 *
+	 * The input will fail constraint validation if the length of the text value of the field is
+	 * greater than `maxlength` UTF-16 code units long. Constraint validation is only applied when
+	 * the value is changed by the user.
+	 */
+	maxlength: number;
+
+	/**
+	 * The minimum number of characters (as UTF-16 code units) the user can enter into the `url`
+	 * input. This must be an non-negative integer value smaller than or equal to the value
+	 * specified by `maxlength`. If no `minlength` is specified, or an invalid value is specified,
+	 * the `url` input has no minimum length.
+	 *
+	 * The input will fail constraint validation if the length of the text entered into the field is
+	 * fewer than `minlength` UTF-16 code units long. Constraint validation is only applied when the
+	 * value is changed by the user.
+	 */
+	minlength: number;
+
+	/**
+	 * The `pattern` attribute, when specified, is a regular expression that the input's `value`
+	 * must match in order for the value to pass constraint validation. It must be a valid
+	 * JavaScript regular expression, as used by the `RegExp` type, and as documented in our guide
+	 * on regular expressions; the `'u'` flag is specified when compiling the regular expression, so
+	 * that the pattern is treated as a sequence of Unicode code points, instead of as ASCII. No
+	 * forward slashes should be specified around the pattern text.
+	 *
+	 * If the specified pattern is not specified or is invalid, no regular expression is applied and this attribute is ignored completely.
+	 */
+	pattern: string;
+
+	/**
+	 * The `placeholder` attribute is a string that provides a brief hint to the user as to what
+	 * kind of information is expected in the field. It should be a word or short phrase that
+	 * demonstrates the expected type of data, rather than an explanatory message. The text *must
+	 * not* include carriage returns or line feeds.
+	 *
+	 * If the control's content has one directionality (LTR or RTL) but needs to present the
+	 * placeholder in the opposite directionality, you can use Unicode bidirectional algorithm
+	 * formatting characters to override directionality within the placeholder; see Overriding BiDi
+	 * using Unicode control characters in The Unicode Bidirectional Text Algorithm for those
+	 * characters.
+	 */
+	placeholder: string;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `size` attribute is a numeric value indicating how many characters wide the input field
+	 * should be. The value must be a number greater than zero, and the default value is 20. Since
+	 * character widths vary, this may or may not be exact and should not be relied upon to be so;
+	 * the resulting input may be narrower or wider than the specified number of characters,
+	 * depending on the characters and the font (`font` settings in use).
+	 *
+	 * This does *not* set a limit on how many characters the user can enter into the field. It only
+	 * specifies approximately how many can be seen at a time. To set an upper limit on the length
+	 * of the input data, use the `maxlength` attribute.
+	 */
+	size: number;
+
+	/**
+	 * `spellcheck` is a global attribute which is used to indicate whether or not to enable spell
+	 * checking for an element. It can be used on any editable content, but here we consider
+	 * specifics related to the use of `spellcheck` on `<input>` elements. The permitted values for
+	 * `spellcheck` are:
+	 *
+	 *  -   `false`
+	 *      -   Disable spell checking for this element.
+	 *  -   `true`
+	 *      -   Enable spell checking for this element.
+	 *
+	 * An input field can have spell checking enabled if it doesn't have the readonly attribute set
+	 * and is not disabled.
+	 *
+	 * The value returned by reading `spellcheck` may not reflect the actual state of spell checking
+	 * within a control, if the user agent's preferences override the setting.
+	 */
+	spellcheck: boolean;
+}
+
+export interface HTMLWeekInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+
+	/**
+	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
+	 * in the same document. The `<datalist>` provides a list of predefined values to suggest to the
+	 * user for this input. Any values in the list that are not compatible with the `type` are not
+	 * included in the suggested options. The values provided are suggestions, not requirements:
+	 * users can select from this predefined list or provide a different value.
+	 */
+	list: string;
+
+	/**
+	 * The latest (time-wise) year and week number, in the string format discussed in the Value
+	 * section above, to accept. If the `value` entered into the element exceeds this, the element
+	 * fails constraint validation. If the value of the `max` attribute isn't a valid week string,
+	 * then the element has no maximum value.
+	 *
+	 * This value must be greater than or equal to the year and week specified by the `min`
+	 * attribute.
+	 */
+	max: number;
+
+	/**
+	 * The earliest year and week to accept. If the `value` of the element is less than this, the
+	 * element fails constraint validation. If a value is specified for `min` that isn't a valid
+	 * week string, the input has no minimum value.
+	 *
+	 * This value must be less than or equal to the value of the `max` attribute.
+	 */
+	min: number;
+
+	/**
+	 * A Boolean attribute which, if present, means this field cannot be edited by the user. Its
+	 * `value` can, however, still be changed by JavaScript code directly setting the
+	 * `HTMLInputElement.value` property.
+	 */
+	readonly: boolean;
+
+	/**
+	 * `required` is a Boolean attribute which, if present, indicates that the user must specify a
+	 * value for the input before the owning form can be submitted.
+	 */
+	required: boolean;
+
+	/**
+	 * The `step` attribute is a number that specifies the granularity that the value must adhere
+	 * to, or the special value `any`, which is described below. Only values which are equal to the
+	 * basis for stepping (`min` if specified, `value` otherwise, and an appropriate default value
+	 * if neither of those is provided) are valid.
+	 *
+	 * A string value of `any` means that no stepping is implied, and any value is allowed (barring
+	 * other constraints, such as `min` and `max`).
+	 *
+	 * For `week` inputs, the value of `step` is given in weeks, with a scaling factor of
+	 * 604,800,000 (since the underlying numeric value is in milliseconds). The default value of
+	 * `step` is 1, indicating 1 week. The default stepping base is -259,200,000, which is the
+	 * beginning of the first week of 1970 (`"1970-W01"`).
+	 */
+	step: number;
+}
 
 export interface HTMLLabelElementAttributes extends HTMLElementAttributes {
 
