@@ -20,7 +20,7 @@ import type { HTMLElementAttributesMap } from "./types/attributes";
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 // <track> should be a part of a <audio> or <video>
 
-const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|([0-9a-f]{1,6}(\r\n|[ \t\r\n\f])?|[^\r\n\f0-9a-f]))([_a-z0-9-]|[\240-\377]|([0-9a-f]{1,6}(\r\n|[ \t\r\n\f])?|[^\r\n\f0-9a-f]))*/;
+const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*/i;
 
 // eslint-disable-next-line complexity
 function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLElementAttributes extends keyof HTMLElementAttributesMap>(element: TopLevelHTMLElements) {
