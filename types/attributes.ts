@@ -1,5 +1,71 @@
 /* eslint-enable @typescript-eslint/typedef */
 
+export interface HTMLElementAttributesMap {
+	"a": HTMLAnchorElementAttributes;
+	"article": HTMLElementAttributes;
+	"aside": HTMLElementAttributes;
+	"audio": HTMLAudioElementAttributes;
+	"b": HTMLElementAttributes;
+	"blockquote": HTMLBlockQuoteElementAttributes;
+	"br": HTMLElementAttributes;
+	"button": HTMLButtonElementAttributes;
+	"canvas": HTMLCanvasElementAttributes;
+	"code": HTMLElementAttributes;
+	"col": HTMLTableColElementAttributes;
+	"del": HTMLModElementAttributes;
+	"details": HTMLDetailsElementAttributes;
+	"div": HTMLElementAttributes;
+	"fieldset": HTMLFieldSetElementAttributes;
+	"figure": HTMLElementAttributes;
+	"footer": HTMLElementAttributes;
+	"form": HTMLFormElementAttributes;
+	"h1": HTMLElementAttributes;
+	"h2": HTMLElementAttributes;
+	"h3": HTMLElementAttributes;
+	"h4": HTMLElementAttributes;
+	"h5": HTMLElementAttributes;
+	"h6": HTMLElementAttributes;
+	"header": HTMLElementAttributes;
+	"hr": HTMLHRElement;
+	"i": HTMLElementAttributes;
+	"iframe": HTMLIFrameElementAttributes;
+	"img": HTMLImageElementAttributes;
+	"input": HTMLInputElementAttributes;
+	"ins": HTMLModElementAttributes;
+	"kbd": HTMLElementAttributes;
+	"label": HTMLLabelElementAttributes;
+	"li": HTMLLIElementAttributes;
+	"main": HTMLElementAttributes;
+	"mark": HTMLElementAttributes;
+	"meter": HTMLMeterElementAttributes;
+	"nav": HTMLElementAttributes;
+	"ol": HTMLOListElementAttributes;
+	"optgroup": HTMLOptGroupElementAttributes;
+	"options": HTMLOptionElementAttributes;
+	"p": HTMLElementAttributes;
+	"picture": HTMLElementAttributes;
+	"pre": HTMLElementAttributes;
+	"progress": HTMLProgressElementAttributes;
+	"q": HTMLQuoteElementAttributes;
+	"s": HTMLElementAttributes;
+	"section": HTMLElementAttributes;
+	"select": HTMLSelectElementAttributes;
+	"small": HTMLElementAttributes;
+	"source": HTMLSourceElementAttributes;
+	"span": HTMLElementAttributes;
+	"strong": HTMLElementAttributes;
+	"sub": HTMLElementAttributes;
+	"sup": HTMLElementAttributes;
+	"table": HTMLElementAttributes;
+	"td": HTMLTableDataCellElementAttributes;
+	"textarea": HTMLTextAreaElementAttributes;
+	"th": HTMLTableHeaderCellElementAttributes;
+	"track": HTMLTrackElementAttributes;
+	"u": HTMLElementAttributes;
+	"ul": HTMLElementAttributes;
+	"video": HTMLVideoElementAttributes;
+}
+
 interface HTMLElementAttributes {
 
 	/**
@@ -350,7 +416,7 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	src: string;
 }
 
-export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
+export interface HTMLBlockQuoteElementAttributes extends HTMLElementAttributes {
 
 	/**
 	 * A URL that designates a source document or message for the information quoted. This attribute

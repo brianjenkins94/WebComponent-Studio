@@ -115,4 +115,4 @@ interface TextLevelSemantics {
 	"u": HTMLElement;
 }
 
-export type HtmlElement = keyof EditingContent | keyof EmbeddedContent | keyof FormAssociatedContent | keyof GroupingContent | keyof HeadingContent | keyof InteractiveContent | keyof SectioningContent | keyof TabularContent | keyof TextLevelSemantics;
+export type TopLevelHTMLElements = keyof EditingContent | keyof EmbeddedContent | keyof FormAssociatedContent | keyof GroupingContent | keyof HeadingContent | keyof InteractiveContent | keyof SectioningContent | keyof TabularContent | keyof TextLevelSemantics;
