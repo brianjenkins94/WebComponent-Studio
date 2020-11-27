@@ -1,12 +1,13 @@
-import { Node } from "../abstract/node";
+import { Node } from "../abstract/Node";
 import type { HTMLAnchorElementAttributes } from "../types/attributes";
+import type { TopLevelHTMLElement } from "../types/elements";
 
 export class AnchorNode extends Node {
 	private readonly attributes: HTMLAnchorElementAttributes;
 	private readonly textContent;
 
-	public constructor(textContent: string, href: string, extras: HTMLAnchorElementAttributes) {
-		super();
+	public constructor(element: TopLevelHTMLElement, textContent: string, href: string, extras: HTMLAnchorElementAttributes) {
+		super(element);
 
 		this.textContent = textContent || "";
 
@@ -20,7 +21,7 @@ export class AnchorNode extends Node {
 	public get fragment(): DocumentFragment {
 		const fragment = document.createDocumentFragment();
 
-		const anchor = document.createElement("a");
+		const anchor = document.createElement(this.type);
 		anchor.textContent = this.textContent;
 		anchor.setAttribute("src", this.attributes.href);
 

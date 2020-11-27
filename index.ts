@@ -1,7 +1,8 @@
 /* eslint-disable no-lonely-if */
 
-import type { TopLevelHTMLElements } from "./types/elements";
+import { NodeTagNameMap } from "./nodes";
 import type { HTMLElementAttributesMap } from "./types/attributes";
+import type { TopLevelHTMLElement } from "./types/elements";
 
 // <caption> should be part of a <table>
 // <col> should be part of a <colgroup>
@@ -23,7 +24,7 @@ import type { HTMLElementAttributesMap } from "./types/attributes";
 const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLElementAttributes extends keyof HTMLElementAttributesMap>(element: TopLevelHTMLElements) {
+function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLElementAttributes extends keyof HTMLElementAttributesMap>(element: keyof TopLevelHTMLElement) {
 	switch (element) {
 		case "del":
 		case "ins":
@@ -41,6 +42,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 		case "h6":
 		case "b":
 		case "code":
+		case "em":
 		case "i":
 		case "kbd":
 		case "mark":
@@ -138,6 +140,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				return fragment;
 			};
+		case "canvas":
 		case "meter":
 		case "progress":
 		case "textarea":
@@ -433,42 +436,16 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 				return fragment;
 			};
 		case "a":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], textContent?: string | HTMLElementTagNameMap[HTMLElement], href?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElement]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(element));
-
-				// selectors
-
+			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], textContent?: string | HTMLElementTagNameMap[HTMLElement], href?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-					for (const selector of selectors.split(/#|./g)) {
-						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
-						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
-						}
-					}
+					return new NodeTagNameMap[element](selectors, textContent, href, extras);
 				} else {
 					textContent = selectors;
 				}
 
-				// textContent
-
-				// TODO
-
-				// href
-
-				// TODO
-
-				// extras
-
 				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
+					return new NodeTagNameMap[element]();
 				}
-
-				return fragment;
 			};
 		default:
 			throw new Error("Unrecognized element `" + element + "`.");
@@ -504,6 +481,7 @@ export const sup = createPrimitive("sup");
 export const u = createPrimitive("u");
 
 export const audio = createPrimitive("audio");
+export const canvas = createPrimitive("canvas");
 export const img = createPrimitive("img");
 export const picture = createPrimitive("picture");
 export const video = createPrimitive("video");

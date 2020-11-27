@@ -1,84 +1,91 @@
-import { AnchorNode } from "./anchorNode";
+import { AnchorNode } from "./AnchorNode";
+import type { TopLevelHTMLElement } from "../types/elements";
+
+function primeConstructor(node, element: keyof TopLevelHTMLElement, ...args: ConstructorParameters<typeof node>): typeof node {
+	return node[element](element, ...args);
+}
 
 export const NodeTagNameMap = {
 	// Text Content
-	"del": TextLevelNode,
-	"ins": TextLevelNode,
-	"button": TextLevelNode,
-	"label": TextLevelNode,
-	"blockquote": TextLevelNode,
-	"li": TextLevelNode,
-	"p": TextLevelNode,
-	"pre": TextLevelNode,
-	"h1": TextLevelNode,
-	"h2": TextLevelNode,
-	"h3": TextLevelNode,
-	"h4": TextLevelNode,
-	"h5": TextLevelNode,
-	"h6": TextLevelNode,
-	"b": TextLevelNode,
-	"code": TextLevelNode,
-	"i": TextLevelNode,
-	"kbd": TextLevelNode,
-	"mark": TextLevelNode,
-	"q": TextLevelNode,
-	"s": TextLevelNode,
-	"small": TextLevelNode,
-	"span": TextLevelNode,
-	"strong": TextLevelNode,
-	"sub": TextLevelNode,
-	"sup": TextLevelNode,
-	"u": TextLevelNode,
+	"del": primeConstructor(TextLevelNode, "del"),
+	"ins": primeConstructor(TextLevelNode, "ins"),
+	"button": primeConstructor(TextLevelNode, "button"),
+	"label": primeConstructor(TextLevelNode, "label"),
+	"blockquote": primeConstructor(TextLevelNode, "blockquote"),
+	"li": primeConstructor(TextLevelNode, "li"),
+	"p": primeConstructor(TextLevelNode, "p"),
+	"pre": primeConstructor(TextLevelNode, "pre"),
+	"h1": primeConstructor(TextLevelNode, "h1"),
+	"h2": primeConstructor(TextLevelNode, "h2"),
+	"h3": primeConstructor(TextLevelNode, "h3"),
+	"h4": primeConstructor(TextLevelNode, "h4"),
+	"h5": primeConstructor(TextLevelNode, "h5"),
+	"h6": primeConstructor(TextLevelNode, "h6"),
+	"b": primeConstructor(TextLevelNode, "b"),
+	"code": primeConstructor(TextLevelNode, "code"),
+	"em": primeConstructor(TextLevelNode, "em"),
+	"i": primeConstructor(TextLevelNode, "i"),
+	"kbd": primeConstructor(TextLevelNode, "kbd"),
+	"mark": primeConstructor(TextLevelNode, "mark"),
+	"q": primeConstructor(TextLevelNode, "q"),
+	"s": primeConstructor(TextLevelNode, "s"),
+	"small": primeConstructor(TextLevelNode, "small"),
+	"span": primeConstructor(TextLevelNode, "span"),
+	"strong": primeConstructor(TextLevelNode, "strong"),
+	"sub": primeConstructor(TextLevelNode, "sub"),
+	"sup": primeConstructor(TextLevelNode, "sup"),
+	"u": primeConstructor(TextLevelNode, "u"),
 
 	// Embedded
-	"audio": Node,
-	"img": Node, // Childless
-	"picture": Node,
-	"video": Node,
+	"audio": primeConstructor(EmbeddedNode, "audio"),
+	"img": primeConstructor(EmbeddedNode, "img"), // Childless
+	"picture": primeConstructor(EmbeddedNode, "picture"),
+	"video": primeConstructor(EmbeddedNode, "video"),
 
 	// Grouping
-	"div": GroupingNode,
-	"ol": GroupingNode,
-	"ul": GroupingNode,
-	"article": GroupingNode,
-	"aside": GroupingNode,
-	"footer": GroupingNode,
-	"header": GroupingNode,
-	"main": GroupingNode,
-	"nav": GroupingNode,
-	"section": GroupingNode,
-	"hr": GroupingNode, // Childless
-	"br": GroupingNode, // Childless
+	"canvas": primeConstructor(GroupingNode, "canvas"),
+	"div": primeConstructor(GroupingNode, "div"),
+	"ol": primeConstructor(GroupingNode, "ol"),
+	"ul": primeConstructor(GroupingNode, "ul"),
+	"article": primeConstructor(GroupingNode, "article"),
+	"aside": primeConstructor(GroupingNode, "aside"),
+	"footer": primeConstructor(GroupingNode, "footer"),
+	"header": primeConstructor(GroupingNode, "header"),
+	"main": primeConstructor(GroupingNode, "main"),
+	"nav": primeConstructor(GroupingNode, "nav"),
+	"section": primeConstructor(GroupingNode, "section"),
+	"hr": primeConstructor(GroupingNode, "hr"), // Childless
+	"br": primeConstructor(GroupingNode, "br"), // Childless
 
 	// Form-associated
-	"meter": GroupingNode,
-	"progress": GroupingNode,
-	"textarea": GroupingNode,
+	"meter": primeConstructor(GroupingNode, "meter"),
+	"progress": primeConstructor(GroupingNode, "progress"),
+	"textarea": primeConstructor(GroupingNode, "textarea"),
 
 	// IFrame
-	"iframe": IFrameNode,
+	"iframe": primeConstructor(IFrameNode, "iframe"),
 
 	// FieldSet
-	"fieldset": FieldSetNode,
+	"fieldset": primeConstructor(FieldSetNode, "fieldset"),
 
 	// Form
-	"form": FormNode,
+	"form": primeConstructor(FormNode, "form"),
 
 	// Input
-	"input": InputNode, // Childless
+	"input": primeConstructor(InputNode, "input"),
 
 	// Select
-	"select": SelectNode,
+	"select": primeConstructor(SelectNode, "select"),
 
 	// Figure
-	"figure": FigureNode,
+	"figure": primeConstructor(FigureNode, "figure"),
 
 	// Details
-	"details": DetailsNode,
+	"details": primeConstructor(DetailsNode, "details"),
 
 	// Table
-	"table": TableNode,
+	"table": primeConstructor(TableNode, "table"),
 
 	// Anchor
-	"a": AnchorNode
+	"a": primeConstructor(AnchorNode, "a")
 };
