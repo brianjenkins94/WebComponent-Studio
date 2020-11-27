@@ -1,8 +1,10 @@
 import { AnchorNode } from "./AnchorNode";
 import type { TopLevelHTMLElement } from "../types/elements";
 
-function primeConstructor(node, element: keyof TopLevelHTMLElement, ...args: ConstructorParameters<typeof node>): typeof node {
-	return node[element](element, ...args);
+export const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*/i;
+
+function primeConstructor(node, tagName: keyof TopLevelHTMLElement, ...args: ConstructorParameters<typeof node>): typeof node {
+	return node[tagName](tagName, ...args);
 }
 
 export const NodeTagNameMap = {

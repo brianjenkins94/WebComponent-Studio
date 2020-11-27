@@ -18,16 +18,16 @@
   },
   "homepage": "https://github.com/brianjenkins94/WebComponent-Studio#readme",
   "dependencies": {
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.5"
+    "ts-node": "latest",
+    "typescript": "latest"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^6.1.0",
-    "@types/node": "^14.14.7",
-    "@typescript-eslint/eslint-plugin": "^4.7.0",
-    "@typescript-eslint/parser": "^4.7.0",
-    "eslint": "^7.13.0",
-    "rollup": "^2.33.1",
-    "tslib": "^2.0.3"
+    "@rollup/plugin-typescript": "latest",
+    "@types/node": "latest",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint": "latest",
+    "rollup": "latest",
+    "tslib": "latest"
   }
 }

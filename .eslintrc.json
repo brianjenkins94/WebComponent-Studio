@@ -39,22 +39,23 @@
 		"wrap-iife": ["warn", "inside"], // Parentheses after IIFEs
 
 		// Warn
-		"@typescript-eslint/no-extra-parens": ["warn"],
-		"@typescript-eslint/no-unnecessary-condition": ["warn"],
-		"@typescript-eslint/no-unused-vars": ["warn"],
-		"@typescript-eslint/strict-boolean-expressions": ["warn"],
-		"no-empty": ["warn"],
-		"no-param-reassign": ["warn"],
-		"no-shadow": ["warn"],
-		"sort-keys": ["warn"],
+		"max-params": "warn",
+		"@typescript-eslint/no-extra-parens": "warn",
+		"@typescript-eslint/no-unused-vars": "warn",
+		"no-empty": "warn",
+		"no-param-reassign": "warn",
+		"no-shadow": "warn",
+		"sort-keys": "warn",
 
 		// Disabled
 		"@typescript-eslint/dot-notation": "off",
 		"@typescript-eslint/explicit-function-return-type": "off",
 		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/lines-between-class-members": "off",
 		"@typescript-eslint/no-dynamic-delete": "off",
 		"@typescript-eslint/no-floating-promises": "off",
 		"@typescript-eslint/no-magic-numbers": "off",
+		"@typescript-eslint/no-unnecessary-condition": "off", // requires `strictNullChecks`
 		"@typescript-eslint/no-unsafe-assignment": "off",
 		"@typescript-eslint/no-unsafe-call": "off",
 		"@typescript-eslint/no-unsafe-member-access": "off",
@@ -63,6 +64,7 @@
 		"@typescript-eslint/promise-function-async": "off",
 		"@typescript-eslint/require-array-sort-compare": "off",
 		"@typescript-eslint/restrict-plus-operands": "off",
+		"@typescript-eslint/strict-boolean-expressions": "off", // requires `strictNullChecks`
 		"@typescript-eslint/typedef": "off",
 		"capitalized-comments": "off",
 		"class-methods-use-this": "off",

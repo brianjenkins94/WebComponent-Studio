@@ -4,28 +4,9 @@ import { NodeTagNameMap } from "./nodes";
 import type { HTMLElementAttributesMap } from "./types/attributes";
 import type { TopLevelHTMLElement } from "./types/elements";
 
-// <caption> should be part of a <table>
-// <col> should be part of a <colgroup>
-// <colgroup> should be part of a <table>
-// <figcaption> should be part of a <figure>
-// <legend> should be part of a <fieldset>
-// <optgroup> should be part of a <select>
-// <option> should be part of a <select> or <optgroup>
-// <source> should be a part of a <picture>, <audio> or <video>
-// <summary> should be part of a <details>
-// <tbody> should be part of a <table>
-// <td> should be part of a <tr>
-// <tfoot> should be part of a <table>
-// <th> should be part of a <tr>
-// <thead> should be part of a <table>
-// <tr> should be part of a <tbody>, <tfoot> or <thead>
-// <track> should be a part of a <audio> or <video>
-
-const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*/i;
-
 // eslint-disable-next-line complexity
-function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLElementAttributes extends keyof HTMLElementAttributesMap>(element: keyof TopLevelHTMLElement) {
-	switch (element) {
+function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLElementAttributes extends keyof HTMLElementAttributesMap>(tagName: keyof TopLevelHTMLElement) {
+	switch (tagName) {
 		case "b":
 		case "blockquote":
 		case "button":
@@ -57,7 +38,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], textContent?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -98,7 +79,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | string[] | HTMLElementTagNameMap[HTMLElement], sources?: string | string[] | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -159,7 +140,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -191,7 +172,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], source?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -225,7 +206,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], legend?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -259,7 +240,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], method?: string | HTMLElementTagNameMap[HTMLElement], action?: string | HTMLElementTagNameMap[HTMLElement], encoding?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -303,7 +284,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], options?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -337,7 +318,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], figcaption?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -371,7 +352,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], summary?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -405,7 +386,7 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], caption?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
-				const root = fragment.appendChild(document.createElement(element));
+				const root = fragment.appendChild(document.createElement(tagName));
 
 				// selectors
 
@@ -438,17 +419,17 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 		case "a":
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], textContent?: string | HTMLElementTagNameMap[HTMLElement], href?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-					return new NodeTagNameMap[element](selectors, textContent, href, extras);
+					return new NodeTagNameMap[tagName](selectors, textContent, href, extras);
 				} else {
 					textContent = selectors;
 				}
 
 				if (extras !== undefined) {
-					return new NodeTagNameMap[element]();
+					return new NodeTagNameMap[tagName]();
 				}
 			};
 		default:
-			throw new Error("Unrecognized element `" + element + "`.");
+			throw new Error("Unrecognized element `" + tagName + "`.");
 	}
 }
 
@@ -520,8 +501,8 @@ export const a = createPrimitive("a");
 
 //
 
-function createTemplate(element) {
-	element.name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+function createTemplate(tagName) {
+	tagName.name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 
 	customElements.define(tagName, target);
 

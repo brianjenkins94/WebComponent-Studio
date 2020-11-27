@@ -6,8 +6,8 @@ export class AnchorNode extends Node {
 	private readonly attributes: HTMLAnchorElementAttributes;
 	private readonly textContent;
 
-	public constructor(element: TopLevelHTMLElement, textContent: string, href: string, extras: HTMLAnchorElementAttributes) {
-		super(element);
+	public constructor(tagName: TopLevelHTMLElement, textContent: string, href: string, extras: HTMLAnchorElementAttributes) {
+		super(tagName);
 
 		this.textContent = textContent || "";
 
