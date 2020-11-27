@@ -26,26 +26,26 @@ const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377
 // eslint-disable-next-line complexity
 function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLElementAttributes extends keyof HTMLElementAttributesMap>(element: keyof TopLevelHTMLElement) {
 	switch (element) {
-		case "del":
-		case "ins":
-		case "button":
-		case "label":
+		case "b":
 		case "blockquote":
-		case "li":
-		case "p":
-		case "pre":
+		case "button":
+		case "code":
+		case "del":
+		case "em":
 		case "h1":
 		case "h2":
 		case "h3":
 		case "h4":
 		case "h5":
 		case "h6":
-		case "b":
-		case "code":
-		case "em":
 		case "i":
+		case "ins":
 		case "kbd":
+		case "label":
+		case "li":
 		case "mark":
+		case "p":
+		case "pre":
 		case "q":
 		case "s":
 		case "small":
@@ -140,22 +140,22 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				return fragment;
 			};
-		case "canvas":
-		case "meter":
-		case "progress":
-		case "textarea":
-		case "div":
-		case "ol":
-		case "ul":
 		case "article":
 		case "aside":
+		case "br":
+		case "canvas":
+		case "div":
 		case "footer":
 		case "header":
-		case "main":
-		case "nav":
-		case "section":
 		case "hr":
-		case "br":
+		case "main":
+		case "meter":
+		case "nav":
+		case "ol":
+		case "progress":
+		case "section":
+		case "textarea":
+		case "ul":
 			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
 				const fragment = document.createDocumentFragment();
 
@@ -452,25 +452,25 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 	}
 }
 
-export const del = createPrimitive("del");
-export const ins = createPrimitive("ins");
-export const button = createPrimitive("button");
-export const label = createPrimitive("label");
+export const b = createPrimitive("b");
 export const blockquote = createPrimitive("blockquote");
-export const li = createPrimitive("li");
-export const p = createPrimitive("p");
-export const pre = createPrimitive("pre");
+export const button = createPrimitive("button");
+export const code = createPrimitive("code");
+export const del = createPrimitive("del");
+export const em = createPrimitive("i");
 export const h1 = createPrimitive("h1");
 export const h2 = createPrimitive("h2");
 export const h3 = createPrimitive("h3");
 export const h4 = createPrimitive("h4");
 export const h5 = createPrimitive("h5");
 export const h6 = createPrimitive("h6");
-export const b = createPrimitive("b");
-export const code = createPrimitive("code");
-export const em = createPrimitive("i");
+export const ins = createPrimitive("ins");
 export const kbd = createPrimitive("kbd");
+export const label = createPrimitive("label");
+export const li = createPrimitive("li");
 export const mark = createPrimitive("mark");
+export const p = createPrimitive("p");
+export const pre = createPrimitive("pre");
 export const q = createPrimitive("q");
 export const s = createPrimitive("s");
 export const small = createPrimitive("small");
@@ -481,26 +481,26 @@ export const sup = createPrimitive("sup");
 export const u = createPrimitive("u");
 
 export const audio = createPrimitive("audio");
-export const canvas = createPrimitive("canvas");
 export const img = createPrimitive("img");
 export const picture = createPrimitive("picture");
 export const video = createPrimitive("video");
 
-export const meter = createPrimitive("meter");
-export const progress = createPrimitive("progress");
-export const textarea = createPrimitive("textarea");
-export const div = createPrimitive("div");
-export const ol = createPrimitive("ol");
-export const ul = createPrimitive("ul");
 export const article = createPrimitive("article");
 export const aside = createPrimitive("aside");
+export const br = createPrimitive("br");
+export const canvas = createPrimitive("canvas");
+export const div = createPrimitive("div");
 export const footer = createPrimitive("footer");
 export const header = createPrimitive("header");
-export const main = createPrimitive("main");
-export const nav = createPrimitive("nav");
-export const section = createPrimitive("section");
 export const hr = createPrimitive("hr");
-export const br = createPrimitive("br");
+export const main = createPrimitive("main");
+export const meter = createPrimitive("meter");
+export const nav = createPrimitive("nav");
+export const ol = createPrimitive("ol");
+export const progress = createPrimitive("progress");
+export const section = createPrimitive("section");
+export const textarea = createPrimitive("textarea");
+export const ul = createPrimitive("ul");
 
 export const iframe = createPrimitive("iframe");
 

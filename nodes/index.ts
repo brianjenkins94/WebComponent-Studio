@@ -7,26 +7,26 @@ function primeConstructor(node, element: keyof TopLevelHTMLElement, ...args: Con
 
 export const NodeTagNameMap = {
 	// Text Content
-	"del": primeConstructor(TextLevelNode, "del"),
-	"ins": primeConstructor(TextLevelNode, "ins"),
-	"button": primeConstructor(TextLevelNode, "button"),
-	"label": primeConstructor(TextLevelNode, "label"),
+	"b": primeConstructor(TextLevelNode, "b"),
 	"blockquote": primeConstructor(TextLevelNode, "blockquote"),
-	"li": primeConstructor(TextLevelNode, "li"),
-	"p": primeConstructor(TextLevelNode, "p"),
-	"pre": primeConstructor(TextLevelNode, "pre"),
+	"button": primeConstructor(TextLevelNode, "button"),
+	"code": primeConstructor(TextLevelNode, "code"),
+	"del": primeConstructor(TextLevelNode, "del"),
+	"em": primeConstructor(TextLevelNode, "em"),
 	"h1": primeConstructor(TextLevelNode, "h1"),
 	"h2": primeConstructor(TextLevelNode, "h2"),
 	"h3": primeConstructor(TextLevelNode, "h3"),
 	"h4": primeConstructor(TextLevelNode, "h4"),
 	"h5": primeConstructor(TextLevelNode, "h5"),
 	"h6": primeConstructor(TextLevelNode, "h6"),
-	"b": primeConstructor(TextLevelNode, "b"),
-	"code": primeConstructor(TextLevelNode, "code"),
-	"em": primeConstructor(TextLevelNode, "em"),
 	"i": primeConstructor(TextLevelNode, "i"),
+	"ins": primeConstructor(TextLevelNode, "ins"),
 	"kbd": primeConstructor(TextLevelNode, "kbd"),
+	"label": primeConstructor(TextLevelNode, "label"),
+	"li": primeConstructor(TextLevelNode, "li"),
 	"mark": primeConstructor(TextLevelNode, "mark"),
+	"p": primeConstructor(TextLevelNode, "p"),
+	"pre": primeConstructor(TextLevelNode, "pre"),
 	"q": primeConstructor(TextLevelNode, "q"),
 	"s": primeConstructor(TextLevelNode, "s"),
 	"small": primeConstructor(TextLevelNode, "small"),
@@ -43,19 +43,19 @@ export const NodeTagNameMap = {
 	"video": primeConstructor(EmbeddedNode, "video"),
 
 	// Grouping
-	"canvas": primeConstructor(GroupingNode, "canvas"),
-	"div": primeConstructor(GroupingNode, "div"),
-	"ol": primeConstructor(GroupingNode, "ol"),
-	"ul": primeConstructor(GroupingNode, "ul"),
 	"article": primeConstructor(GroupingNode, "article"),
 	"aside": primeConstructor(GroupingNode, "aside"),
+	"br": primeConstructor(GroupingNode, "br"), // Childless
+	"canvas": primeConstructor(GroupingNode, "canvas"),
+	"div": primeConstructor(GroupingNode, "div"),
 	"footer": primeConstructor(GroupingNode, "footer"),
 	"header": primeConstructor(GroupingNode, "header"),
+	"hr": primeConstructor(GroupingNode, "hr"), // Childless
 	"main": primeConstructor(GroupingNode, "main"),
 	"nav": primeConstructor(GroupingNode, "nav"),
+	"ol": primeConstructor(GroupingNode, "ol"),
 	"section": primeConstructor(GroupingNode, "section"),
-	"hr": primeConstructor(GroupingNode, "hr"), // Childless
-	"br": primeConstructor(GroupingNode, "br"), // Childless
+	"ul": primeConstructor(GroupingNode, "ul"),
 
 	// Form-associated
 	"meter": primeConstructor(GroupingNode, "meter"),
