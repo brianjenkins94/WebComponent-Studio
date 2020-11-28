@@ -3,8 +3,6 @@ import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElement } from "../types/elements";
 
 export class FormNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
-
 	public constructor(tagName: keyof TopLevelHTMLElement, method: string, action: string, encoding: string, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
@@ -20,6 +18,16 @@ export class FormNode extends Node {
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const formNode = document.createElement(this.type);
+
+		for (const [key, value] of Object.entries(this.attributes)) {
+			formNode.setAttribute(key, value);
+		}
+
+		this.cachedFragment.appendChild(formNode);
+
+		return this.cachedFragment;
 	}
 }

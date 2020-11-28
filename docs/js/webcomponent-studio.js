@@ -1,4 +1,4 @@
-import { URL } from 'url';
+//import { URL } from 'url';
 
 class Node {
     constructor(type) {
@@ -29,10 +29,12 @@ class AnchorNode extends Node {
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
-        const anchor = document.createElement(this.type);
-        anchor.textContent = this.textContent;
-        anchor.setAttribute("src", this.attributes.href);
-        this.cachedFragment.appendChild(anchor);
+        const anchorNode = document.createElement(this.type);
+        anchorNode.textContent = this.textContent;
+        for (const [key, value] of Object.entries(this.attributes)) {
+            anchorNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(anchorNode);
         return this.cachedFragment;
     }
 }
@@ -47,7 +49,18 @@ class DetailsNode extends Node {
         this.summary = summary;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const detailsNode = document.createElement(this.type);
+        if (this.summary !== undefined) {
+            const summary = document.createElement("summary");
+            summary.innerHTML = this.summary;
+            detailsNode.append(summary);
+        }
+        for (const [key, value] of Object.entries(this.attributes)) {
+            detailsNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(detailsNode);
+        return this.cachedFragment;
     }
 }
 
@@ -62,7 +75,25 @@ class EmbeddedNode extends Node {
         this.sources = sources;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const embeddedNode = document.createElement(this.type);
+        if (/^audio|picture|video$/i.test(this.type)) {
+            // TODO: Handle type
+            for (const source of this.sources) {
+                const sourceNode = document.createElement("source");
+                sourceNode.setAttribute("src", source);
+                embeddedNode.append(sourceNode);
+            }
+        }
+        else {
+            // TODO: Handle multiple `src`s
+            embeddedNode.setAttribute("src", this.sources[0]);
+        }
+        for (const [key, value] of Object.entries(this.attributes)) {
+            embeddedNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(embeddedNode);
+        return this.cachedFragment;
     }
 }
 
@@ -73,10 +104,21 @@ class FieldSetNode extends Node {
         for (const [key, value] of Object.entries(extras)) {
             this.attributes[key] = value;
         }
-        this.caption = legend;
+        this.legend = legend;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const fieldSetNode = document.createElement(this.type);
+        if (this.legend !== undefined) {
+            const legend = document.createElement("legend");
+            legend.textContent = this.legend;
+            fieldSetNode.append(legend);
+        }
+        for (const [key, value] of Object.entries(this.attributes)) {
+            fieldSetNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(fieldSetNode);
+        return this.cachedFragment;
     }
 }
 
@@ -90,7 +132,18 @@ class FigureNode extends Node {
         this.caption = caption;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const figureNode = document.createElement(this.type);
+        if (this.caption !== undefined) {
+            const caption = document.createElement("caption");
+            caption.textContent = this.caption;
+            figureNode.append(caption);
+        }
+        for (const [key, value] of Object.entries(this.attributes)) {
+            figureNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(figureNode);
+        return this.cachedFragment;
     }
 }
 
@@ -105,7 +158,13 @@ class FormNode extends Node {
         this.attributes.enctype = encoding;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const formNode = document.createElement(this.type);
+        for (const [key, value] of Object.entries(this.attributes)) {
+            formNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(formNode);
+        return this.cachedFragment;
     }
 }
 
@@ -117,7 +176,13 @@ class GroupingNode extends Node {
         }
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const groupingNode = document.createElement(this.type);
+        for (const [key, value] of Object.entries(this.attributes)) {
+            groupingNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(groupingNode);
+        return this.cachedFragment;
     }
 }
 
@@ -127,10 +192,16 @@ class IFrameNode extends Node {
         for (const [key, value] of Object.entries(extras)) {
             this.attributes[key] = value;
         }
-        this.source = source;
+        this.attributes.src = source;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const iFrameNode = document.createElement(this.type);
+        for (const [key, value] of Object.entries(this.attributes)) {
+            iFrameNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(iFrameNode);
+        return this.cachedFragment;
     }
 }
 
@@ -142,6 +213,7 @@ class SelectNode extends Node {
         for (const [key, value] of Object.entries(extras)) {
             this.attributes[key] = value;
         }
+        this.options = options;
     }
     get fragment() {
         // TODO
@@ -166,7 +238,21 @@ class TableNode extends Node {
         this.caption = caption;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const tableNode = document.createElement(this.type);
+        if (this.caption !== undefined) {
+            const caption = document.createElement("caption");
+            caption.textContent = this.caption;
+            tableNode.append(caption);
+        }
+        tableNode.append(document.createElement("thead"));
+        tableNode.append(document.createElement("tbody"));
+        tableNode.append(document.createElement("tfoot"));
+        for (const [key, value] of Object.entries(this.attributes)) {
+            tableNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(tableNode);
+        return this.cachedFragment;
     }
 }
 
@@ -179,12 +265,19 @@ class TextLevelNode extends Node {
         this.textContent = textContent;
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const textLevelNode = document.createElement(this.type);
+        textLevelNode.textContent = this.textContent;
+        for (const [key, value] of Object.entries(this.attributes)) {
+            textLevelNode.setAttribute(key, value);
+        }
+        this.cachedFragment.appendChild(textLevelNode);
+        return this.cachedFragment;
     }
 }
 
-function primeConstructor(node, tagName, ...args) {
-    return node[tagName](tagName, ...args);
+function primeConstructor(Node, tagName, ...args) {
+    return new Node(tagName, ...args);
 }
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const NodeTagNameMap = {
@@ -769,4 +862,4 @@ globalThis.table = table;
 const a = createPrimitive("a");
 globalThis.a = a;
 
-export { a, article, aside, audio, b, blockquote, br, button, canvas, code, del, details, div, em, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, iframe, img, ins, kbd, label, li, main, mark, meter, nav, ol, p, picture, pre, progress, q, s, section, select, small, span, strong, sub, sup, table, textarea, u, ul, video };
+//export { a, article, aside, audio, b, blockquote, br, button, canvas, code, del, details, div, em, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, iframe, img, ins, kbd, label, li, main, mark, meter, nav, ol, p, picture, pre, progress, q, s, section, select, small, span, strong, sub, sup, table, textarea, u, ul, video };

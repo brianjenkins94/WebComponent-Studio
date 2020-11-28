@@ -5,7 +5,6 @@ import type { TopLevelHTMLElement } from "../types/elements";
 // <figcaption> should be part of a <figure>
 
 export class FigureNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
 	private readonly caption: string;
 
 	public constructor(tagName: keyof TopLevelHTMLElement, caption: string, extras: HTMLElementAttributesMap[typeof tagName]) {
@@ -19,6 +18,23 @@ export class FigureNode extends Node {
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const figureNode = document.createElement(this.type);
+
+		if (this.caption !== undefined) {
+			const caption = document.createElement("caption");
+			caption.textContent = this.caption;
+
+			figureNode.append(caption);
+		}
+
+		for (const [key, value] of Object.entries(this.attributes)) {
+			figureNode.setAttribute(key, value);
+		}
+
+		this.cachedFragment.appendChild(figureNode);
+
+		return this.cachedFragment;
 	}
 }

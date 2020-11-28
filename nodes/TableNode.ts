@@ -13,7 +13,6 @@ import type { TopLevelHTMLElement } from "../types/elements";
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
 export class TableNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
 	private readonly caption: string;
 
 	public constructor(tagName: keyof TopLevelHTMLElement, caption: string, extras: HTMLElementAttributesMap[typeof tagName]) {
@@ -27,6 +26,27 @@ export class TableNode extends Node {
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const tableNode = document.createElement(this.type);
+
+		if (this.caption !== undefined) {
+			const caption = document.createElement("caption");
+			caption.textContent = this.caption;
+
+			tableNode.append(caption);
+		}
+
+		tableNode.append(document.createElement("thead"));
+		tableNode.append(document.createElement("tbody"));
+		tableNode.append(document.createElement("tfoot"));
+
+		for (const [key, value] of Object.entries(this.attributes)) {
+			tableNode.setAttribute(key, value);
+		}
+
+		this.cachedFragment.appendChild(tableNode);
+
+		return this.cachedFragment;
 	}
 }

@@ -3,8 +3,6 @@ import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElement } from "../types/elements";
 
 export class GroupingNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
-
 	public constructor(tagName: keyof TopLevelHTMLElement, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
@@ -14,6 +12,16 @@ export class GroupingNode extends Node {
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const groupingNode = document.createElement(this.type);
+
+		for (const [key, value] of Object.entries(this.attributes)) {
+			groupingNode.setAttribute(key, value);
+		}
+
+		this.cachedFragment.appendChild(groupingNode);
+
+		return this.cachedFragment;
 	}
 }

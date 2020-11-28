@@ -1,7 +1,9 @@
+import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElement } from "../types/elements";
 
 export class Node {
 	protected cachedFragment: DocumentFragment;
+	protected readonly attributes: HTMLElementAttributesMap;
 	protected readonly type: keyof TopLevelHTMLElement;
 	private readonly children = [];
 

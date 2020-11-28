@@ -23,7 +23,7 @@
 		// Configured
 		"@typescript-eslint/indent": ["warn", "tab"], // Indent using tabs
 		"@typescript-eslint/no-misused-promises": ["warn", { "checksVoidReturn": false }], // No promises in conditionals
-		"@typescript-eslint/space-before-function-paren": ["error", { "anonymous": "never", "named": "never", "asyncArrow": "always" }], // No space before function parentheses, except for async arrow
+		"@typescript-eslint/space-before-function-paren": ["warn", { "anonymous": "never", "named": "never", "asyncArrow": "always" }], // No space before function parentheses, except for async arrow
 		"array-bracket-newline": ["warn", "consistent"], // Per-array consistent formatting
 		"array-element-newline": ["warn", "consistent"], // Per-array consistent formatting
 		"dot-location": ["warn", "property"], // Dot on the next line for chained functions

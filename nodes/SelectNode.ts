@@ -6,7 +6,6 @@ import type { TopLevelHTMLElement } from "../types/elements";
 // <option> should be part of a <select> or <optgroup>
 
 export class SelectNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
 	private readonly options: object;
 
 	public constructor(tagName: keyof TopLevelHTMLElement, options: object, extras: HTMLElementAttributesMap[typeof tagName]) {
@@ -15,6 +14,8 @@ export class SelectNode extends Node {
 		for (const [key, value] of Object.entries(extras)) {
 			this.attributes[key] = value;
 		}
+
+		this.options = options;
 	}
 
 	public get fragment(): DocumentFragment {

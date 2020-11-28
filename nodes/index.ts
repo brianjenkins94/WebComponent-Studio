@@ -11,8 +11,8 @@ import { TableNode } from "./TableNode";
 import { TextLevelNode } from "./TextLevelNode";
 import type { TopLevelHTMLElement } from "../types/elements";
 
-function primeConstructor(node, tagName: keyof TopLevelHTMLElement, ...args: ConstructorParameters<typeof node>): typeof node {
-	return node[tagName](tagName, ...args);
+function primeConstructor(Node, tagName: keyof TopLevelHTMLElement, ...args: ConstructorParameters<typeof Node>): typeof Node {
+	return new Node(tagName, ...args);
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

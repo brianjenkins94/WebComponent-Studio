@@ -5,7 +5,6 @@ import type { TopLevelHTMLElement } from "../types/elements";
 // <summary> should be part of a <details>
 
 export class DetailsNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
 	private readonly summary: string;
 
 	public constructor(tagName: keyof TopLevelHTMLElement, summary: string, extras: HTMLElementAttributesMap[typeof tagName]) {
@@ -19,6 +18,23 @@ export class DetailsNode extends Node {
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const detailsNode = document.createElement(this.type);
+
+		if (this.summary !== undefined) {
+			const summary = document.createElement("summary");
+			summary.innerHTML = this.summary;
+
+			detailsNode.append(summary);
+		}
+
+		for (const [key, value] of Object.entries(this.attributes)) {
+			detailsNode.setAttribute(key, value);
+		}
+
+		this.cachedFragment.appendChild(detailsNode);
+
+		return this.cachedFragment;
 	}
 }

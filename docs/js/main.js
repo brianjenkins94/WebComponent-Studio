@@ -1,5 +1,7 @@
 // Text Content
 
+debugger;
+
 // b
 document.getElementById("b").after(b(".b", "This is some bold text.").fragment);
 

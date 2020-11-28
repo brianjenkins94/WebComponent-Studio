@@ -29,6 +29,7 @@
     "@typescript-eslint/parser": "latest",
     "eslint": "latest",
     "rollup": "latest",
+    "rollup-plugin-postprocess": "github:brettz9/rollup-plugin-postprocess#update",
     "tslib": "latest"
   }
 }

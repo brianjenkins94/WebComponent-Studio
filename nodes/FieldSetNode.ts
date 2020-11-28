@@ -5,7 +5,6 @@ import type { TopLevelHTMLElement } from "../types/elements";
 // <legend> should be part of a <fieldset>
 
 export class FieldSetNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
 	private readonly legend: string;
 
 	public constructor(tagName: keyof TopLevelHTMLElement, legend: string, extras: HTMLElementAttributesMap[typeof tagName]) {
@@ -15,10 +14,27 @@ export class FieldSetNode extends Node {
 			this.attributes[key] = value;
 		}
 
-		this.caption = legend;
+		this.legend = legend;
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const fieldSetNode = document.createElement(this.type);
+
+		if (this.legend !== undefined) {
+			const legend = document.createElement("legend");
+			legend.textContent = this.legend;
+
+			fieldSetNode.append(legend);
+		}
+
+		for (const [key, value] of Object.entries(this.attributes)) {
+			fieldSetNode.setAttribute(key, value);
+		}
+
+		this.cachedFragment.appendChild(fieldSetNode);
+
+		return this.cachedFragment;
 	}
 }

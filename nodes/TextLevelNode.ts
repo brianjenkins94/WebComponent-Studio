@@ -3,7 +3,6 @@ import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElement } from "../types/elements";
 
 export class TextLevelNode extends Node {
-	private readonly attributes: HTMLElementAttributesMap;
 	private readonly textContent: string;
 
 	public constructor(tagName: keyof TopLevelHTMLElement, textContent: string, extras: HTMLElementAttributesMap[typeof tagName]) {
@@ -17,6 +16,17 @@ export class TextLevelNode extends Node {
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const textLevelNode = document.createElement(this.type);
+		textLevelNode.textContent = this.textContent;
+
+		for (const [key, value] of Object.entries(this.attributes)) {
+			textLevelNode.setAttribute(key, value);
+		}
+
+		this.cachedFragment.appendChild(textLevelNode);
+
+		return this.cachedFragment;
 	}
 }
