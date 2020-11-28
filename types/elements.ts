@@ -1,4 +1,3 @@
-
 interface EditingContent {
 	"del": HTMLModElement;
 	"ins": HTMLModElement;

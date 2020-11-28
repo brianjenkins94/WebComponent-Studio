@@ -1,4 +1,3 @@
-
 export interface HTMLElementAttributesMap {
 	"a": HTMLAnchorElementAttributes;
 	"article": HTMLElementAttributes;
