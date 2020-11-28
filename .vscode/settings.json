@@ -14,5 +14,6 @@
 		"fences": true
 	},
 	"typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-	"typescript.format.insertSpaceBeforeFunctionParenthesis": false
+	"typescript.format.insertSpaceBeforeFunctionParenthesis": false,
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

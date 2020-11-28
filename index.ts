@@ -1,11 +1,28 @@
-/* eslint-disable no-lonely-if */
+/* eslint-disable @typescript-eslint/typedef */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
+import { URL } from "url";
 
 import { NodeTagNameMap } from "./nodes";
 import type { HTMLElementAttributesMap } from "./types/attributes";
 import type { TopLevelHTMLElement } from "./types/elements";
 
+const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*/i;
+
+function isUrl(string: string) {
+	try {
+		// eslint-disable-next-line no-new
+		new URL(string);
+	} catch (error) {
+		return false;
+	}
+
+	return true;
+}
+
 // eslint-disable-next-line complexity
-function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLElementAttributes extends keyof HTMLElementAttributesMap>(tagName: keyof TopLevelHTMLElement) {
+function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 	switch (tagName) {
 		case "b":
 		case "blockquote":
@@ -35,19 +52,19 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 		case "sub":
 		case "sup":
 		case "u":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], textContent?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], textContent?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				// selectors
 
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
@@ -56,70 +73,53 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				// textContent
 
-				if (/* textContent !== undefined && */ typeof textContent !== "object") {
-					fragment.appendChild(document.createTextNode(textContent));
-				} else {
+				if (textContent !== undefined && typeof textContent !== "object") {
+					return new NodeTagNameMap[tagName](textContent, extras);
+				} else if (typeof textContent === "object") {
 					extras = textContent;
 				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "audio":
 		case "img":
 		case "picture":
 		case "video":
-			return function(selectors?: string | string[] | HTMLElementTagNameMap[HTMLElement], sources?: string | string[] | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
-				// selectors
-
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+			return function(selectors?: string | string[] | HTMLElementAttributesMap[typeof tagName], sources?: string | string[] | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
+					// eslint-disable-next-line no-lonely-if
 					if (Array.isArray(sources)) {
 						sources = selectors;
 					} else if (typeof selectors === "string") {
-						// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-						// ^ Is there a way to get rid of this?
 						sources = [selectors];
 					}
 				}
 
 				// sources
 
-				if (/* sources !== undefined && */ Array.isArray(sources)) {
-					// TODO
+				if (sources !== undefined && Array.isArray(sources)) {
+					return new NodeTagNameMap[tagName](sources, extras);
 				} else if (typeof sources === "object") {
-					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					// ^ Is there a way to get rid of this?
-					extras = sources;
+					extras = { ...sources, ...extras };
 				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](undefined, extras);
 			};
 		case "article":
 		case "aside":
@@ -137,51 +137,39 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 		case "section":
 		case "textarea":
 		case "ul":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
-				// selectors
-
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else if (typeof selectors === "object") {
-					// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					// ^ Is there a way to get rid of this?
-					extras = selectors;
+					extras = { ...selectors, ...extras };
 				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "iframe":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], source?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
-				// selectors
-
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], source?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
@@ -190,32 +178,28 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				// source
 
-				root.setAttribute("src", String(source));
+				if (typeof source === "string") {
+					return new NodeTagNameMap[tagName](source, extras);
+				} else {
+					extras = { ...source, ...extras };
+				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "fieldset":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], legend?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
-				// selectors
-
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], legend?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
@@ -224,32 +208,30 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				// source
 
-				// TODO
+				if (typeof legend === "string") {
+					return new NodeTagNameMap[tagName](legend, extras);
+				} else {
+					extras = { ...legend, ...extras };
+				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "form":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], method?: string | HTMLElementTagNameMap[HTMLElement], action?: string | HTMLElementTagNameMap[HTMLElement], encoding?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], method?: string | HTMLElementAttributesMap[typeof tagName], action?: string | HTMLElementAttributesMap[typeof tagName], encoding?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				// selectors
 
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
@@ -258,42 +240,46 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				// method
 
-				// TODO
+				if (method !== undefined && typeof method === "string" && /^post|get|dialog$/i.test(method)) {
+					extras.method = method;
+				} else {
+					action = method;
+				}
 
 				// action
 
-				// TODO
+				if (action !== undefined && typeof action === "string" && isUrl(action)) {
+					extras.action = action;
+				} else {
+					action = encoding;
+				}
 
 				// encoding
 
-				// TODO
+				if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
+					extras.enctype = action;
+				} else if (typeof encoding === "object") {
+					extras = { ...encoding, ...extras };
+				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "input":
 			throw new Error("Not yet implemented.");
 		case "select":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], options?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
-				// selectors
-
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], options?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
@@ -302,32 +288,28 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				// method
 
-				// TODO
+				if (options !== undefined && Array.isArray(options)) {
+					return new NodeTagNameMap[tagName](extras).push(options);
+				} else if (typeof options === "object") {
+					extras = { ...options, ...extras };
+				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "figure":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], figcaption?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
-				// selectors
-
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], figcaption?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
@@ -336,66 +318,62 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				// figcaption
 
-				// TODO
+				if (figcaption !== undefined && typeof figcaption === "string") {
+					return new NodeTagNameMap[tagName](figcaption, extras);
+				} else if (typeof figcaption === "object") {
+					extras = { ...figcaption, ...extras };
+				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "details":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], summary?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], summary?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				// selectors
 
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
+
+					return new NodeTagNameMap[tagName]();
 				} else {
 					summary = selectors;
 				}
 
 				// summary
 
-				// TODO
+				if (summary !== undefined && typeof summary === "string") {
+					return new NodeTagNameMap[tagName](summary, extras);
+				} else if (typeof summary === "object") {
+					extras = { ...summary, ...extras };
+				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "table":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], caption?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				const fragment = document.createDocumentFragment();
-
-				const root = fragment.appendChild(document.createElement(tagName));
-
-				// selectors
-
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], caption?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
-							root.setAttribute("id", selector.substring(1));
+							extras.id = selector;
 						} else if (selector.startsWith(".")) {
-							root.classList.add(selector.substring(1));
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
 						}
 					}
 				} else {
@@ -404,29 +382,53 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 
 				// caption
 
-				// TODO
+				if (caption !== undefined && typeof caption === "string") {
+					return new NodeTagNameMap[tagName](caption, extras);
+				} else if (typeof caption === "object") {
+					extras = { ...caption, ...extras };
+				}
 
 				// extras
 
-				if (extras !== undefined) {
-					for (const [key, value] of Object.entries(extras)) {
-						root.setAttribute(key, String(value));
-					}
-				}
-
-				return fragment;
+				return new NodeTagNameMap[tagName](extras);
 			};
 		case "a":
-			return function(selectors?: string | HTMLElementTagNameMap[HTMLElement], textContent?: string | HTMLElementTagNameMap[HTMLElement], href?: string | HTMLElementTagNameMap[HTMLElement], extras?: HTMLElementAttributesMap[HTMLElementAttributes]) {
-				if (/* selectors !== undefined && */ typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-					return new NodeTagNameMap[tagName](selectors, textContent, href, extras);
+			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], textContent?: string | HTMLElementAttributesMap[typeof tagName], href?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+					for (const selector of selectors.split(/#|./g)) {
+						if (selector.startsWith("#")) {
+							extras.id = selector;
+						} else if (selector.startsWith(".")) {
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
+						}
+					}
 				} else {
 					textContent = selectors;
 				}
 
-				if (extras !== undefined) {
-					return new NodeTagNameMap[tagName]();
+				// textContent
+
+				if (textContent !== undefined && typeof textContent === "string") {
+					return new NodeTagNameMap[tagName](textContent, href, extras);
+				} else {
+					href = textContent;
 				}
+
+				// href
+
+				if (href !== undefined && typeof href === "string" && isUrl(href)) {
+					return new NodeTagNameMap[tagName](href, href, extras);
+				} else if (typeof textContent === "object") {
+					extras = { ...textContent, ...extras };
+				}
+
+				// extras
+
+				return new NodeTagNameMap[tagName](extras);
 			};
 		default:
 			throw new Error("Unrecognized element `" + tagName + "`.");
@@ -434,70 +436,125 @@ function createPrimitive<HTMLElement extends keyof HTMLElementTagNameMap, HTMLEl
 }
 
 export const b = createPrimitive("b");
+globalThis.b = b;
 export const blockquote = createPrimitive("blockquote");
+globalThis.blockquote = blockquote;
 export const button = createPrimitive("button");
+globalThis.button = button;
 export const code = createPrimitive("code");
+globalThis.code = code;
 export const del = createPrimitive("del");
-export const em = createPrimitive("i");
+globalThis.del = del;
+export const em = createPrimitive("em");
+globalThis.em = em;
 export const h1 = createPrimitive("h1");
+globalThis.h1 = h1;
 export const h2 = createPrimitive("h2");
+globalThis.h2 = h2;
 export const h3 = createPrimitive("h3");
+globalThis.h3 = h3;
 export const h4 = createPrimitive("h4");
+globalThis.h4 = h4;
 export const h5 = createPrimitive("h5");
+globalThis.h5 = h5;
 export const h6 = createPrimitive("h6");
+globalThis.h6 = h6;
 export const ins = createPrimitive("ins");
+globalThis.ins = ins;
 export const kbd = createPrimitive("kbd");
+globalThis.kbd = kbd;
 export const label = createPrimitive("label");
+globalThis.label = label;
 export const li = createPrimitive("li");
+globalThis.li = li;
 export const mark = createPrimitive("mark");
+globalThis.mark = mark;
 export const p = createPrimitive("p");
+globalThis.p = p;
 export const pre = createPrimitive("pre");
+globalThis.pre = pre;
 export const q = createPrimitive("q");
+globalThis.q = q;
 export const s = createPrimitive("s");
+globalThis.s = s;
 export const small = createPrimitive("small");
+globalThis.small = small;
 export const span = createPrimitive("span");
+globalThis.span = span;
 export const strong = createPrimitive("strong");
+globalThis.strong = strong;
 export const sub = createPrimitive("sub");
+globalThis.sub = sub;
 export const sup = createPrimitive("sup");
+globalThis.sup = sup;
 export const u = createPrimitive("u");
+globalThis.u = u;
 
 export const audio = createPrimitive("audio");
+globalThis.audio = audio;
 export const img = createPrimitive("img");
+globalThis.img = img;
 export const picture = createPrimitive("picture");
+globalThis.picture = picture;
 export const video = createPrimitive("video");
+globalThis.video = video;
 
 export const article = createPrimitive("article");
+globalThis.article = article;
 export const aside = createPrimitive("aside");
+globalThis.aside = aside;
 export const br = createPrimitive("br");
+globalThis.br = br;
 export const canvas = createPrimitive("canvas");
+globalThis.canvas = canvas;
 export const div = createPrimitive("div");
+globalThis.div = div;
 export const footer = createPrimitive("footer");
+globalThis.footer = footer;
 export const header = createPrimitive("header");
+globalThis.header = header;
 export const hr = createPrimitive("hr");
+globalThis.hr = hr;
 export const main = createPrimitive("main");
+globalThis.main = main;
 export const meter = createPrimitive("meter");
+globalThis.meter = meter;
 export const nav = createPrimitive("nav");
+globalThis.nav = nav;
 export const ol = createPrimitive("ol");
+globalThis.ol = ol;
 export const progress = createPrimitive("progress");
+globalThis.progress = progress;
 export const section = createPrimitive("section");
+globalThis.section = section;
 export const textarea = createPrimitive("textarea");
+globalThis.textarea = textarea;
 export const ul = createPrimitive("ul");
+globalThis.ul = ul;
 
 export const iframe = createPrimitive("iframe");
+globalThis.iframe = iframe;
 
 export const fieldset = createPrimitive("fieldset");
+globalThis.fieldset = fieldset;
 
 export const form = createPrimitive("form");
+globalThis.form = form;
 
 export const select = createPrimitive("select");
+globalThis.select = select;
 
 export const figure = createPrimitive("figure");
+globalThis.figure = figure;
 
 export const details = createPrimitive("details");
+globalThis.details = details;
 
 export const table = createPrimitive("table");
+globalThis.table = table;
 
 export const a = createPrimitive("a");
+globalThis.a = a;
 
 //
 

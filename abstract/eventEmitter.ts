@@ -1,7 +1,8 @@
+
 export class EventEmitter {
 	private events = {};
 
-	public on(event, listener) {
+	public on(event: string, listener: () => void): () => void {
 		if (this.events[event] === undefined) {
 			this.events[event] = [];
 		}
@@ -11,7 +12,7 @@ export class EventEmitter {
 		return listener;
 	}
 
-	public off(event?, listener?) {
+	public off(event?: string, listener?: () => void): void {
 		if (event === undefined && listener === undefined) {
 			this.events = {};
 		} else if (listener === undefined) {
@@ -21,7 +22,7 @@ export class EventEmitter {
 		}
 	}
 
-	public emit(event, ...args) {
+	public emit(event: string, ...args: any[]): void {
 		if (this.events[event] !== undefined) {
 			for (const listener of this.events[event]) {
 				listener(...args);
@@ -33,7 +34,7 @@ export class EventEmitter {
 		}
 	}
 
-	public once(event, listener) {
+	public once(event: string, listener: () => void): () => void {
 		return this.on(event, () => {
 			this.emit(event);
 

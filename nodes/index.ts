@@ -1,12 +1,21 @@
 import { AnchorNode } from "./AnchorNode";
+import { DetailsNode } from "./DetailsNode";
+import { EmbeddedNode } from "./EmbeddedNode";
+import { FieldSetNode } from "./FieldSetNode";
+import { FigureNode } from "./FigureNode";
+import { FormNode } from "./FormNode";
+import { GroupingNode } from "./GroupingNode";
+import { IFrameNode } from "./IFrameNode";
+import { SelectNode } from "./SelectNode";
+import { TableNode } from "./TableNode";
+import { TextLevelNode } from "./TextLevelNode";
 import type { TopLevelHTMLElement } from "../types/elements";
-
-export const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*/i;
 
 function primeConstructor(node, tagName: keyof TopLevelHTMLElement, ...args: ConstructorParameters<typeof node>): typeof node {
 	return node[tagName](tagName, ...args);
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const NodeTagNameMap = {
 	// Text Content
 	"b": primeConstructor(TextLevelNode, "b"),

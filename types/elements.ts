@@ -1,4 +1,3 @@
-/* eslint-enable @typescript-eslint/typedef */
 
 interface EditingContent {
 	"del": HTMLModElement;
@@ -116,3 +115,5 @@ interface TextLevelSemantics {
 }
 
 export interface TopLevelHTMLElement extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics { }
+
+export interface AbstractTopLevelHTMLElement extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }

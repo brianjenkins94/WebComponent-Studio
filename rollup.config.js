@@ -5,12 +5,12 @@
 import typescript from "@rollup/plugin-typescript";
 
 export default {
-	"input": "docs/js/main.ts",
+	"input": "index.ts",
 	"output": {
-		"file": "docs/js/main.js",
+		"file": "docs/js/webcomponent-studio.js",
 		"format": "esm"
 	},
-	"external": [],
+	"external": ["url"],
 	"plugins": [
 		//nodeResolve(),
 		//commonJs(),
