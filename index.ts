@@ -53,8 +53,6 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 		case "sup":
 		case "u":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], textContent?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
-				// selectors
-
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
@@ -178,9 +176,9 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				// source
 
-				if (typeof source === "string") {
-					return new NodeTagNameMap[tagName](source, extras);
-				} else {
+				if (typeof source === "string" && isUrl(source)) {
+					extras.src = source;
+				} else if (typeof source === "object") {
 					extras = { ...source, ...extras };
 				}
 
@@ -220,8 +218,6 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 			};
 		case "form":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], method?: string | HTMLElementAttributesMap[typeof tagName], action?: string | HTMLElementAttributesMap[typeof tagName], encoding?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
-				// selectors
-
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
@@ -330,8 +326,6 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 			};
 		case "details":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], summary?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
-				// selectors
-
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|./g)) {
 						if (selector.startsWith("#")) {
@@ -459,6 +453,8 @@ export const h5 = createPrimitive("h5");
 globalThis.h5 = h5;
 export const h6 = createPrimitive("h6");
 globalThis.h6 = h6;
+export const i = createPrimitive("i");
+globalThis.i = i;
 export const ins = createPrimitive("ins");
 globalThis.ins = ins;
 export const kbd = createPrimitive("kbd");

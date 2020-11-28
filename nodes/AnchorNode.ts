@@ -8,13 +8,11 @@ export class AnchorNode extends Node {
 	public constructor(tagName: keyof TopLevelHTMLElement, textContent: string, href: string, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
-		for (const [key, value] of Object.entries(extras)) {
-			this.attributes[key] = value;
-		}
-
 		this.textContent = textContent;
 
 		this.attributes.href = href;
+
+		this.attributes = { ...extras, ...this.attributes };
 	}
 
 	public get fragment(): DocumentFragment {
@@ -24,7 +22,7 @@ export class AnchorNode extends Node {
 		anchorNode.textContent = this.textContent;
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			anchorNode.setAttribute(key, value);
+			anchorNode.setAttribute(key, String(value));
 		}
 
 		this.cachedFragment.appendChild(anchorNode);

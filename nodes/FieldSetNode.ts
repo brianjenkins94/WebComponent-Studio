@@ -10,11 +10,9 @@ export class FieldSetNode extends Node {
 	public constructor(tagName: keyof TopLevelHTMLElement, legend: string, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
-		for (const [key, value] of Object.entries(extras)) {
-			this.attributes[key] = value;
-		}
-
 		this.legend = legend;
+
+		this.attributes = { ...extras, ...this.attributes };
 	}
 
 	public get fragment(): DocumentFragment {
@@ -30,7 +28,7 @@ export class FieldSetNode extends Node {
 		}
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			fieldSetNode.setAttribute(key, value);
+			fieldSetNode.setAttribute(key, String(value));
 		}
 
 		this.cachedFragment.appendChild(fieldSetNode);

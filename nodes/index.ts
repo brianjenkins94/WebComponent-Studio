@@ -3,16 +3,16 @@ import { DetailsNode } from "./DetailsNode";
 import { EmbeddedNode } from "./EmbeddedNode";
 import { FieldSetNode } from "./FieldSetNode";
 import { FigureNode } from "./FigureNode";
-import { FormNode } from "./FormNode";
 import { GroupingNode } from "./GroupingNode";
-import { IFrameNode } from "./IFrameNode";
 import { SelectNode } from "./SelectNode";
 import { TableNode } from "./TableNode";
 import { TextLevelNode } from "./TextLevelNode";
 import type { TopLevelHTMLElement } from "../types/elements";
 
-function primeConstructor(Node, tagName: keyof TopLevelHTMLElement, ...args: ConstructorParameters<typeof Node>): typeof Node {
-	return new Node(tagName, ...args);
+function primeConstructor(Node, tagName: keyof TopLevelHTMLElement): () => Node {
+	return function(...args: ConstructorParameters<typeof Node>): Node {
+		return new Node(tagName, ...args);
+	};
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -69,21 +69,19 @@ export const NodeTagNameMap = {
 	"ul": primeConstructor(GroupingNode, "ul"),
 
 	// Form-associated
+	"form": primeConstructor(GroupingNode, "form"),
 	"meter": primeConstructor(GroupingNode, "meter"),
 	"progress": primeConstructor(GroupingNode, "progress"),
 	"textarea": primeConstructor(GroupingNode, "textarea"),
 
 	// IFrame
-	"iframe": primeConstructor(IFrameNode, "iframe"),
+	"iframe": primeConstructor(GroupingNode, "iframe"),
 
 	// FieldSet
 	"fieldset": primeConstructor(FieldSetNode, "fieldset"),
 
-	// Form
-	"form": primeConstructor(FormNode, "form"),
-
 	// Input
-	"input": primeConstructor(InputNode, "input"),
+	//"input": primeConstructor(InputNode, "input"),
 
 	// Select
 	"select": primeConstructor(SelectNode, "select"),

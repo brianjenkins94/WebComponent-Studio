@@ -11,11 +11,9 @@ export class SelectNode extends Node {
 	public constructor(tagName: keyof TopLevelHTMLElement, options: object, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
-		for (const [key, value] of Object.entries(extras)) {
-			this.attributes[key] = value;
-		}
-
 		this.options = options;
+
+		this.attributes = { ...extras, ...this.attributes };
 	}
 
 	public get fragment(): DocumentFragment {

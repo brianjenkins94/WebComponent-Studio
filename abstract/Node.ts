@@ -3,7 +3,8 @@ import type { TopLevelHTMLElement } from "../types/elements";
 
 export class Node {
 	protected cachedFragment: DocumentFragment;
-	protected readonly attributes: HTMLElementAttributesMap;
+	protected attributes = {};
+	// FIXME: ~~~~~~~~~~ Surely this can be typed
 	protected readonly type: keyof TopLevelHTMLElement;
 	private readonly children = [];
 

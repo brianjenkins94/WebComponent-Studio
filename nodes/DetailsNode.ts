@@ -10,11 +10,9 @@ export class DetailsNode extends Node {
 	public constructor(tagName: keyof TopLevelHTMLElement, summary: string, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
-		for (const [key, value] of Object.entries(extras)) {
-			this.attributes[key] = value;
-		}
-
 		this.summary = summary;
+
+		this.attributes = { ...extras, ...this.attributes };
 	}
 
 	public get fragment(): DocumentFragment {
@@ -30,7 +28,7 @@ export class DetailsNode extends Node {
 		}
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			detailsNode.setAttribute(key, value);
+			detailsNode.setAttribute(key, String(value));
 		}
 
 		this.cachedFragment.appendChild(detailsNode);

@@ -18,11 +18,9 @@ export class TableNode extends Node {
 	public constructor(tagName: keyof TopLevelHTMLElement, caption: string, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
-		for (const [key, value] of Object.entries(extras)) {
-			this.attributes[key] = value;
-		}
-
 		this.caption = caption;
+
+		this.attributes = { ...extras, ...this.attributes };
 	}
 
 	public get fragment(): DocumentFragment {
@@ -42,7 +40,7 @@ export class TableNode extends Node {
 		tableNode.append(document.createElement("tfoot"));
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			tableNode.setAttribute(key, value);
+			tableNode.setAttribute(key, String(value));
 		}
 
 		this.cachedFragment.appendChild(tableNode);

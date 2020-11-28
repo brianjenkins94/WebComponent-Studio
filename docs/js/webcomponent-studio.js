@@ -2,6 +2,7 @@
 
 class Node {
     constructor(type) {
+        this.attributes = {};
         this.children = [];
         this.type = type;
     }
@@ -21,18 +22,16 @@ class Node {
 class AnchorNode extends Node {
     constructor(tagName, textContent, href, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.textContent = textContent;
         this.attributes.href = href;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const anchorNode = document.createElement(this.type);
         anchorNode.textContent = this.textContent;
         for (const [key, value] of Object.entries(this.attributes)) {
-            anchorNode.setAttribute(key, value);
+            anchorNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(anchorNode);
         return this.cachedFragment;
@@ -43,10 +42,8 @@ class AnchorNode extends Node {
 class DetailsNode extends Node {
     constructor(tagName, summary, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.summary = summary;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
@@ -57,7 +54,7 @@ class DetailsNode extends Node {
             detailsNode.append(summary);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            detailsNode.setAttribute(key, value);
+            detailsNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(detailsNode);
         return this.cachedFragment;
@@ -69,10 +66,8 @@ class DetailsNode extends Node {
 class EmbeddedNode extends Node {
     constructor(tagName, sources, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.sources = sources;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
@@ -90,7 +85,7 @@ class EmbeddedNode extends Node {
             embeddedNode.setAttribute("src", this.sources[0]);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            embeddedNode.setAttribute(key, value);
+            embeddedNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(embeddedNode);
         return this.cachedFragment;
@@ -101,10 +96,8 @@ class EmbeddedNode extends Node {
 class FieldSetNode extends Node {
     constructor(tagName, legend, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.legend = legend;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
@@ -115,7 +108,7 @@ class FieldSetNode extends Node {
             fieldSetNode.append(legend);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            fieldSetNode.setAttribute(key, value);
+            fieldSetNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(fieldSetNode);
         return this.cachedFragment;
@@ -126,10 +119,8 @@ class FieldSetNode extends Node {
 class FigureNode extends Node {
     constructor(tagName, caption, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.caption = caption;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
@@ -140,30 +131,9 @@ class FigureNode extends Node {
             figureNode.append(caption);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            figureNode.setAttribute(key, value);
+            figureNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(figureNode);
-        return this.cachedFragment;
-    }
-}
-
-class FormNode extends Node {
-    constructor(tagName, method, action, encoding, extras) {
-        super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
-        this.attributes.method = method;
-        this.attributes.action = action;
-        this.attributes.enctype = encoding;
-    }
-    get fragment() {
-        this.cachedFragment = document.createDocumentFragment();
-        const formNode = document.createElement(this.type);
-        for (const [key, value] of Object.entries(this.attributes)) {
-            formNode.setAttribute(key, value);
-        }
-        this.cachedFragment.appendChild(formNode);
         return this.cachedFragment;
     }
 }
@@ -171,36 +141,15 @@ class FormNode extends Node {
 class GroupingNode extends Node {
     constructor(tagName, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const groupingNode = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            groupingNode.setAttribute(key, value);
+            groupingNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(groupingNode);
-        return this.cachedFragment;
-    }
-}
-
-class IFrameNode extends Node {
-    constructor(tagName, source, extras) {
-        super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
-        this.attributes.src = source;
-    }
-    get fragment() {
-        this.cachedFragment = document.createDocumentFragment();
-        const iFrameNode = document.createElement(this.type);
-        for (const [key, value] of Object.entries(this.attributes)) {
-            iFrameNode.setAttribute(key, value);
-        }
-        this.cachedFragment.appendChild(iFrameNode);
         return this.cachedFragment;
     }
 }
@@ -210,10 +159,8 @@ class IFrameNode extends Node {
 class SelectNode extends Node {
     constructor(tagName, options, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.options = options;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         // TODO
@@ -232,10 +179,8 @@ class SelectNode extends Node {
 class TableNode extends Node {
     constructor(tagName, caption, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.caption = caption;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
@@ -249,7 +194,7 @@ class TableNode extends Node {
         tableNode.append(document.createElement("tbody"));
         tableNode.append(document.createElement("tfoot"));
         for (const [key, value] of Object.entries(this.attributes)) {
-            tableNode.setAttribute(key, value);
+            tableNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(tableNode);
         return this.cachedFragment;
@@ -259,25 +204,25 @@ class TableNode extends Node {
 class TextLevelNode extends Node {
     constructor(tagName, textContent, extras) {
         super(tagName);
-        for (const [key, value] of Object.entries(extras)) {
-            this.attributes[key] = value;
-        }
         this.textContent = textContent;
+        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const textLevelNode = document.createElement(this.type);
         textLevelNode.textContent = this.textContent;
         for (const [key, value] of Object.entries(this.attributes)) {
-            textLevelNode.setAttribute(key, value);
+            textLevelNode.setAttribute(key, String(value));
         }
         this.cachedFragment.appendChild(textLevelNode);
         return this.cachedFragment;
     }
 }
 
-function primeConstructor(Node, tagName, ...args) {
-    return new Node(tagName, ...args);
+function primeConstructor(Node, tagName) {
+    return function (...args) {
+        return new Node(tagName, ...args);
+    };
 }
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const NodeTagNameMap = {
@@ -330,17 +275,16 @@ const NodeTagNameMap = {
     "section": primeConstructor(GroupingNode, "section"),
     "ul": primeConstructor(GroupingNode, "ul"),
     // Form-associated
+    "form": primeConstructor(GroupingNode, "form"),
     "meter": primeConstructor(GroupingNode, "meter"),
     "progress": primeConstructor(GroupingNode, "progress"),
     "textarea": primeConstructor(GroupingNode, "textarea"),
     // IFrame
-    "iframe": primeConstructor(IFrameNode, "iframe"),
+    "iframe": primeConstructor(GroupingNode, "iframe"),
     // FieldSet
     "fieldset": primeConstructor(FieldSetNode, "fieldset"),
-    // Form
-    "form": primeConstructor(FormNode, "form"),
     // Input
-    "input": primeConstructor(InputNode, "input"),
+    //"input": primeConstructor(InputNode, "input"),
     // Select
     "select": primeConstructor(SelectNode, "select"),
     // Figure
@@ -397,7 +341,6 @@ function createPrimitive(tagName) {
         case "sup":
         case "u":
             return function (selectors, textContent, extras = {}) {
-                // selectors
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
                     for (const selector of selectors.split(/#|./g)) {
                         if (selector.startsWith("#")) {
@@ -516,10 +459,10 @@ function createPrimitive(tagName) {
                     source = selectors;
                 }
                 // source
-                if (typeof source === "string") {
-                    return new NodeTagNameMap[tagName](source, extras);
+                if (typeof source === "string" && isUrl(source)) {
+                    extras.src = source;
                 }
-                else {
+                else if (typeof source === "object") {
                     extras = Object.assign(Object.assign({}, source), extras);
                 }
                 // extras
@@ -555,7 +498,6 @@ function createPrimitive(tagName) {
             };
         case "form":
             return function (selectors, method, action, encoding, extras = {}) {
-                // selectors
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
                     for (const selector of selectors.split(/#|./g)) {
                         if (selector.startsWith("#")) {
@@ -656,7 +598,6 @@ function createPrimitive(tagName) {
             };
         case "details":
             return function (selectors, summary, extras = {}) {
-                // selectors
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
                     for (const selector of selectors.split(/#|./g)) {
                         if (selector.startsWith("#")) {
@@ -775,6 +716,8 @@ const h5 = createPrimitive("h5");
 globalThis.h5 = h5;
 const h6 = createPrimitive("h6");
 globalThis.h6 = h6;
+const i = createPrimitive("i");
+globalThis.i = i;
 const ins = createPrimitive("ins");
 globalThis.ins = ins;
 const kbd = createPrimitive("kbd");
@@ -862,4 +805,4 @@ globalThis.table = table;
 const a = createPrimitive("a");
 globalThis.a = a;
 
-//export { a, article, aside, audio, b, blockquote, br, button, canvas, code, del, details, div, em, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, iframe, img, ins, kbd, label, li, main, mark, meter, nav, ol, p, picture, pre, progress, q, s, section, select, small, span, strong, sub, sup, table, textarea, u, ul, video };
+//export { a, article, aside, audio, b, blockquote, br, button, canvas, code, del, details, div, em, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img, ins, kbd, label, li, main, mark, meter, nav, ol, p, picture, pre, progress, q, s, section, select, small, span, strong, sub, sup, table, textarea, u, ul, video };

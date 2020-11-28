@@ -6,9 +6,7 @@ export class GroupingNode extends Node {
 	public constructor(tagName: keyof TopLevelHTMLElement, extras: HTMLElementAttributesMap[typeof tagName]) {
 		super(tagName);
 
-		for (const [key, value] of Object.entries(extras)) {
-			this.attributes[key] = value;
-		}
+		this.attributes = { ...extras, ...this.attributes };
 	}
 
 	public get fragment(): DocumentFragment {
@@ -17,7 +15,7 @@ export class GroupingNode extends Node {
 		const groupingNode = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			groupingNode.setAttribute(key, value);
+			groupingNode.setAttribute(key, String(value));
 		}
 
 		this.cachedFragment.appendChild(groupingNode);

@@ -1,7 +1,5 @@
 // Text Content
 
-debugger;
-
 // b
 document.getElementById("b").after(b(".b", "This is some bold text.").fragment);
 
@@ -51,6 +49,7 @@ document.getElementById("kbd").after(kbd(".kbd", "Ctrl").fragment);
 document.getElementById("label").after(label(".label", "This is a label.").fragment);
 
 // li
+const listItem = li(".li", "This is a list item.");
 
 // mark
 document.getElementById("mark").after(mark(".mark", "This is some marked text.").fragment);
@@ -86,54 +85,100 @@ document.getElementById("sup").after(sup(".sup", "This is some superscripted tex
 document.getElementById("u").after(u(".u", "This is some underlined text.").fragment);
 
 // Embedded
-"audio";
-"img";
-"picture";
-"video";
+
+// audio
+document.getElementById("audio").after(audio(".audio", []).fragment);
+
+// img
+document.getElementById("img").after(img(".img", []).fragment);
+
+// picture
+document.getElementById("picture").after(picture(".picture", []).fragment);
+
+// video
+document.getElementById("video").after(video(".video", []).fragment);
 
 // Grouping
-"article";
-"aside";
-"br";
-"canvas";
-"div";
-"footer";
-"header";
-"hr";
-"main";
-"nav";
-"ol";
-"section";
-"ul";
+
+// article
+document.getElementById("article").after(article(".article").fragment);
+
+// aside
+document.getElementById("aside").after(aside(".aside").fragment);
+
+// br
+document.getElementById("br").after(br(".br").fragment);
+
+// canvas
+document.getElementById("canvas").after(canvas(".canvas").fragment);
+
+// div
+document.getElementById("div").after(div(".div").fragment);
+
+// footer
+document.getElementById("footer").after(footer(".footer").fragment);
+
+// header
+document.getElementById("header").after(header(".header").fragment);
+
+// hr
+document.getElementById("hr").after(hr(".hr").fragment);
+
+// main
+document.getElementById("main").after(main(".main").fragment);
+
+// nav
+document.getElementById("nav").after(nav(".nav").fragment);
+
+// ol
+const orderedList = ol(".ol");
+orderedList.push(listItem);
+
+document.getElementById("ol").after(orderedList);
+
+// section
+document.getElementById("section").after(section(".section").fragment);
+
+// ul
+const unorderedList = ul(".ul");
+unorderedList.push(listItem);
+
+document.getElementById("ol").after(unorderedList);
 
 // Form-associated
-"meter";
-"progress";
-"textarea";
+
+// meter
+document.getElementById("meter").after(meter(".meter").fragment);
+
+// progress
+document.getElementById("progress").after(progress(".progress").fragment);
+
+// textarea
+document.getElementById("textarea").after(textarea(".textarea").fragment);
 
 // IFrame
-"iframe";
+document.getElementById("iframe").after(iframe(".iframe", window.location.href).fragment);
 
 // Field Set
-"fieldset";
+document.getElementById("fieldset").after(fieldset(".fieldset", "This is a legend.").fragment);
 
 // Form
-"form";
+document.getElementById("form").after(form(".form", "GET", "/", "application/x-www-form-urlencoded").fragment);
 
 // Input
-"input";
+// TODO
 
 // Select
-"select";
+document.getElementById("select").after(select(".select", {}).fragment);
 
 // Figure
-"figure";
+document.getElementById("figure").after(figure(".figure", "This is a caption.").fragment);
 
 // Details
-"details";
+document.getElementById("details").after(details(".details", "This is a summary.").fragment);
 
 // Table
-"table";
+document.getElementById("table").after(table(".table", "This is a table.").fragment);
 
 // Anchor
-"a";
+document.getElementById("a").after(a(".a", "This is an anchor.", window.location.href).fragment);
