@@ -1,7 +1,7 @@
-import type { HTMLElementAttributesMap } from "../types/attributes";
+import { EventEmitter } from "./EventEmitter";
 import type { TopLevelHTMLElement } from "../types/elements";
 
-export class Node {
+export class Node extends EventEmitter {
 	protected cachedFragment: DocumentFragment;
 	protected attributes = {};
 	// FIXME: ~~~~~~~~~~ Surely this can be typed
@@ -9,6 +9,8 @@ export class Node {
 	private readonly children = [];
 
 	public constructor(type: keyof TopLevelHTMLElement) {
+		super();
+
 		this.type = type;
 	}
 

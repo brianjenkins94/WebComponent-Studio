@@ -26,7 +26,6 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 	switch (tagName) {
 		case "b":
 		case "blockquote":
-		case "button":
 		case "code":
 		case "del":
 		case "em":
@@ -262,7 +261,83 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
-		case "input":
+		case "button[type=button]":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "button[type=reset]":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "button":
+		case "button[type=submit]":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "input[type=button]":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "checkbox":
+			// selectors, label, name, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "color":
+			// selectors, label, name, value, extras
+			throw new Error("Not yet implemented.");
+		case "date":
+			// selectors, label?, name, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "datetime":
+			// selectors, label?, name, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "email":
+			// selectors, label?, name, placeholder?, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "file":
+			// selectors, label?, name, required, extras
+			throw new Error("Not yet implemented.");
+		case "hidden":
+			// selectors, name, extras
+			throw new Error("Not yet implemented.");
+		case "image":
+			// selectors, source, extras
+			throw new Error("Not yet implemented.");
+		case "month":
+			// selectors, label?, name, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "number":
+			// selectors, label?, name, placeholder?, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "password":
+			// selectors, label?, name, required, extras
+			throw new Error("Not yet implemented.");
+		case "radio":
+			// selectors, label, name, value, extras
+			throw new Error("Not yet implemented.");
+		case "range":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "input[type=reset]":
+		case "reset":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "search":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "input[type=submit]":
+		case "submit":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "tel":
+			// selectors, label?, name, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "text":
+			// selectors, label?, name, placeholder?, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "time":
+			// selectors, label?, name, value, required, extras
+			throw new Error("Not yet implemented.");
+		case "url":
+			// selectors, label?, name, placeholder?, value?, required, extras
+			throw new Error("Not yet implemented.");
+		case "week":
+			// selectors, label?, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "select":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], options?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {

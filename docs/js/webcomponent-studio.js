@@ -314,7 +314,6 @@ function createPrimitive(tagName) {
     switch (tagName) {
         case "b":
         case "blockquote":
-        case "button":
         case "code":
         case "del":
         case "em":
@@ -538,7 +537,49 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
-        case "input":
+        case "button":
+            throw new Error("Not yet implemented.");
+        case "checkbox":
+            throw new Error("Not yet implemented.");
+        case "color":
+            throw new Error("Not yet implemented.");
+        case "date":
+            throw new Error("Not yet implemented.");
+        case "datetime":
+            throw new Error("Not yet implemented.");
+        case "email":
+            throw new Error("Not yet implemented.");
+        case "file":
+            throw new Error("Not yet implemented.");
+        case "hidden":
+            throw new Error("Not yet implemented.");
+        case "image":
+            throw new Error("Not yet implemented.");
+        case "month":
+            throw new Error("Not yet implemented.");
+        case "number":
+            throw new Error("Not yet implemented.");
+        case "password":
+            throw new Error("Not yet implemented.");
+        case "radio":
+            throw new Error("Not yet implemented.");
+        case "range":
+            throw new Error("Not yet implemented.");
+        case "reset":
+            throw new Error("Not yet implemented.");
+        case "search":
+            throw new Error("Not yet implemented.");
+        case "submit":
+            throw new Error("Not yet implemented.");
+        case "tel":
+            throw new Error("Not yet implemented.");
+        case "text":
+            throw new Error("Not yet implemented.");
+        case "time":
+            throw new Error("Not yet implemented.");
+        case "url":
+            throw new Error("Not yet implemented.");
+        case "week":
             throw new Error("Not yet implemented.");
         case "select":
             return function (selectors, options, extras = {}) {
