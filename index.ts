@@ -24,6 +24,13 @@ function isUrl(string: string) {
 // eslint-disable-next-line complexity
 function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 	switch (tagName) {
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, textContent: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, textContent?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "b":
 		case "blockquote":
 		case "code":
@@ -80,6 +87,13 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, sources: string | string[]): NodeTagNameMap[tagName]
+		 * (selectors?: string, sources?: string | string[], extras: object): NodeTagNameMap[tagName]
+		 */
 		case "audio":
 		case "img":
 		case "picture":
@@ -118,6 +132,12 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](undefined, extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "article":
 		case "aside":
 		case "br":
@@ -155,6 +175,13 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, source: string[]): NodeTagNameMap[tagName]
+		 * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[tagName]
+		 */
 		case "iframe":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], source?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -185,6 +212,13 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, legend: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "fieldset":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], legend?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -215,6 +249,15 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, method: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, method?: string, action: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "form":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], method?: string | HTMLElementAttributesMap[typeof tagName], action?: string | HTMLElementAttributesMap[typeof tagName], encoding?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -285,6 +328,12 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 		case "input[type=submit]":
 			// selectors, value, extras
 			throw new Error("Not yet implemented.");
+		case "search":
+			// selectors, value, extras
+			throw new Error("Not yet implemented.");
+		case "image":
+			// selectors, source, extras
+			throw new Error("Not yet implemented.");
 
 		// Require-able
 
@@ -292,40 +341,40 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 			// selectors, label, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "date":
-			// selectors, label?, name, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "datetime":
-			// selectors, label?, name, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "email":
-			// selectors, label?, name, placeholder?, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "file":
-			// selectors, label?, name, required, extras
+			// selectors, name, required, extras
 			throw new Error("Not yet implemented.");
 		case "month":
-			// selectors, label?, name, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "number":
-			// selectors, label?, name, placeholder?, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "password":
-			// selectors, label?, name, required, extras
+			// selectors, name, required, extras
 			throw new Error("Not yet implemented.");
 		case "tel":
-			// selectors, label?, name, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "text":
-			// selectors, label?, name, placeholder?, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "time":
-			// selectors, label?, name, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 		case "url":
-			// selectors, label?, name, placeholder?, value?, required, extras
+			// selectors, name, required, extras
 			throw new Error("Not yet implemented.");
 		case "week":
-			// selectors, label?, name, value, required, extras
+			// selectors, name, value, required, extras
 			throw new Error("Not yet implemented.");
 
 		// Non-require-able
@@ -336,19 +385,19 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 		case "hidden":
 			// selectors, name, extras
 			throw new Error("Not yet implemented.");
-		case "image":
-			// selectors, source, extras
-			throw new Error("Not yet implemented.");
 		case "radio":
 			// selectors, label, name, value, extras
 			throw new Error("Not yet implemented.");
 		case "range":
-			// selectors, value, extras
-			throw new Error("Not yet implemented.");
-		case "search":
-			// selectors, value, extras
+			// selectors, name, value, extras
 			throw new Error("Not yet implemented.");
 
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, options: object[]): NodeTagNameMap[tagName]
+		 * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[tagName]
+		 */
 		case "select":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], options?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -379,6 +428,13 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors): NodeTagNameMap[tagName]
+		 * (selectors?: string, figcaption: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "figure":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], figcaption?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -409,6 +465,13 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, summary: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "details":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], summary?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -441,6 +504,13 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, caption: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "table":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], caption?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -471,6 +541,14 @@ function createPrimitive(tagName: keyof TopLevelHTMLElement) {
 
 				return new NodeTagNameMap[tagName](extras);
 			};
+
+		/**
+		 * (): NodeTagNameMap[tagName]
+		 * (selectors: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, href): NodeTagNameMap[tagName]
+		 * (selectors?: string, textContent?: string, href: string): NodeTagNameMap[tagName]
+		 * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[tagName]
+		 */
 		case "a":
 			return function(selectors?: string | HTMLElementAttributesMap[typeof tagName], textContent?: string | HTMLElementAttributesMap[typeof tagName], href?: string | HTMLElementAttributesMap[typeof tagName], extras: HTMLElementAttributesMap[typeof tagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
