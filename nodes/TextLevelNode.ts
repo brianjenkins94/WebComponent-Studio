@@ -17,7 +17,7 @@ export class TextLevelNode extends Node {
 		this.cachedFragment = document.createDocumentFragment();
 
 		const textLevelNode = document.createElement(this.type);
-		textLevelNode.textContent = this.textContent;
+		textLevelNode.innerHTML = this.textContent;
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			textLevelNode.setAttribute(key, String(value));

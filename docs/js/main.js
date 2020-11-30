@@ -1,4 +1,4 @@
-// Text Content
+// Text-Level
 
 // b
 document.getElementById("b").after(b(".b", "This is some bold text.").fragment);
@@ -166,7 +166,87 @@ document.getElementById("fieldset").after(fieldset(".fieldset", "This is a legen
 document.getElementById("form").after(form(".form", "GET", "/", "application/x-www-form-urlencoded").fragment);
 
 // Input
-// TODO
+
+// Button-like
+
+// button[type=button]
+document.getElementById("button");
+
+// input[type=button]
+document.getElementById("buttonInput");
+
+// button[type=reset]
+document.getElementById("reset");
+
+// input[type=reset]
+document.getElementById("resetInput");
+
+// button[type=submit]
+document.getElementById("submit");
+
+// input[type=submit]
+document.getElementById("submitInput");
+
+// input[type=search]
+document.getElementById("search");
+
+// File
+document.getElementById("file");
+
+// Require-ables
+
+// input[type=checkbox]
+document.getElementById("checkbox");
+
+// input[type=date]
+document.getElementById("date");
+
+// input[type=datetime]
+document.getElementById("datetime");
+
+// input[type=email]
+document.getElementById("email");
+
+// input[type=image]
+document.getElementById("image");
+
+// input[type=month]
+document.getElementById("month");
+
+// input[type=number]
+document.getElementById("number");
+
+// input[type=password]
+document.getElementById("password");
+
+// input[type=tel]
+document.getElementById("tel");
+
+// input[type=text]
+document.getElementById("text");
+
+// input[type=time]
+document.getElementById("time");
+
+// input[type=url]
+document.getElementById("url");
+
+// input[type=week]
+document.getElementById("week");
+
+// Non-Require-ables
+
+// color
+document.getElementById("color");
+
+// hidden
+document.getElementById("hidden");
+
+// radio
+document.getElementById("radio");
+
+// range
+document.getElementById("range");
 
 // Select
 document.getElementById("select").after(select(".select", {}).fragment);

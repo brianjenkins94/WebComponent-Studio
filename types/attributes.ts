@@ -65,6 +65,36 @@ export interface HTMLElementAttributesMap {
 	"video": HTMLVideoElementAttributes;
 }
 
+export interface ExtendedHTMLElementAttributesMap extends HTMLElementAttributesMap {
+	"button[type=button]": HTMLButtonElementAttributes;
+	"button[type=reset]": HTMLButtonElementAttributes;
+	"button[type=submit]": HTMLButtonElementAttributes;
+	"checkbox": HTMLCheckboxInputElementAttributes;
+	"color": HTMLColorInputElementAttributes;
+	"date": HTMLDateInputElementAttributes;
+	"datetime": HTMLDatetimeLocalInputElementAttributes;
+	"email": HTMLEmailInputElementAttributes;
+	"file": HTMLFileInputElementAttributes;
+	"hidden": HTMLHiddenInputElementAttributes;
+	"image": HTMLImageInputElementAttributes;
+	"input[type=button]": HTMLButtonInputElementAttributes;
+	"input[type=reset]": HTMLButtonInputElementAttributes;
+	"input[type=submit]": HTMLButtonInputElementAttributes;
+	"month": HTMLMonthInputElementAttributes;
+	"number": HTMLNumberInputElementAttributes;
+	"password": HTMLPasswordInputElementAttributes;
+	"radio": HTMLRadioInputElementAttributes;
+	"range": HTMLRangeInputElementAttributes;
+	"reset": HTMLButtonElementAttributes;
+	"search": HTMLSearchInputElementAttributes;
+	"submit": HTMLButtonElementAttributes;
+	"tel": HTMLTelInputElementAttributes;
+	"text": HTMLTextInputElementAttributes;
+	"time": HTMLTimeInputElementAttributes;
+	"url": HTMLUrlInputElementAttributes;
+	"week": HTMLWeekInputElementAttributes;
+}
+
 interface HTMLElementAttributes {
 
 	/**
@@ -1069,9 +1099,9 @@ interface HTMLInputElementAttributes extends HTMLElementAttributes {
 	value?: string;
 }
 
-export interface HTMLButtonInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
+export interface HTMLButtonInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
-export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLCheckboxInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * A Boolean attribute indicating whether or not this checkbox is checked by default (when the
@@ -1105,7 +1135,7 @@ export interface HTMLCheckboxInputElement extends HTMLElementAttributes, HTMLInp
 	required?: boolean;
 }
 
-export interface HTMLColorInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLColorInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1117,7 +1147,7 @@ export interface HTMLColorInputElement extends HTMLElementAttributes, HTMLInputE
 	list?: string;
 }
 
-export interface HTMLDateInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLDateInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1177,7 +1207,7 @@ export interface HTMLDateInputElement extends HTMLElementAttributes, HTMLInputEl
 	step?: number;
 }
 
-export interface HTMLDatetimeLocalInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLDatetimeLocalInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1238,7 +1268,7 @@ export interface HTMLDatetimeLocalInputElement extends HTMLElementAttributes, HT
 	step?: number;
 }
 
-export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLEmailInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1334,7 +1364,7 @@ export interface HTMLEmailInputElement extends HTMLElementAttributes, HTMLInputE
 	size?: number;
 }
 
-export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLFileInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The `accept` attribute value is a string that defines the file types the file input should
@@ -1379,9 +1409,9 @@ export interface HTMLFileInputElement extends HTMLElementAttributes, HTMLInputEl
 	required?: boolean;
 }
 
-export interface HTMLHiddenInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
+export interface HTMLHiddenInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
-export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLImageInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The `alt` attribute provides an alternate string to use as the button's label if the image
@@ -1507,7 +1537,7 @@ export interface HTMLImageInputElement extends HTMLElementAttributes, HTMLInputE
 	width?: number;
 }
 
-export interface HTMLMonthInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLMonthInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1568,7 +1598,7 @@ export interface HTMLMonthInputElement extends HTMLElementAttributes, HTMLInputE
 	step?: number;
 }
 
-export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLNumberInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1636,7 +1666,7 @@ export interface HTMLNumberInputElement extends HTMLElementAttributes, HTMLInput
 	step?: number;
 }
 
-export interface HTMLPasswordInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLPasswordInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The maximum number of characters (as UTF-16 code units) the user can enter into the password
@@ -1720,7 +1750,7 @@ export interface HTMLPasswordInputElement extends HTMLElementAttributes, HTMLInp
 	size?: number;
 }
 
-export interface HTMLRadioInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLRadioInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * A Boolean attribute which, if present, indicates that this radio button is the default
@@ -1738,7 +1768,7 @@ export interface HTMLRadioInputElement extends HTMLElementAttributes, HTMLInputE
 	required?: boolean;
 }
 
-export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLRangeInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1787,9 +1817,9 @@ export interface HTMLRangeInputElement extends HTMLElementAttributes, HTMLInputE
 	step?: number;
 }
 
-export interface HTMLResetInputElement extends HTMLElementAttributes, HTMLInputElementAttributes { }
+export interface HTMLResetInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes { }
 
-export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLSearchInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The dirname attribute enables the submission of the directionality of the element. When
@@ -1903,7 +1933,7 @@ export interface HTMLSearchInputElement extends HTMLElementAttributes, HTMLInput
 	spellcheck?: boolean;
 }
 
-export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLSubmitInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * A string indicating the URL to which to submit the data. This takes precedence over the
@@ -1997,7 +2027,7 @@ export interface HTMLSubmitInputElement extends HTMLElementAttributes, HTMLInput
 	formtarget?: "_self" | "_blank" | "parent" | "_top";
 }
 
-export interface HTMLTelInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLTelInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -2084,7 +2114,7 @@ export interface HTMLTelInputElement extends HTMLElementAttributes, HTMLInputEle
 	size?: number;
 }
 
-export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLTextInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The dirname attribute enables the submission of the directionality of the element. When
@@ -2200,7 +2230,7 @@ export interface HTMLTextInputElement extends HTMLElementAttributes, HTMLInputEl
 	spellcheck?: boolean;
 }
 
-export interface HTMLTimeInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLTimeInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -2248,7 +2278,7 @@ export interface HTMLTimeInputElement extends HTMLElementAttributes, HTMLInputEl
 	step?: number;
 }
 
-export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLUrlInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -2356,7 +2386,7 @@ export interface HTMLUrlInputElement extends HTMLElementAttributes, HTMLInputEle
 	spellcheck?: boolean;
 }
 
-export interface HTMLWeekInputElement extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLWeekInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located

@@ -1,7 +1,46 @@
-//import { URL } from 'url';
+class EventEmitter {
+    constructor() {
+        this.events = {};
+    }
+    on(event, listener) {
+        if (this.events[event] === undefined) {
+            this.events[event] = [];
+        }
+        this.events[event].push(listener);
+        return listener;
+    }
+    off(event, listener) {
+        if (event === undefined && listener === undefined) {
+            this.events = {};
+        }
+        else if (listener === undefined) {
+            delete this.events[event];
+        }
+        else if (this.events[event].indexOf(listener) !== -1) {
+            this.events[event].splice(this.events[event].indexOf(listener), 1);
+        }
+    }
+    emit(event, ...args) {
+        if (this.events[event] !== undefined) {
+            for (const listener of this.events[event]) {
+                listener(...args);
+            }
+        }
+        if (event !== "*") {
+            this.emit("*", ...args);
+        }
+    }
+    once(event, listener) {
+        return this.on(event, () => {
+            this.emit(event);
+            this.off(event, listener);
+        });
+    }
+}
 
-class Node {
+class Node extends EventEmitter {
     constructor(type) {
+        super();
         this.attributes = {};
         this.children = [];
         this.type = type;
@@ -226,7 +265,7 @@ function primeConstructor(Node, tagName) {
 }
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const NodeTagNameMap = {
-    // Text Content
+    // Text-Level
     "b": primeConstructor(TextLevelNode, "b"),
     "blockquote": primeConstructor(TextLevelNode, "blockquote"),
     "button": primeConstructor(TextLevelNode, "button"),
@@ -298,20 +337,20 @@ const NodeTagNameMap = {
 };
 
 /* eslint-disable @typescript-eslint/typedef */
-const CSS_SELECTOR = /-?([_a-z]|[\240-\377]|[0-9a-f]{1,6})([_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*/i;
-function isUrl(string) {
-    try {
-        // eslint-disable-next-line no-new
-        new URL(string);
-    }
-    catch (error) {
-        return false;
-    }
-    return true;
-}
+// SOURCE: https://www.w3.org/TR/selectors-3/#lex
+const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*$/i;
+// SOURCE: https://tools.ietf.org/html/rfc3986#appendix-B
+const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 // eslint-disable-next-line complexity
 function createPrimitive(tagName) {
     switch (tagName) {
+        /**
+         * Text-level
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, textContent: string): NodeTagNameMap[tagName]
+         * (selectors?: string, textContent?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "b":
         case "blockquote":
         case "code":
@@ -326,7 +365,6 @@ function createPrimitive(tagName) {
         case "i":
         case "ins":
         case "kbd":
-        case "label":
         case "li":
         case "mark":
         case "p":
@@ -366,6 +404,26 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Label
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors): NodeTagNameMap[tagName]
+         * (selectors?, for, textContent): NodeTagNameMap[tagName]
+         * (selectors?, for, textContent, extras: object): NodeTagNameMap[tagName]
+         */
+        case "label":
+            return function (selectors, forValue, textContent, extras = {}) {
+                // TODO
+            };
+        /**
+         * Embedded
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, sources: string | string[]): NodeTagNameMap[tagName]
+         * (selectors?: string, sources?: string | string[], extras: object): NodeTagNameMap[tagName]
+         */
         case "audio":
         case "img":
         case "picture":
@@ -403,6 +461,13 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](undefined, extras);
             };
+        /**
+         * Grouping (+Sectioning/Form-associated)
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "article":
         case "aside":
         case "br":
@@ -439,7 +504,16 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * IFrame, Image
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, source: string[]): NodeTagNameMap[tagName]
+         * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[tagName]
+         */
         case "iframe":
+        case "image":
             return function (selectors, source, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
                     for (const selector of selectors.split(/#|./g)) {
@@ -458,7 +532,7 @@ function createPrimitive(tagName) {
                     source = selectors;
                 }
                 // source
-                if (typeof source === "string" && isUrl(source)) {
+                if (typeof source === "string" && URL_PATHNAME.test(source)) {
                     extras.src = source;
                 }
                 else if (typeof source === "object") {
@@ -467,6 +541,14 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Field Set
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, legend: string): NodeTagNameMap[tagName]
+         * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "fieldset":
             return function (selectors, legend, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -495,6 +577,16 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Form
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, method: string): NodeTagNameMap[tagName]
+         * (selectors?: string, method?: string, action: string): NodeTagNameMap[tagName]
+         * (selectors?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[tagName]
+         * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "form":
             return function (selectors, method, action, encoding, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -521,7 +613,7 @@ function createPrimitive(tagName) {
                     action = method;
                 }
                 // action
-                if (action !== undefined && typeof action === "string" && isUrl(action)) {
+                if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
                     extras.action = action;
                 }
                 else {
@@ -537,50 +629,90 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Button-like
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, value: string): NodeTagNameMap[tagName]
+         * (selectors?: string, value?: string, extras: object): NodeTagNameMap[tagName]
+         */
+        case "button[type=button]":
+        case "button[type=reset]":
         case "button":
-            throw new Error("Not yet implemented.");
-        case "checkbox":
-            throw new Error("Not yet implemented.");
-        case "color":
-            throw new Error("Not yet implemented.");
-        case "date":
-            throw new Error("Not yet implemented.");
-        case "datetime":
-            throw new Error("Not yet implemented.");
-        case "email":
-            throw new Error("Not yet implemented.");
-        case "file":
-            throw new Error("Not yet implemented.");
-        case "hidden":
-            throw new Error("Not yet implemented.");
-        case "image":
-            throw new Error("Not yet implemented.");
-        case "month":
-            throw new Error("Not yet implemented.");
-        case "number":
-            throw new Error("Not yet implemented.");
-        case "password":
-            throw new Error("Not yet implemented.");
-        case "radio":
-            throw new Error("Not yet implemented.");
-        case "range":
-            throw new Error("Not yet implemented.");
-        case "reset":
-            throw new Error("Not yet implemented.");
-        case "search":
-            throw new Error("Not yet implemented.");
+        case "button[type=submit]":
         case "submit":
-            throw new Error("Not yet implemented.");
+        case "input[type=button]":
+        case "input[type=reset]":
+        case "reset":
+        case "input[type=submit]":
+        case "search":
+            return function (selectors, options, extras = {}) {
+                // TODO
+            };
+        /**
+         * File
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, accept: string | string[]): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[tagName]
+         */
+        case "file":
+            return function (selectors, options, extras = {}) {
+                // TODO
+            };
+        /**
+         * Require-able
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, value: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[tagName]
+         */
+        case "checkbox":
+        case "date":
+        case "datetime":
+        case "email":
+        case "month":
+        case "number":
+        case "password":
         case "tel":
-            throw new Error("Not yet implemented.");
         case "text":
-            throw new Error("Not yet implemented.");
         case "time":
-            throw new Error("Not yet implemented.");
         case "url":
-            throw new Error("Not yet implemented.");
         case "week":
-            throw new Error("Not yet implemented.");
+            return function (selectors, options, extras = {}) {
+                // TODO
+            };
+        /**
+         * Non-require-able
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, value: string): NodeTagNameMap[tagName]
+         * (selectors?: string, name?: string, value?: string, extras: object): NodeTagNameMap[tagName]
+         */
+        case "color":
+        case "hidden":
+        case "radio":
+        case "range":
+            return function (selectors, options, extras = {}) {
+                // TODO
+            };
+        /**
+         * Select
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, options: object[]): NodeTagNameMap[tagName]
+         * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[tagName]
+         */
         case "select":
             return function (selectors, options, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -609,6 +741,14 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Figure
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors): NodeTagNameMap[tagName]
+         * (selectors?: string, figcaption: string): NodeTagNameMap[tagName]
+         * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "figure":
             return function (selectors, figcaption, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -637,6 +777,14 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Details
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, summary: string): NodeTagNameMap[tagName]
+         * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "details":
             return function (selectors, summary, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -666,6 +814,14 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Table
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, caption: string): NodeTagNameMap[tagName]
+         * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "table":
             return function (selectors, caption, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -694,6 +850,15 @@ function createPrimitive(tagName) {
                 // extras
                 return new NodeTagNameMap[tagName](extras);
             };
+        /**
+         * Anchor
+         *
+         * (): NodeTagNameMap[tagName]
+         * (selectors: string): NodeTagNameMap[tagName]
+         * (selectors?: string, href): NodeTagNameMap[tagName]
+         * (selectors?: string, textContent?: string, href: string): NodeTagNameMap[tagName]
+         * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[tagName]
+         */
         case "a":
             return function (selectors, textContent, href, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {

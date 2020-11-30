@@ -17,10 +17,9 @@ function primeConstructor(Node, tagName: keyof TopLevelHTMLElement): () => Node 
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const NodeTagNameMap = {
-	// Text Content
+	// Text-Level
 	"b": primeConstructor(TextLevelNode, "b"),
 	"blockquote": primeConstructor(TextLevelNode, "blockquote"),
-	"button": primeConstructor(TextLevelNode, "button"),
 	"code": primeConstructor(TextLevelNode, "code"),
 	"del": primeConstructor(TextLevelNode, "del"),
 	"em": primeConstructor(TextLevelNode, "em"),
@@ -80,8 +79,38 @@ export const NodeTagNameMap = {
 	// FieldSet
 	"fieldset": primeConstructor(FieldSetNode, "fieldset"),
 
-	// Input
-	//"input": primeConstructor(InputNode, "input"),
+	// Button-like
+	"button": primeConstructor(GroupingNode, "button"),
+	"buttonInput": primeConstructor(GroupingNode, "input"), // Childless
+	"reset": primeConstructor(GroupingNode, "input"),
+	"resetInput": primeConstructor(GroupingNode, "input"), // Childless
+	"submit": primeConstructor(GroupingNode, "input"),
+	"submitInput": primeConstructor(GroupingNode, "input"), // Childless
+	"search": primeConstructor(GroupingNode, "input"), // Childless
+
+	// File
+	"file": primeConstructor(GroupingNode, "input"), // Childless
+
+	// Require-ables
+	"checkbox": primeConstructor(GroupingNode, "input"), // Childless
+	"date": primeConstructor(GroupingNode, "input"), // Childless
+	"datetime": primeConstructor(GroupingNode, "input"), // Childless
+	"email": primeConstructor(GroupingNode, "input"), // Childless
+	"image": primeConstructor(GroupingNode, "input"), // Childless
+	"month": primeConstructor(GroupingNode, "input"), // Childless
+	"number": primeConstructor(GroupingNode, "input"), // Childless
+	"password": primeConstructor(GroupingNode, "input"), // Childless
+	"tel": primeConstructor(GroupingNode, "input"), // Childless
+	"text": primeConstructor(GroupingNode, "input"), // Childless
+	"time": primeConstructor(GroupingNode, "input"), // Childless
+	"url": primeConstructor(GroupingNode, "input"), // Childless
+	"week": primeConstructor(GroupingNode, "input"), // Childless
+
+	// Non-Require-ables
+	"color": primeConstructor(GroupingNode, "input"), // Childless
+	"hidden": primeConstructor(GroupingNode, "input"), // Childless
+	"radio": primeConstructor(GroupingNode, "input"), // Childless
+	"range": primeConstructor(GroupingNode, "input"), // Childless
 
 	// Select
 	"select": primeConstructor(SelectNode, "select"),

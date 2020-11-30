@@ -30,7 +30,7 @@ export class TableNode extends Node {
 
 		if (this.caption !== undefined) {
 			const caption = document.createElement("caption");
-			caption.textContent = this.caption;
+			caption.innerHTML = this.caption;
 
 			tableNode.append(caption);
 		}

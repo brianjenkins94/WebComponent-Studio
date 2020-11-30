@@ -22,7 +22,7 @@ export class FigureNode extends Node {
 
 		if (this.caption !== undefined) {
 			const caption = document.createElement("caption");
-			caption.textContent = this.caption;
+			caption.innerHTML = this.caption;
 
 			figureNode.append(caption);
 		}

@@ -22,7 +22,7 @@ export class FieldSetNode extends Node {
 
 		if (this.legend !== undefined) {
 			const legend = document.createElement("legend");
-			legend.textContent = this.legend;
+			legend.innerHTML = this.legend;
 
 			fieldSetNode.append(legend);
 		}
