@@ -331,25 +331,24 @@ const NodeTagNameMap = {
     "search": primeConstructor(GroupingNode, "input"),
     // File
     "file": primeConstructor(GroupingNode, "input"),
-    // Require-ables
+    // Input
     "checkbox": primeConstructor(GroupingNode, "input"),
+    "color": primeConstructor(GroupingNode, "input"),
     "date": primeConstructor(GroupingNode, "input"),
     "datetime": primeConstructor(GroupingNode, "input"),
     "email": primeConstructor(GroupingNode, "input"),
+    "hidden": primeConstructor(GroupingNode, "input"),
     "image": primeConstructor(GroupingNode, "input"),
     "month": primeConstructor(GroupingNode, "input"),
     "number": primeConstructor(GroupingNode, "input"),
     "password": primeConstructor(GroupingNode, "input"),
+    "radio": primeConstructor(GroupingNode, "input"),
+    "range": primeConstructor(GroupingNode, "input"),
     "tel": primeConstructor(GroupingNode, "input"),
     "text": primeConstructor(GroupingNode, "input"),
     "time": primeConstructor(GroupingNode, "input"),
     "url": primeConstructor(GroupingNode, "input"),
     "week": primeConstructor(GroupingNode, "input"),
-    // Non-Require-ables
-    "color": primeConstructor(GroupingNode, "input"),
-    "hidden": primeConstructor(GroupingNode, "input"),
-    "radio": primeConstructor(GroupingNode, "input"),
-    "range": primeConstructor(GroupingNode, "input"),
     // Select
     "select": primeConstructor(SelectNode, "select"),
     // Figure
@@ -691,7 +690,7 @@ function createPrimitive(tagName) {
                 // TODO
             };
         /**
-         * Require-able
+         * Input
          *
          * (): NodeTagNameMap[tagName]
          * (selectors: string): NodeTagNameMap[tagName]
@@ -701,33 +700,21 @@ function createPrimitive(tagName) {
          * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[tagName]
          */
         case "checkbox":
+        case "color":
         case "date":
         case "datetime":
         case "email":
+        case "hidden":
         case "month":
         case "number":
         case "password":
+        case "radio":
+        case "range":
         case "tel":
         case "text":
         case "time":
         case "url":
         case "week":
-            return function (selectors, options, extras = {}) {
-                // TODO
-            };
-        /**
-         * Non-require-able
-         *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, value: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, value?: string, extras: object): NodeTagNameMap[tagName]
-         */
-        case "color":
-        case "hidden":
-        case "radio":
-        case "range":
             return function (selectors, options, extras = {}) {
                 // TODO
             };
@@ -1042,12 +1029,16 @@ const file = createPrimitive("file");
 globalThis.file = file;
 const checkbox = createPrimitive("checkbox");
 globalThis.checkbox = checkbox;
+const color = createPrimitive("color");
+globalThis.color = color;
 const date = createPrimitive("date");
 globalThis.date = date;
 const datetime = createPrimitive("datetime");
 globalThis.datetime = datetime;
 const email = createPrimitive("email");
 globalThis.email = email;
+const hidden = createPrimitive("hidden");
+globalThis.hidden = hidden;
 const month = createPrimitive("month");
 globalThis.month = month;
 const number = createPrimitive("number");
@@ -1055,6 +1046,10 @@ globalThis.number = number;
 const password = createPrimitive("password");
 globalThis.password = password;
 const tel = createPrimitive("tel");
+const radio = createPrimitive("radio");
+globalThis.radio = radio;
+const range = createPrimitive("range");
+globalThis.range = range;
 globalThis.tel = tel;
 const text = createPrimitive("text");
 globalThis.text = text;
@@ -1064,14 +1059,6 @@ const url = createPrimitive("url");
 globalThis.url = url;
 const week = createPrimitive("week");
 globalThis.week = week;
-const color = createPrimitive("color");
-globalThis.color = color;
-const hidden = createPrimitive("hidden");
-globalThis.hidden = hidden;
-const radio = createPrimitive("radio");
-globalThis.radio = radio;
-const range = createPrimitive("range");
-globalThis.range = range;
 const select = createPrimitive("select");
 globalThis.select = select;
 const figure = createPrimitive("figure");

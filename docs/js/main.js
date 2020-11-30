@@ -193,10 +193,13 @@ document.getElementById("search");
 // File
 document.getElementById("file");
 
-// Require-ables
+// Input
 
 // input[type=checkbox]
 document.getElementById("checkbox");
+
+// input[type=color]
+document.getElementById("color");
 
 // input[type=date]
 document.getElementById("date");
@@ -206,6 +209,9 @@ document.getElementById("datetime");
 
 // input[type=email]
 document.getElementById("email");
+
+// input[type=hidden]
+document.getElementById("hidden");
 
 // input[type=image]
 document.getElementById("image");
@@ -218,6 +224,12 @@ document.getElementById("number");
 
 // input[type=password]
 document.getElementById("password");
+
+// input[type=radio]
+document.getElementById("radio");
+
+// input[type=range]
+document.getElementById("range");
 
 // input[type=tel]
 document.getElementById("tel");
@@ -233,20 +245,6 @@ document.getElementById("url");
 
 // input[type=week]
 document.getElementById("week");
-
-// Non-Require-ables
-
-// color
-document.getElementById("color");
-
-// hidden
-document.getElementById("hidden");
-
-// radio
-document.getElementById("radio");
-
-// range
-document.getElementById("range");
 
 // Select
 document.getElementById("select").after(select(".select", {}).fragment);

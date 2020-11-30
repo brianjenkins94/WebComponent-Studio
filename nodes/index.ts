@@ -91,26 +91,24 @@ export const NodeTagNameMap = {
 	// File
 	"file": primeConstructor(GroupingNode, "input"), // Childless
 
-	// Require-ables
+	// Input
 	"checkbox": primeConstructor(GroupingNode, "input"), // Childless
+	"color": primeConstructor(GroupingNode, "input"), // Childless
 	"date": primeConstructor(GroupingNode, "input"), // Childless
 	"datetime": primeConstructor(GroupingNode, "input"), // Childless
 	"email": primeConstructor(GroupingNode, "input"), // Childless
+	"hidden": primeConstructor(GroupingNode, "input"), // Childless
 	"image": primeConstructor(GroupingNode, "input"), // Childless
 	"month": primeConstructor(GroupingNode, "input"), // Childless
 	"number": primeConstructor(GroupingNode, "input"), // Childless
 	"password": primeConstructor(GroupingNode, "input"), // Childless
+	"radio": primeConstructor(GroupingNode, "input"), // Childless
+	"range": primeConstructor(GroupingNode, "input"), // Childless
 	"tel": primeConstructor(GroupingNode, "input"), // Childless
 	"text": primeConstructor(GroupingNode, "input"), // Childless
 	"time": primeConstructor(GroupingNode, "input"), // Childless
 	"url": primeConstructor(GroupingNode, "input"), // Childless
 	"week": primeConstructor(GroupingNode, "input"), // Childless
-
-	// Non-Require-ables
-	"color": primeConstructor(GroupingNode, "input"), // Childless
-	"hidden": primeConstructor(GroupingNode, "input"), // Childless
-	"radio": primeConstructor(GroupingNode, "input"), // Childless
-	"range": primeConstructor(GroupingNode, "input"), // Childless
 
 	// Select
 	"select": primeConstructor(SelectNode, "select"),

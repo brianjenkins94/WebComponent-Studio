@@ -358,7 +358,7 @@ function createPrimitive(tagName: keyof ExtendedTopLevelHTMLElement) {
 			};
 
 		/**
-		 * Require-able
+		 * Input
 		 *
 		 * (): NodeTagNameMap[tagName]
 		 * (selectors: string): NodeTagNameMap[tagName]
@@ -368,34 +368,21 @@ function createPrimitive(tagName: keyof ExtendedTopLevelHTMLElement) {
 		 * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "checkbox":
+		case "color":
 		case "date":
 		case "datetime":
 		case "email":
+		case "hidden":
 		case "month":
 		case "number":
 		case "password":
+		case "radio":
+		case "range":
 		case "tel":
 		case "text":
 		case "time":
 		case "url":
 		case "week":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], options?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
-				// TODO
-			};
-
-		/**
-		 * Non-require-able
-		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, value: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, value?: string, extras: object): NodeTagNameMap[tagName]
-		 */
-		case "color":
-		case "hidden":
-		case "radio":
-		case "range":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], options?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
 				// TODO
 			};
@@ -737,12 +724,16 @@ globalThis.file = file;
 
 export const checkbox = createPrimitive("checkbox");
 globalThis.checkbox = checkbox;
+export const color = createPrimitive("color");
+globalThis.color = color;
 export const date = createPrimitive("date");
 globalThis.date = date;
 export const datetime = createPrimitive("datetime");
 globalThis.datetime = datetime;
 export const email = createPrimitive("email");
 globalThis.email = email;
+export const hidden = createPrimitive("hidden");
+globalThis.hidden = hidden;
 export const month = createPrimitive("month");
 globalThis.month = month;
 export const number = createPrimitive("number");
@@ -750,6 +741,10 @@ globalThis.number = number;
 export const password = createPrimitive("password");
 globalThis.password = password;
 export const tel = createPrimitive("tel");
+export const radio = createPrimitive("radio");
+globalThis.radio = radio;
+export const range = createPrimitive("range");
+globalThis.range = range;
 globalThis.tel = tel;
 export const text = createPrimitive("text");
 globalThis.text = text;
@@ -759,15 +754,6 @@ export const url = createPrimitive("url");
 globalThis.url = url;
 export const week = createPrimitive("week");
 globalThis.week = week;
-
-export const color = createPrimitive("color");
-globalThis.color = color;
-export const hidden = createPrimitive("hidden");
-globalThis.hidden = hidden;
-export const radio = createPrimitive("radio");
-globalThis.radio = radio;
-export const range = createPrimitive("range");
-globalThis.range = range;
 
 export const select = createPrimitive("select");
 globalThis.select = select;
