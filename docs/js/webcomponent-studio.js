@@ -143,7 +143,7 @@ class FieldSetNode extends Node {
         const fieldSetNode = document.createElement(this.type);
         if (this.legend !== undefined) {
             const legend = document.createElement("legend");
-            legend.textContent = this.legend;
+            legend.innerHTML = this.legend;
             fieldSetNode.append(legend);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
@@ -166,7 +166,7 @@ class FigureNode extends Node {
         const figureNode = document.createElement(this.type);
         if (this.caption !== undefined) {
             const caption = document.createElement("caption");
-            caption.textContent = this.caption;
+            caption.innerHTML = this.caption;
             figureNode.append(caption);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
@@ -226,7 +226,7 @@ class TableNode extends Node {
         const tableNode = document.createElement(this.type);
         if (this.caption !== undefined) {
             const caption = document.createElement("caption");
-            caption.textContent = this.caption;
+            caption.innerHTML = this.caption;
             tableNode.append(caption);
         }
         tableNode.append(document.createElement("thead"));
@@ -249,7 +249,7 @@ class TextLevelNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const textLevelNode = document.createElement(this.type);
-        textLevelNode.textContent = this.textContent;
+        textLevelNode.innerHTML = this.textContent;
         for (const [key, value] of Object.entries(this.attributes)) {
             textLevelNode.setAttribute(key, String(value));
         }
@@ -268,7 +268,6 @@ const NodeTagNameMap = {
     // Text-Level
     "b": primeConstructor(TextLevelNode, "b"),
     "blockquote": primeConstructor(TextLevelNode, "blockquote"),
-    "button": primeConstructor(TextLevelNode, "button"),
     "code": primeConstructor(TextLevelNode, "code"),
     "del": primeConstructor(TextLevelNode, "del"),
     "em": primeConstructor(TextLevelNode, "em"),
@@ -322,8 +321,35 @@ const NodeTagNameMap = {
     "iframe": primeConstructor(GroupingNode, "iframe"),
     // FieldSet
     "fieldset": primeConstructor(FieldSetNode, "fieldset"),
-    // Input
-    //"input": primeConstructor(InputNode, "input"),
+    // Button-like
+    "button": primeConstructor(GroupingNode, "button"),
+    "buttonInput": primeConstructor(GroupingNode, "input"),
+    "reset": primeConstructor(GroupingNode, "input"),
+    "resetInput": primeConstructor(GroupingNode, "input"),
+    "submit": primeConstructor(GroupingNode, "input"),
+    "submitInput": primeConstructor(GroupingNode, "input"),
+    "search": primeConstructor(GroupingNode, "input"),
+    // File
+    "file": primeConstructor(GroupingNode, "input"),
+    // Require-ables
+    "checkbox": primeConstructor(GroupingNode, "input"),
+    "date": primeConstructor(GroupingNode, "input"),
+    "datetime": primeConstructor(GroupingNode, "input"),
+    "email": primeConstructor(GroupingNode, "input"),
+    "image": primeConstructor(GroupingNode, "input"),
+    "month": primeConstructor(GroupingNode, "input"),
+    "number": primeConstructor(GroupingNode, "input"),
+    "password": primeConstructor(GroupingNode, "input"),
+    "tel": primeConstructor(GroupingNode, "input"),
+    "text": primeConstructor(GroupingNode, "input"),
+    "time": primeConstructor(GroupingNode, "input"),
+    "url": primeConstructor(GroupingNode, "input"),
+    "week": primeConstructor(GroupingNode, "input"),
+    // Non-Require-ables
+    "color": primeConstructor(GroupingNode, "input"),
+    "hidden": primeConstructor(GroupingNode, "input"),
+    "radio": primeConstructor(GroupingNode, "input"),
+    "range": primeConstructor(GroupingNode, "input"),
     // Select
     "select": primeConstructor(SelectNode, "select"),
     // Figure
@@ -902,8 +928,6 @@ const b = createPrimitive("b");
 globalThis.b = b;
 const blockquote = createPrimitive("blockquote");
 globalThis.blockquote = blockquote;
-const button = createPrimitive("button");
-globalThis.button = button;
 const code = createPrimitive("code");
 globalThis.code = code;
 const del = createPrimitive("del");
@@ -928,8 +952,6 @@ const ins = createPrimitive("ins");
 globalThis.ins = ins;
 const kbd = createPrimitive("kbd");
 globalThis.kbd = kbd;
-const label = createPrimitive("label");
-globalThis.label = label;
 const li = createPrimitive("li");
 globalThis.li = li;
 const mark = createPrimitive("mark");
@@ -954,6 +976,8 @@ const sup = createPrimitive("sup");
 globalThis.sup = sup;
 const u = createPrimitive("u");
 globalThis.u = u;
+const label = createPrimitive("label");
+globalThis.label = label;
 const audio = createPrimitive("audio");
 globalThis.audio = audio;
 const img = createPrimitive("img");
@@ -1000,6 +1024,54 @@ const fieldset = createPrimitive("fieldset");
 globalThis.fieldset = fieldset;
 const form = createPrimitive("form");
 globalThis.form = form;
+const button = createPrimitive("button[type=button]");
+globalThis.button = button;
+const reset = createPrimitive("button[type=reset]");
+globalThis.reset = reset;
+const submit = createPrimitive("button[type=submit]");
+globalThis.submit = submit;
+const buttonInput = createPrimitive("input[type=button]");
+globalThis.buttonInput = buttonInput;
+const resetInput = createPrimitive("input[type=reset]");
+globalThis.resetInput = resetInput;
+const submitInput = createPrimitive("input[type=submit]");
+globalThis.submitInput = submitInput;
+const search = createPrimitive("search");
+globalThis.search = search;
+const file = createPrimitive("file");
+globalThis.file = file;
+const checkbox = createPrimitive("checkbox");
+globalThis.checkbox = checkbox;
+const date = createPrimitive("date");
+globalThis.date = date;
+const datetime = createPrimitive("datetime");
+globalThis.datetime = datetime;
+const email = createPrimitive("email");
+globalThis.email = email;
+const month = createPrimitive("month");
+globalThis.month = month;
+const number = createPrimitive("number");
+globalThis.number = number;
+const password = createPrimitive("password");
+globalThis.password = password;
+const tel = createPrimitive("tel");
+globalThis.tel = tel;
+const text = createPrimitive("text");
+globalThis.text = text;
+const time = createPrimitive("time");
+globalThis.time = time;
+const url = createPrimitive("url");
+globalThis.url = url;
+const week = createPrimitive("week");
+globalThis.week = week;
+const color = createPrimitive("color");
+globalThis.color = color;
+const hidden = createPrimitive("hidden");
+globalThis.hidden = hidden;
+const radio = createPrimitive("radio");
+globalThis.radio = radio;
+const range = createPrimitive("range");
+globalThis.range = range;
 const select = createPrimitive("select");
 globalThis.select = select;
 const figure = createPrimitive("figure");
@@ -1011,4 +1083,4 @@ globalThis.table = table;
 const a = createPrimitive("a");
 globalThis.a = a;
 
-//export { a, article, aside, audio, b, blockquote, br, button, canvas, code, del, details, div, em, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img, ins, kbd, label, li, main, mark, meter, nav, ol, p, picture, pre, progress, q, s, section, select, small, span, strong, sub, sup, table, textarea, u, ul, video };
+//export { a, article, aside, audio, b, blockquote, br, button, buttonInput, canvas, checkbox, code, color, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, img, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, resetInput, s, search, section, select, small, span, strong, sub, submit, submitInput, sup, table, tel, text, textarea, time, u, ul, url, video, week };
