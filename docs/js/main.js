@@ -6,13 +6,10 @@ document.getElementById("b").after(b(".b", "This is some bold text.").fragment);
 // blockquote
 document.getElementById("blockquote").after(blockquote(".blockquote", "This is a blockquote.").fragment);
 
-// button
-document.getElementById("button").after(button(".button", "This is a button.").fragment);
-
 // code
 document.getElementById("code").after(code(".code", "This is some inline code.").fragment);
 
-// code
+// del
 document.getElementById("del").after(del(".del", "This is some deleted text.").fragment);
 
 // em

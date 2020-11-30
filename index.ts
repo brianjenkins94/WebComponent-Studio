@@ -71,7 +71,7 @@ function createPrimitive(tagName: keyof ExtendedTopLevelHTMLElement) {
 				if (textContent !== undefined && typeof textContent !== "object") {
 					return new NodeTagNameMap[tagName](textContent, extras);
 				} else if (typeof textContent === "object") {
-					extras = textContent;
+					extras = { ...textContent, ...extras };
 				}
 
 				// extras
@@ -89,7 +89,26 @@ function createPrimitive(tagName: keyof ExtendedTopLevelHTMLElement) {
 		 */
 		case "label":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], forValue?: string | ExtendedHTMLElementAttributesMap[typeof tagName], textContent?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
-				// TODO
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+					for (const selector of selectors.split(/#|./g)) {
+						if (selector.startsWith("#")) {
+							extras.id = selector;
+						} else if (selector.startsWith(".")) {
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
+						}
+					}
+				} else {
+					forValue = selectors;
+					textContent = forValue;
+				}
+
+				// extras
+
+				return new NodeTagNameMap[tagName](forValue, textContent, extras);
 			};
 
 		/**
@@ -338,8 +357,34 @@ function createPrimitive(tagName: keyof ExtendedTopLevelHTMLElement) {
 		case "reset":
 		case "input[type=submit]":
 		case "search":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], options?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
-				// TODO
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], value?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+					for (const selector of selectors.split(/#|./g)) {
+						if (selector.startsWith("#")) {
+							extras.id = selector;
+						} else if (selector.startsWith(".")) {
+							if (extras.class === undefined) {
+								extras.class = "";
+							}
+
+							extras.class += " " + selector;
+						}
+					}
+				} else {
+					value = selectors;
+				}
+
+				// value
+
+				if (value !== undefined && Array.isArray(value)) {
+					return new NodeTagNameMap[tagName](value, extras);
+				} else if (typeof value === "object") {
+					extras = { ...value, ...extras };
+				}
+
+				// extras
+
+				return new NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -740,11 +785,11 @@ export const number = createPrimitive("number");
 globalThis.number = number;
 export const password = createPrimitive("password");
 globalThis.password = password;
-export const tel = createPrimitive("tel");
 export const radio = createPrimitive("radio");
 globalThis.radio = radio;
 export const range = createPrimitive("range");
 globalThis.range = range;
+export const tel = createPrimitive("tel");
 globalThis.tel = tel;
 export const text = createPrimitive("text");
 globalThis.text = text;
