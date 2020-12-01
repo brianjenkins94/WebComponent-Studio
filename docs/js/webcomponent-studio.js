@@ -404,7 +404,7 @@ function createPrimitive(tagName) {
         case "u":
             return function (selectors, textContent, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -424,7 +424,7 @@ function createPrimitive(tagName) {
                     return new NodeTagNameMap[tagName](textContent, extras);
                 }
                 else if (typeof textContent === "object") {
-                    extras = textContent;
+                    extras = Object.assign(Object.assign({}, textContent), extras);
                 }
                 // extras
                 return new NodeTagNameMap[tagName](extras);
@@ -439,7 +439,25 @@ function createPrimitive(tagName) {
          */
         case "label":
             return function (selectors, forValue, textContent, extras = {}) {
-                // TODO
+                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+                    for (const selector of selectors.split(/#|\./g)) {
+                        if (selector.startsWith("#")) {
+                            extras.id = selector;
+                        }
+                        else if (selector.startsWith(".")) {
+                            if (extras.class === undefined) {
+                                extras.class = "";
+                            }
+                            extras.class += " " + selector;
+                        }
+                    }
+                }
+                else {
+                    forValue = selectors;
+                    textContent = forValue;
+                }
+                // extras
+                return new NodeTagNameMap[tagName](forValue, textContent, extras);
             };
         /**
          * Embedded
@@ -455,7 +473,7 @@ function createPrimitive(tagName) {
         case "video":
             return function (selectors, sources, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -511,7 +529,7 @@ function createPrimitive(tagName) {
         case "ul":
             return function (selectors, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -541,7 +559,7 @@ function createPrimitive(tagName) {
         case "image":
             return function (selectors, source, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -577,7 +595,7 @@ function createPrimitive(tagName) {
         case "fieldset":
             return function (selectors, legend, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -615,7 +633,7 @@ function createPrimitive(tagName) {
         case "form":
             return function (selectors, method, action, encoding, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -672,8 +690,32 @@ function createPrimitive(tagName) {
         case "reset":
         case "input[type=submit]":
         case "search":
-            return function (selectors, options, extras = {}) {
-                // TODO
+            return function (selectors, value, extras = {}) {
+                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+                    for (const selector of selectors.split(/#|\./g)) {
+                        if (selector.startsWith("#")) {
+                            extras.id = selector;
+                        }
+                        else if (selector.startsWith(".")) {
+                            if (extras.class === undefined) {
+                                extras.class = "";
+                            }
+                            extras.class += " " + selector;
+                        }
+                    }
+                }
+                else {
+                    value = selectors;
+                }
+                // value
+                if (value !== undefined && Array.isArray(value)) {
+                    return new NodeTagNameMap[tagName](value, extras);
+                }
+                else if (typeof value === "object") {
+                    extras = Object.assign(Object.assign({}, value), extras);
+                }
+                // extras
+                return new NodeTagNameMap[tagName](extras);
             };
         /**
          * File
@@ -686,8 +728,51 @@ function createPrimitive(tagName) {
          * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[tagName]
          */
         case "file":
-            return function (selectors, options, extras = {}) {
-                // TODO
+            return function (selectors, name, accept, required, extras = {}) {
+                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+                    for (const selector of selectors.split(/#|\./g)) {
+                        if (selector.startsWith("#")) {
+                            extras.id = selector;
+                        }
+                        else if (selector.startsWith(".")) {
+                            if (extras.class === undefined) {
+                                extras.class = "";
+                            }
+                            extras.class += " " + selector;
+                        }
+                    }
+                    if (extras.id !== undefined) {
+                        extras.name = extras.id;
+                    }
+                }
+                else {
+                    name = selectors;
+                }
+                // name
+                if (name !== undefined && typeof name === "string") {
+                    if (/\w+/i.test(name)) {
+                        extras.name = name;
+                    }
+                    else if (name.startsWith(".") || name.includes("/")) {
+                        accept = name;
+                    }
+                }
+                else if (typeof name === "boolean") {
+                    required = name;
+                }
+                // accept
+                if (accept !== undefined && typeof accept === "string") {
+                    extras.accept = accept;
+                }
+                else {
+                    required = accept;
+                }
+                // required
+                if (required !== undefined && typeof required === "boolean") {
+                    extras.required = required;
+                }
+                // extras
+                return new NodeTagNameMap[tagName](extras);
             };
         /**
          * Input
@@ -715,8 +800,46 @@ function createPrimitive(tagName) {
         case "time":
         case "url":
         case "week":
-            return function (selectors, options, extras = {}) {
-                // TODO
+            return function (selectors, name, value, required, extras = {}) {
+                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+                    for (const selector of selectors.split(/#|\./g)) {
+                        if (selector.startsWith("#")) {
+                            extras.id = selector;
+                        }
+                        else if (selector.startsWith(".")) {
+                            if (extras.class === undefined) {
+                                extras.class = "";
+                            }
+                            extras.class += " " + selector;
+                        }
+                    }
+                    if (extras.id !== undefined) {
+                        extras.name = extras.id;
+                    }
+                }
+                else {
+                    name = selectors;
+                }
+                // name
+                if (name !== undefined && typeof name === "string" && typeof value !== "string") {
+                    extras.name = name;
+                }
+                else if (typeof name === "boolean") {
+                    value = name;
+                }
+                // value
+                if (value !== undefined && typeof value === "string") {
+                    extras.value = value;
+                }
+                else {
+                    required = value;
+                }
+                // required
+                if (required !== undefined && typeof required === "boolean") {
+                    extras.required = required;
+                }
+                // extras
+                return new NodeTagNameMap[tagName](extras);
             };
         /**
          * Select
@@ -729,7 +852,7 @@ function createPrimitive(tagName) {
         case "select":
             return function (selectors, options, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -765,7 +888,7 @@ function createPrimitive(tagName) {
         case "figure":
             return function (selectors, figcaption, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -801,7 +924,7 @@ function createPrimitive(tagName) {
         case "details":
             return function (selectors, summary, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -838,7 +961,7 @@ function createPrimitive(tagName) {
         case "table":
             return function (selectors, caption, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -875,7 +998,7 @@ function createPrimitive(tagName) {
         case "a":
             return function (selectors, textContent, href, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|./g)) {
+                    for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
                             extras.id = selector;
                         }
@@ -1045,11 +1168,11 @@ const number = createPrimitive("number");
 globalThis.number = number;
 const password = createPrimitive("password");
 globalThis.password = password;
-const tel = createPrimitive("tel");
 const radio = createPrimitive("radio");
 globalThis.radio = radio;
 const range = createPrimitive("range");
 globalThis.range = range;
+const tel = createPrimitive("tel");
 globalThis.tel = tel;
 const text = createPrimitive("text");
 globalThis.text = text;

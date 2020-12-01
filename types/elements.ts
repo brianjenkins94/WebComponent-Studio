@@ -1,5 +1,3 @@
-import type { HTMLCheckboxInputElementAttributes, HTMLColorInputElementAttributes, HTMLDateInputElementAttributes, HTMLDatetimeLocalInputElementAttributes, HTMLEmailInputElementAttributes, HTMLFileInputElementAttributes, HTMLHiddenInputElementAttributes, HTMLButtonInputElementAttributes, HTMLSubmitInputElementAttributes, HTMLMonthInputElementAttributes, HTMLNumberInputElementAttributes, HTMLPasswordInputElementAttributes, HTMLRadioInputElementAttributes, HTMLRangeInputElementAttributes, HTMLSearchInputElementAttributes, HTMLTelInputElementAttributes, HTMLTextInputElementAttributes, HTMLTimeInputElementAttributes, HTMLUrlInputElementAttributes, HTMLWeekInputElementAttributes } from "./attributes";
-
 interface EditingContent {
 	"del": HTMLModElement;
 	"ins": HTMLModElement;
@@ -123,28 +121,28 @@ export interface ExtendedTopLevelHTMLElement extends TopLevelHTMLElement {
 	"button[type=button]": HTMLButtonElement;
 	"button[type=reset]": HTMLButtonElement;
 	"button[type=submit]": HTMLButtonElement;
-	"checkbox": HTMLCheckboxInputElementAttributes;
-	"color": HTMLColorInputElementAttributes;
-	"date": HTMLDateInputElementAttributes;
-	"datetime": HTMLDatetimeLocalInputElementAttributes;
-	"email": HTMLEmailInputElementAttributes;
-	"file": HTMLFileInputElementAttributes;
-	"hidden": HTMLHiddenInputElementAttributes;
+	"checkbox": HTMLInputElement;
+	"color": HTMLInputElement;
+	"date": HTMLInputElement;
+	"datetime": HTMLInputElement;
+	"email": HTMLInputElement;
+	"file": HTMLInputElement;
+	"hidden": HTMLInputElement;
 	"image": HTMLInputElement;
-	"input[type=button]": HTMLButtonInputElementAttributes;
-	"input[type=reset]": HTMLButtonInputElementAttributes;
-	"input[type=submit]": HTMLSubmitInputElementAttributes;
-	"month": HTMLMonthInputElementAttributes;
-	"number": HTMLNumberInputElementAttributes;
-	"password": HTMLPasswordInputElementAttributes;
-	"radio": HTMLRadioInputElementAttributes;
-	"range": HTMLRangeInputElementAttributes;
-	"reset": HTMLButtonElement;
-	"search": HTMLSearchInputElementAttributes;
-	"submit": HTMLButtonElement;
-	"tel": HTMLTelInputElementAttributes;
-	"text": HTMLTextInputElementAttributes;
-	"time": HTMLTimeInputElementAttributes;
-	"url": HTMLUrlInputElementAttributes;
-	"week": HTMLWeekInputElementAttributes;
+	"input[type=button]": HTMLInputElement;
+	"input[type=reset]": HTMLInputElement;
+	"input[type=submit]": HTMLInputElement;
+	"month": HTMLInputElement;
+	"number": HTMLInputElement;
+	"password": HTMLInputElement;
+	"radio": HTMLInputElement;
+	"range": HTMLInputElement;
+	"reset": HTMLInputElement;
+	"search": HTMLInputElement;
+	"submit": HTMLInputElement;
+	"tel": HTMLInputElement;
+	"text": HTMLInputElement;
+	"time": HTMLInputElement;
+	"url": HTMLInputElement;
+	"week": HTMLInputElement;
 }
