@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { AnchorNode } from "./AnchorNode";
 import { DetailsNode } from "./DetailsNode";
 import { EmbeddedNode } from "./EmbeddedNode";
@@ -7,15 +9,15 @@ import { GroupingNode } from "./GroupingNode";
 import { SelectNode } from "./SelectNode";
 import { TableNode } from "./TableNode";
 import { TextLevelNode } from "./TextLevelNode";
-import type { TopLevelHTMLElement } from "../types/elements";
+import type { Node } from "../abstract/Node";
 
-function primeConstructor(Node, tagName: keyof TopLevelHTMLElement): () => Node {
-	return function(...args: ConstructorParameters<typeof Node>): Node {
-		return new Node(tagName, ...args);
+// `node` should be anything decendant of `Node`
+function primeConstructor<NodeType extends Node, ArgsType extends any[]>(Node: new (type: string, ...args: ArgsType) => NodeType, type: string) {
+	return function(...args: [...ArgsType]): NodeType {
+		return new Node(type, ...args);
 	};
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const NodeTagNameMap = {
 	// Text-Level
 	"b": primeConstructor(TextLevelNode, "b"),

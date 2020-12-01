@@ -258,12 +258,13 @@ class TextLevelNode extends Node {
     }
 }
 
-function primeConstructor(Node, tagName) {
+/* eslint-disable @typescript-eslint/naming-convention */
+// `node` should be anything decendant of `Node`
+function primeConstructor(Node, type) {
     return function (...args) {
-        return new Node(tagName, ...args);
+        return new Node(type, ...args);
     };
 }
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const NodeTagNameMap = {
     // Text-Level
     "b": primeConstructor(TextLevelNode, "b"),
@@ -1021,7 +1022,7 @@ function createPrimitive(tagName) {
                     href = textContent;
                 }
                 // href
-                if (href !== undefined && typeof href === "string" && isUrl(href)) {
+                if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
                     return new NodeTagNameMap[tagName](href, href, extras);
                 }
                 else if (typeof textContent === "object") {

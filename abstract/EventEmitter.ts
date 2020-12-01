@@ -1,4 +1,4 @@
-export class EventEmitter {
+export abstract class EventEmitter {
 	private events = {};
 
 	public on(event: string, listener: () => void): () => void {

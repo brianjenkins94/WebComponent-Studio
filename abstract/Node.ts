@@ -1,7 +1,7 @@
 import { EventEmitter } from "./EventEmitter";
 import type { TopLevelHTMLElement } from "../types/elements";
 
-export class Node extends EventEmitter {
+export abstract class Node extends EventEmitter {
 	protected cachedFragment: DocumentFragment;
 	protected attributes = {};
 	// FIXME: ~~~~~~~~~~ Surely this can be typed

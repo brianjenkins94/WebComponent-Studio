@@ -13,7 +13,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive(tagName: keyof ExtendedTopLevelHTMLElement) {
+function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyof ExtendedTopLevelHTMLElement) {
 	switch (tagName) {
 
 		/**
@@ -719,7 +719,7 @@ function createPrimitive(tagName: keyof ExtendedTopLevelHTMLElement) {
 
 				// href
 
-				if (href !== undefined && typeof href === "string" && isUrl(href)) {
+				if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
 					return new NodeTagNameMap[tagName](href, href, extras);
 				} else if (typeof textContent === "object") {
 					extras = { ...textContent, ...extras };
