@@ -13,7 +13,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyof ExtendedTopLevelHTMLElement) {
+function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTMLElementAttributesMap, NodeTagName extends keyof typeof NodeTagNameMap>(tagName: keyof ExtendedTopLevelHTMLElement) {
 	switch (tagName) {
 
 		/**
@@ -49,7 +49,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		case "sub":
 		case "sup":
 		case "u":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], textContent?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -69,14 +69,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// textContent
 
 				if (textContent !== undefined && typeof textContent !== "object") {
-					return new NodeTagNameMap[tagName](textContent, extras);
+					return NodeTagNameMap[tagName](textContent, extras);
 				} else if (typeof textContent === "object") {
 					extras = { ...textContent, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -88,7 +88,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?, for, textContent, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "label":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], forValue?: string | ExtendedHTMLElementAttributesMap[typeof tagName], textContent?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], forValue?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -108,7 +108,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 
 				// extras
 
-				return new NodeTagNameMap[tagName](forValue, textContent, extras);
+				return NodeTagNameMap[tagName](forValue, textContent, extras);
 			};
 
 		/**
@@ -123,7 +123,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		case "img":
 		case "picture":
 		case "video":
-			return function(selectors?: string | string[] | ExtendedHTMLElementAttributesMap[typeof tagName], sources?: string | string[] | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | string[] | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], sources?: string | string[] | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -148,14 +148,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// sources
 
 				if (sources !== undefined && Array.isArray(sources)) {
-					return new NodeTagNameMap[tagName](sources, extras);
+					return NodeTagNameMap[tagName](sources, extras);
 				} else if (typeof sources === "object") {
 					extras = { ...sources, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](undefined, extras);
+				return NodeTagNameMap[tagName](undefined, extras);
 			};
 
 		/**
@@ -181,7 +181,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		case "section":
 		case "textarea":
 		case "ul":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -200,7 +200,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -213,7 +213,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 */
 		case "iframe":
 		case "image":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], source?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], source?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -240,7 +240,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -252,7 +252,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "fieldset":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], legend?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], legend?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -272,14 +272,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// source
 
 				if (typeof legend === "string") {
-					return new NodeTagNameMap[tagName](legend, extras);
+					return NodeTagNameMap[tagName](legend, extras);
 				} else {
 					extras = { ...legend, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -293,7 +293,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "form":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], method?: string | ExtendedHTMLElementAttributesMap[typeof tagName], action?: string | ExtendedHTMLElementAttributesMap[typeof tagName], encoding?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], method?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], action?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], encoding?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -336,7 +336,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -357,7 +357,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		case "reset":
 		case "input[type=submit]":
 		case "search":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], value?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], value?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -377,14 +377,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// value
 
 				if (value !== undefined && Array.isArray(value)) {
-					return new NodeTagNameMap[tagName](value, extras);
+					return NodeTagNameMap[tagName](value, extras);
 				} else if (typeof value === "object") {
 					extras = { ...value, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -398,7 +398,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "file":
-			return function(selectors?: string | boolean | ExtendedHTMLElementAttributesMap[typeof tagName], name?: string | boolean | ExtendedHTMLElementAttributesMap[typeof tagName], accept?: string | boolean | ExtendedHTMLElementAttributesMap[typeof tagName], required?: string | boolean | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], name?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], accept?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], required?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -447,7 +447,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -476,7 +476,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		case "time":
 		case "url":
 		case "week":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], name?: string | ExtendedHTMLElementAttributesMap[typeof tagName], value?: string | ExtendedHTMLElementAttributesMap[typeof tagName], required?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], name?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], value?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], required?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -521,7 +521,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -533,7 +533,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[tagName]
 		 */
 		case "select":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], options?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], options?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -553,14 +553,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// method
 
 				if (options !== undefined && Array.isArray(options)) {
-					return new NodeTagNameMap[tagName](extras).push(options);
+					return NodeTagNameMap[tagName](extras).push(options);
 				} else if (typeof options === "object") {
 					extras = { ...options, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -572,7 +572,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "figure":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], figcaption?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], figcaption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -592,14 +592,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// figcaption
 
 				if (figcaption !== undefined && typeof figcaption === "string") {
-					return new NodeTagNameMap[tagName](figcaption, extras);
+					return NodeTagNameMap[tagName](figcaption, extras);
 				} else if (typeof figcaption === "object") {
 					extras = { ...figcaption, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -611,7 +611,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "details":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], summary?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], summary?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -625,7 +625,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 						}
 					}
 
-					return new NodeTagNameMap[tagName]();
+					return NodeTagNameMap[tagName]();
 				} else {
 					summary = selectors;
 				}
@@ -633,14 +633,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// summary
 
 				if (summary !== undefined && typeof summary === "string") {
-					return new NodeTagNameMap[tagName](summary, extras);
+					return NodeTagNameMap[tagName](summary, extras);
 				} else if (typeof summary === "object") {
 					extras = { ...summary, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -652,7 +652,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "table":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], caption?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], caption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -672,14 +672,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// caption
 
 				if (caption !== undefined && typeof caption === "string") {
-					return new NodeTagNameMap[tagName](caption, extras);
+					return NodeTagNameMap[tagName](caption, extras);
 				} else if (typeof caption === "object") {
 					extras = { ...caption, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 
 		/**
@@ -692,7 +692,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 		 * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "a":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[typeof tagName], textContent?: string | ExtendedHTMLElementAttributesMap[typeof tagName], href?: string | ExtendedHTMLElementAttributesMap[typeof tagName], extras: ExtendedHTMLElementAttributesMap[typeof tagName] = {}) {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], href?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap = {}): typeof NodeTagNameMap[NodeTagName] {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -712,7 +712,7 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// textContent
 
 				if (textContent !== undefined && typeof textContent === "string") {
-					return new NodeTagNameMap[tagName](textContent, href, extras);
+					return NodeTagNameMap[tagName](textContent, href, extras);
 				} else {
 					href = textContent;
 				}
@@ -720,14 +720,14 @@ function createPrimitive<KeyT extends keyof typeof NodeTagNameMap>(tagName: keyo
 				// href
 
 				if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-					return new NodeTagNameMap[tagName](href, href, extras);
+					return NodeTagNameMap[tagName](href, href, extras);
 				} else if (typeof textContent === "object") {
 					extras = { ...textContent, ...extras };
 				}
 
 				// extras
 
-				return new NodeTagNameMap[tagName](extras);
+				return NodeTagNameMap[tagName](extras);
 			};
 		default:
 			throw new Error("Unrecognized element `" + tagName + "`.");

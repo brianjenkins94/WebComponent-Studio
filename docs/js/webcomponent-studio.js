@@ -422,13 +422,13 @@ function createPrimitive(tagName) {
                 }
                 // textContent
                 if (textContent !== undefined && typeof textContent !== "object") {
-                    return new NodeTagNameMap[tagName](textContent, extras);
+                    return NodeTagNameMap[tagName](textContent, extras);
                 }
                 else if (typeof textContent === "object") {
                     extras = Object.assign(Object.assign({}, textContent), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Label
@@ -458,7 +458,7 @@ function createPrimitive(tagName) {
                     textContent = forValue;
                 }
                 // extras
-                return new NodeTagNameMap[tagName](forValue, textContent, extras);
+                return NodeTagNameMap[tagName](forValue, textContent, extras);
             };
         /**
          * Embedded
@@ -497,13 +497,13 @@ function createPrimitive(tagName) {
                 }
                 // sources
                 if (sources !== undefined && Array.isArray(sources)) {
-                    return new NodeTagNameMap[tagName](sources, extras);
+                    return NodeTagNameMap[tagName](sources, extras);
                 }
                 else if (typeof sources === "object") {
                     extras = Object.assign(Object.assign({}, sources), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](undefined, extras);
+                return NodeTagNameMap[tagName](undefined, extras);
             };
         /**
          * Grouping (+Sectioning/Form-associated)
@@ -546,7 +546,7 @@ function createPrimitive(tagName) {
                     extras = Object.assign(Object.assign({}, selectors), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * IFrame, Image
@@ -583,7 +583,7 @@ function createPrimitive(tagName) {
                     extras = Object.assign(Object.assign({}, source), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Field Set
@@ -613,13 +613,13 @@ function createPrimitive(tagName) {
                 }
                 // source
                 if (typeof legend === "string") {
-                    return new NodeTagNameMap[tagName](legend, extras);
+                    return NodeTagNameMap[tagName](legend, extras);
                 }
                 else {
                     extras = Object.assign(Object.assign({}, legend), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Form
@@ -671,7 +671,7 @@ function createPrimitive(tagName) {
                     extras = Object.assign(Object.assign({}, encoding), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Button-like
@@ -710,13 +710,13 @@ function createPrimitive(tagName) {
                 }
                 // value
                 if (value !== undefined && Array.isArray(value)) {
-                    return new NodeTagNameMap[tagName](value, extras);
+                    return NodeTagNameMap[tagName](value, extras);
                 }
                 else if (typeof value === "object") {
                     extras = Object.assign(Object.assign({}, value), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * File
@@ -773,7 +773,7 @@ function createPrimitive(tagName) {
                     extras.required = required;
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Input
@@ -840,7 +840,7 @@ function createPrimitive(tagName) {
                     extras.required = required;
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Select
@@ -870,13 +870,13 @@ function createPrimitive(tagName) {
                 }
                 // method
                 if (options !== undefined && Array.isArray(options)) {
-                    return new NodeTagNameMap[tagName](extras).push(options);
+                    return NodeTagNameMap[tagName](extras).push(options);
                 }
                 else if (typeof options === "object") {
                     extras = Object.assign(Object.assign({}, options), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Figure
@@ -906,13 +906,13 @@ function createPrimitive(tagName) {
                 }
                 // figcaption
                 if (figcaption !== undefined && typeof figcaption === "string") {
-                    return new NodeTagNameMap[tagName](figcaption, extras);
+                    return NodeTagNameMap[tagName](figcaption, extras);
                 }
                 else if (typeof figcaption === "object") {
                     extras = Object.assign(Object.assign({}, figcaption), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Details
@@ -936,20 +936,20 @@ function createPrimitive(tagName) {
                             extras.class += " " + selector;
                         }
                     }
-                    return new NodeTagNameMap[tagName]();
+                    return NodeTagNameMap[tagName]();
                 }
                 else {
                     summary = selectors;
                 }
                 // summary
                 if (summary !== undefined && typeof summary === "string") {
-                    return new NodeTagNameMap[tagName](summary, extras);
+                    return NodeTagNameMap[tagName](summary, extras);
                 }
                 else if (typeof summary === "object") {
                     extras = Object.assign(Object.assign({}, summary), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Table
@@ -979,13 +979,13 @@ function createPrimitive(tagName) {
                 }
                 // caption
                 if (caption !== undefined && typeof caption === "string") {
-                    return new NodeTagNameMap[tagName](caption, extras);
+                    return NodeTagNameMap[tagName](caption, extras);
                 }
                 else if (typeof caption === "object") {
                     extras = Object.assign(Object.assign({}, caption), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         /**
          * Anchor
@@ -1016,20 +1016,20 @@ function createPrimitive(tagName) {
                 }
                 // textContent
                 if (textContent !== undefined && typeof textContent === "string") {
-                    return new NodeTagNameMap[tagName](textContent, href, extras);
+                    return NodeTagNameMap[tagName](textContent, href, extras);
                 }
                 else {
                     href = textContent;
                 }
                 // href
                 if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-                    return new NodeTagNameMap[tagName](href, href, extras);
+                    return NodeTagNameMap[tagName](href, href, extras);
                 }
                 else if (typeof textContent === "object") {
                     extras = Object.assign(Object.assign({}, textContent), extras);
                 }
                 // extras
-                return new NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](extras);
             };
         default:
             throw new Error("Unrecognized element `" + tagName + "`.");
