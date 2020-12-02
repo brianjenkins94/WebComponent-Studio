@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/typedef */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 import { NodeTagNameMap } from "./nodes";
 import type { ExtendedHTMLElementAttributesMap } from "./types/attributes";
 import type { ExtendedTopLevelHTMLElement } from "./types/elements";
@@ -13,7 +9,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTMLElementAttributesMap, NodeTagName extends keyof typeof NodeTagNameMap>(tagName: keyof ExtendedTopLevelHTMLElement) {
+function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTMLElementAttributesMap>(tagName: keyof ExtendedTopLevelHTMLElement) {
 	switch (tagName) {
 
 		/**
@@ -49,7 +45,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		case "sub":
 		case "sup":
 		case "u":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -88,7 +84,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?, for, textContent, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "label":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], forValue?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], forValue?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -123,7 +119,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		case "img":
 		case "picture":
 		case "video":
-			return function(selectors?: string | string[] | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], sources?: string | string[] | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | string[] | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], sources?: string | string[] | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -181,7 +177,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		case "section":
 		case "textarea":
 		case "ul":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -213,7 +209,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 */
 		case "iframe":
 		case "image":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], source?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], source?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -252,7 +248,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "fieldset":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], legend?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], legend?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -293,7 +289,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "form":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], method?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], action?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], encoding?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], method?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], action?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], encoding?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -357,7 +353,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		case "reset":
 		case "input[type=submit]":
 		case "search":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], value?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], value?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -398,7 +394,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "file":
-			return function(selectors?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], name?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], accept?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], required?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], name?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], accept?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], required?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -476,7 +472,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		case "time":
 		case "url":
 		case "week":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], name?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], value?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], required?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], name?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], value?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], required?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -533,7 +529,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[tagName]
 		 */
 		case "select":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], options?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], options?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -572,7 +568,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "figure":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], figcaption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], figcaption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -611,7 +607,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "details":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], summary?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], summary?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -652,7 +648,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "table":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], caption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], caption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -692,7 +688,7 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		 * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[tagName]
 		 */
 		case "a":
-			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], href?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap = {}): typeof NodeTagNameMap[NodeTagName] {
+			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], href?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {

@@ -259,7 +259,6 @@ class TextLevelNode extends Node {
 }
 
 /* eslint-disable @typescript-eslint/naming-convention */
-// `node` should be anything decendant of `Node`
 function primeConstructor(Node, type) {
     return function (...args) {
         return new Node(type, ...args);
@@ -362,7 +361,6 @@ const NodeTagNameMap = {
     "a": primeConstructor(AnchorNode, "a")
 };
 
-/* eslint-disable @typescript-eslint/typedef */
 // SOURCE: https://www.w3.org/TR/selectors-3/#lex
 const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*$/i;
 // SOURCE: https://tools.ietf.org/html/rfc3986#appendix-B

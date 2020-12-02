@@ -11,9 +11,8 @@ import { TableNode } from "./TableNode";
 import { TextLevelNode } from "./TextLevelNode";
 import type { Node } from "../abstract/Node";
 
-// `node` should be anything decendant of `Node`
 function primeConstructor<NodeType extends Node, ArgsType extends any[]>(Node: new (type: string, ...args: ArgsType) => NodeType, type: string) {
-	return function(...args: [...ArgsType]): NodeType {
+	return function(...args: ArgsType) {
 		return new Node(type, ...args);
 	};
 }
