@@ -117,7 +117,7 @@ export interface TopLevelHTMLElement extends EditingContent, EmbeddedContent, Fo
 
 export interface AbstractTopLevelHTMLElement extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }
 
-export interface ExtendedTopLevelHTMLElement extends TopLevelHTMLElement {
+export interface ExtendedTopLevelHTMLElementMap extends TopLevelHTMLElement {
 	"button[type=button]": HTMLButtonElement;
 	"button[type=reset]": HTMLButtonElement;
 	"button[type=submit]": HTMLButtonElement;

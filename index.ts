@@ -1,6 +1,6 @@
 import { NodeTagNameMap } from "./nodes";
 import type { ExtendedHTMLElementAttributesMap } from "./types/attributes";
-import type { ExtendedTopLevelHTMLElement } from "./types/elements";
+import type { ExtendedTopLevelHTMLElementMap } from "./types/elements";
 
 // SOURCE: https://www.w3.org/TR/selectors-3/#lex
 const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*$/i;
@@ -9,15 +9,15 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTMLElementAttributesMap>(tagName: keyof ExtendedTopLevelHTMLElement) {
+function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTMLElementAttributesMap, NodeTagName extends keyof typeof NodeTagNameMap>(tagName: keyof ExtendedTopLevelHTMLElementMap): (...args: Parameters<typeof NodeTagNameMap[NodeTagName]>) => typeof NodeTagNameMap[NodeTagName] {
 	switch (tagName) {
 
 		/**
 		 * Text-level
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, textContent: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, textContent?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, textContent: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, textContent?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "b":
 		case "blockquote":
@@ -78,10 +78,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Label
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors): NodeTagNameMap[tagName]
-		 * (selectors?, for, textContent): NodeTagNameMap[tagName]
-		 * (selectors?, for, textContent, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors): NodeTagNameMap[NodeTagName]
+		 * (selectors?, for, textContent): NodeTagNameMap[NodeTagName]
+		 * (selectors?, for, textContent, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "label":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], forValue?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -110,10 +110,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Embedded
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, sources: string | string[]): NodeTagNameMap[tagName]
-		 * (selectors?: string, sources?: string | string[], extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, sources: string | string[]): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, sources?: string | string[], extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "audio":
 		case "img":
@@ -157,9 +157,9 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Grouping (+Sectioning/Form-associated)
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "article":
 		case "aside":
@@ -202,10 +202,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * IFrame, Image
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, source: string[]): NodeTagNameMap[tagName]
-		 * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, source: string[]): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "iframe":
 		case "image":
@@ -242,10 +242,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Field Set
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, legend: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, legend: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "fieldset":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], legend?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -281,12 +281,12 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Form
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, method: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, method?: string, action: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, method: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "form":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], method?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], action?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], encoding?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -338,20 +338,38 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Button-like
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, value: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, value?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, value: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "button[type=button]":
+			if (tagName === "button[type=button]") {
+				tagName = "button";
+			}
 		case "button[type=reset]":
+			if (tagName === "input[type=reset]") {
+				tagName = "reset";
+			}
 		case "button":
 		case "button[type=submit]":
+			if (tagName === "input[type=submit]") {
+				tagName = "submit";
+			}
 		case "submit":
 		case "input[type=button]":
+			if (tagName === "input[type=button]") {
+				tagName = "inputButton";
+			}
 		case "input[type=reset]":
 		case "reset":
+			if (tagName === "input[type=reset]") {
+				tagName = "inputReset";
+			}
 		case "input[type=submit]":
+			if (tagName === "input[type=submit]") {
+				tagName = "inputSubmit";
+			}
 		case "search":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], value?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -386,12 +404,12 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * File
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, accept: string | string[]): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name?: string, accept: string | string[]): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "file":
 			return function(selectors?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], name?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], accept?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], required?: string | boolean | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -449,12 +467,12 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Input
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, value: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[tagName]
-		 * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name?: string, value: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "checkbox":
 		case "color":
@@ -523,10 +541,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Select
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, options: object[]): NodeTagNameMap[tagName]
-		 * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, options: object[]): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "select":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], options?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -562,10 +580,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Figure
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors): NodeTagNameMap[tagName]
-		 * (selectors?: string, figcaption: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, figcaption: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "figure":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], figcaption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -601,10 +619,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Details
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, summary: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, summary: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "details":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], summary?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -642,10 +660,10 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Table
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, caption: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, caption: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "table":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], caption?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
@@ -681,11 +699,11 @@ function createPrimitive<ExtendedHTMLElementAttributes extends keyof ExtendedHTM
 		/**
 		 * Anchor
 		 *
-		 * (): NodeTagNameMap[tagName]
-		 * (selectors: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, href): NodeTagNameMap[tagName]
-		 * (selectors?: string, textContent?: string, href: string): NodeTagNameMap[tagName]
-		 * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[tagName]
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selectors: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, href): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
+		 * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "a":
 			return function(selectors?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], textContent?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], href?: string | ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes], extras: ExtendedHTMLElementAttributesMap[ExtendedHTMLElementAttributes] = {}) {
