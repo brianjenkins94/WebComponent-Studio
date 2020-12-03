@@ -1,6 +1,6 @@
 import { Node } from "../abstract/Node";
 import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElement } from "../types/elements";
+import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <caption> should be part of a <table>
 // <col> should be part of a <colgroup>
@@ -12,10 +12,10 @@ import type { TopLevelHTMLElement } from "../types/elements";
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
-export class TableNode extends Node {
+export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
 	private readonly caption: string;
 
-	public constructor(tagName: keyof TopLevelHTMLElement, caption: string, extras: HTMLElementAttributesMap[typeof tagName]) {
+	public constructor(tagName: TagName, caption: string, extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.caption = caption;

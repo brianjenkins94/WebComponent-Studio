@@ -1,9 +1,9 @@
 import { Node } from "../abstract/Node";
 import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElement } from "../types/elements";
+import type { TopLevelHTMLElementMap } from "../types/elements";
 
-export class GroupingNode extends Node {
-	public constructor(tagName: keyof TopLevelHTMLElement, extras: HTMLElementAttributesMap[typeof tagName]) {
+export class GroupingNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+	public constructor(tagName: TagName, extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.attributes = { ...extras, ...this.attributes };

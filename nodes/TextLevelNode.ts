@@ -1,11 +1,11 @@
 import { Node } from "../abstract/Node";
 import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElement } from "../types/elements";
+import type { TopLevelHTMLElementMap } from "../types/elements";
 
-export class TextLevelNode extends Node {
+export class TextLevelNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
 	private readonly textContent: string;
 
-	public constructor(tagName: keyof TopLevelHTMLElement, textContent: string, extras: HTMLElementAttributesMap[typeof tagName]) {
+	public constructor(tagName: TagName, textContent: string, extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.textContent = textContent;

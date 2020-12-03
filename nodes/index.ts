@@ -10,8 +10,9 @@ import { SelectNode } from "./SelectNode";
 import { TableNode } from "./TableNode";
 import { TextLevelNode } from "./TextLevelNode";
 import type { Node } from "../abstract/Node";
+import type { TopLevelHTMLElementMap } from "../types/elements";
 
-function primeConstructor<NodeType extends Node, ArgsType extends any[]>(Node: new (type: string, ...args: ArgsType) => NodeType, type: string) {
+function primeConstructor<TagName extends keyof TopLevelHTMLElementMap, NodeType extends Node, ArgsType extends any[]>(Node: new (type: TagName, ...args: ArgsType) => NodeType, type: TagName) {
 	return function(...args: ArgsType) {
 		return new Node(type, ...args);
 	};

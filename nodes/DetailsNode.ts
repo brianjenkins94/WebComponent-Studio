@@ -1,13 +1,13 @@
 import { Node } from "../abstract/Node";
 import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElement } from "../types/elements";
+import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <summary> should be part of a <details>
 
-export class DetailsNode extends Node {
+export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
 	private readonly summary: string;
 
-	public constructor(tagName: keyof TopLevelHTMLElement, summary: string, extras: HTMLElementAttributesMap[typeof tagName]) {
+	public constructor(tagName: TagName, summary: string, extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.summary = summary;

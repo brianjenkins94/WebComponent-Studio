@@ -65,36 +65,6 @@ export interface HTMLElementAttributesMap {
 	"video": HTMLVideoElementAttributes;
 }
 
-export interface ExtendedHTMLElementAttributesMap extends HTMLElementAttributesMap {
-	"button[type=button]": HTMLButtonElementAttributes;
-	"button[type=reset]": HTMLButtonElementAttributes;
-	"button[type=submit]": HTMLButtonElementAttributes;
-	"checkbox": HTMLCheckboxInputElementAttributes;
-	"color": HTMLColorInputElementAttributes;
-	"date": HTMLDateInputElementAttributes;
-	"datetime": HTMLDatetimeLocalInputElementAttributes;
-	"email": HTMLEmailInputElementAttributes;
-	"file": HTMLFileInputElementAttributes;
-	"hidden": HTMLHiddenInputElementAttributes;
-	"image": HTMLImageInputElementAttributes;
-	"input[type=button]": HTMLButtonInputElementAttributes;
-	"input[type=reset]": HTMLButtonInputElementAttributes;
-	"input[type=submit]": HTMLButtonInputElementAttributes;
-	"month": HTMLMonthInputElementAttributes;
-	"number": HTMLNumberInputElementAttributes;
-	"password": HTMLPasswordInputElementAttributes;
-	"radio": HTMLRadioInputElementAttributes;
-	"range": HTMLRangeInputElementAttributes;
-	"reset": HTMLButtonElementAttributes;
-	"search": HTMLSearchInputElementAttributes;
-	"submit": HTMLButtonElementAttributes;
-	"tel": HTMLTelInputElementAttributes;
-	"text": HTMLTextInputElementAttributes;
-	"time": HTMLTimeInputElementAttributes;
-	"url": HTMLUrlInputElementAttributes;
-	"week": HTMLWeekInputElementAttributes;
-}
-
 interface HTMLElementAttributes {
 
 	/**

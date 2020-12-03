@@ -113,36 +113,6 @@ interface TextLevelSemantics {
 	"u": HTMLElement;
 }
 
-export interface TopLevelHTMLElement extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics { }
+export interface TopLevelHTMLElementMap extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics { }
 
-export interface AbstractTopLevelHTMLElement extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }
-
-export interface ExtendedTopLevelHTMLElementMap extends TopLevelHTMLElement {
-	"button[type=button]": HTMLButtonElement;
-	"button[type=reset]": HTMLButtonElement;
-	"button[type=submit]": HTMLButtonElement;
-	"checkbox": HTMLInputElement;
-	"color": HTMLInputElement;
-	"date": HTMLInputElement;
-	"datetime": HTMLInputElement;
-	"email": HTMLInputElement;
-	"file": HTMLInputElement;
-	"hidden": HTMLInputElement;
-	"image": HTMLInputElement;
-	"input[type=button]": HTMLInputElement;
-	"input[type=reset]": HTMLInputElement;
-	"input[type=submit]": HTMLInputElement;
-	"month": HTMLInputElement;
-	"number": HTMLInputElement;
-	"password": HTMLInputElement;
-	"radio": HTMLInputElement;
-	"range": HTMLInputElement;
-	"reset": HTMLInputElement;
-	"search": HTMLInputElement;
-	"submit": HTMLInputElement;
-	"tel": HTMLInputElement;
-	"text": HTMLInputElement;
-	"time": HTMLInputElement;
-	"url": HTMLInputElement;
-	"week": HTMLInputElement;
-}
+export interface AbstractTopLevelHTMLElementMap extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }

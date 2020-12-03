@@ -1,14 +1,14 @@
 import { Node } from "../abstract/Node";
 import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElement } from "../types/elements";
+import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <source> should be a part of a <picture>, <audio> or <video>
 // <track> should be a part of a <audio> or <video>
 
-export class EmbeddedNode extends Node {
+export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
 	private readonly sources: string[];
 
-	public constructor(tagName: keyof TopLevelHTMLElement, sources: string[], extras: HTMLElementAttributesMap[typeof tagName]) {
+	public constructor(tagName: TagName, sources: string[], extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.sources = sources;

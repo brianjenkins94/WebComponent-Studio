@@ -1,14 +1,14 @@
 import { EventEmitter } from "./EventEmitter";
-import type { TopLevelHTMLElement } from "../types/elements";
+import type { TopLevelHTMLElementMap } from "../types/elements";
 
 export abstract class Node extends EventEmitter {
 	protected cachedFragment: DocumentFragment;
 	protected attributes = {};
 	// FIXME: ~~~~~~~~~~ Surely this can be typed
-	protected readonly type: keyof TopLevelHTMLElement;
+	protected readonly type: keyof TopLevelHTMLElementMap;
 	private readonly children = [];
 
-	public constructor(type: keyof TopLevelHTMLElement) {
+	public constructor(type: keyof TopLevelHTMLElementMap) {
 		super();
 
 		this.type = type;
