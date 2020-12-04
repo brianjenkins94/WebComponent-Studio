@@ -370,10 +370,10 @@ function createPrimitive(tagName) {
     switch (tagName) {
         /**
          * Text-level
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, textContent: string): NodeTagNameMap[tagName]
-         * (selectors?: string, textContent?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, textContent: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, textContent?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "b":
         case "blockquote":
@@ -431,10 +431,10 @@ function createPrimitive(tagName) {
         /**
          * Label
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors): NodeTagNameMap[tagName]
-         * (selectors?, for, textContent): NodeTagNameMap[tagName]
-         * (selectors?, for, textContent, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors): NodeTagNameMap[NodeTagName]
+         * (selectors?, for, textContent): NodeTagNameMap[NodeTagName]
+         * (selectors?, for, textContent, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "label":
             return function (selectors, forValue, textContent, extras = {}) {
@@ -461,10 +461,10 @@ function createPrimitive(tagName) {
         /**
          * Embedded
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, sources: string | string[]): NodeTagNameMap[tagName]
-         * (selectors?: string, sources?: string | string[], extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, sources: string | string[]): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, sources?: string | string[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "audio":
         case "img":
@@ -506,9 +506,9 @@ function createPrimitive(tagName) {
         /**
          * Grouping (+Sectioning/Form-associated)
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "article":
         case "aside":
@@ -549,10 +549,10 @@ function createPrimitive(tagName) {
         /**
          * IFrame, Image
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, source: string[]): NodeTagNameMap[tagName]
-         * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, source: string[]): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "iframe":
         case "image":
@@ -586,10 +586,10 @@ function createPrimitive(tagName) {
         /**
          * Field Set
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, legend: string): NodeTagNameMap[tagName]
-         * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, legend: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "fieldset":
             return function (selectors, legend, extras = {}) {
@@ -622,12 +622,12 @@ function createPrimitive(tagName) {
         /**
          * Form
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, method: string): NodeTagNameMap[tagName]
-         * (selectors?: string, method?: string, action: string): NodeTagNameMap[tagName]
-         * (selectors?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[tagName]
-         * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, method: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "form":
             return function (selectors, method, action, encoding, extras = {}) {
@@ -674,20 +674,38 @@ function createPrimitive(tagName) {
         /**
          * Button-like
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, value: string): NodeTagNameMap[tagName]
-         * (selectors?: string, value?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, value: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "button[type=button]":
+            if (tagName === "button[type=button]") {
+                tagName = "button";
+            }
         case "button[type=reset]":
+            if (tagName === "button[type=reset]") {
+                tagName = "reset";
+            }
         case "button":
         case "button[type=submit]":
         case "submit":
+            if (tagName === "button[type=submit]") {
+                tagName = "submit";
+            }
         case "input[type=button]":
+            if (tagName === "input[type=button]") {
+                tagName = "inputButton";
+            }
         case "input[type=reset]":
         case "reset":
+            if (tagName === "input[type=reset]") {
+                tagName = "inputReset";
+            }
         case "input[type=submit]":
+            if (tagName === "input[type=submit]") {
+                tagName = "inputSubmit";
+            }
         case "search":
             return function (selectors, value, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -719,12 +737,12 @@ function createPrimitive(tagName) {
         /**
          * File
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, accept: string | string[]): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, accept: string | string[]): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "file":
             return function (selectors, name, accept, required, extras = {}) {
@@ -776,12 +794,12 @@ function createPrimitive(tagName) {
         /**
          * Input
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, value: string): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[tagName]
-         * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, value: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "checkbox":
         case "color":
@@ -843,10 +861,10 @@ function createPrimitive(tagName) {
         /**
          * Select
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, options: object[]): NodeTagNameMap[tagName]
-         * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, options: object[]): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "select":
             return function (selectors, options, extras = {}) {
@@ -879,10 +897,10 @@ function createPrimitive(tagName) {
         /**
          * Figure
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors): NodeTagNameMap[tagName]
-         * (selectors?: string, figcaption: string): NodeTagNameMap[tagName]
-         * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, figcaption: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "figure":
             return function (selectors, figcaption, extras = {}) {
@@ -915,10 +933,10 @@ function createPrimitive(tagName) {
         /**
          * Details
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, summary: string): NodeTagNameMap[tagName]
-         * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, summary: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "details":
             return function (selectors, summary, extras = {}) {
@@ -952,10 +970,10 @@ function createPrimitive(tagName) {
         /**
          * Table
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, caption: string): NodeTagNameMap[tagName]
-         * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, caption: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "table":
             return function (selectors, caption, extras = {}) {
@@ -988,11 +1006,11 @@ function createPrimitive(tagName) {
         /**
          * Anchor
          *
-         * (): NodeTagNameMap[tagName]
-         * (selectors: string): NodeTagNameMap[tagName]
-         * (selectors?: string, href): NodeTagNameMap[tagName]
-         * (selectors?: string, textContent?: string, href: string): NodeTagNameMap[tagName]
-         * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[tagName]
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, href): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "a":
             return function (selectors, textContent, href, extras = {}) {

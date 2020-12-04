@@ -1,36 +1,6 @@
 import { NodeTagNameMap } from "./nodes";
 import type { HTMLElementAttributesMap } from "./types/attributes";
 
-export interface ExtendedTopLevelHTMLElementMap {
-	"button[type=button]": "button";
-	"button[type=reset]": "reset";
-	"button[type=submit]": "submit";
-	// "checkbox": HTMLInputElement;
-	// "color": HTMLInputElement;
-	// "date": HTMLInputElement;
-	// "datetime": HTMLInputElement;
-	// "email": HTMLInputElement;
-	// "file": HTMLInputElement;
-	// "hidden": HTMLInputElement;
-	// "image": HTMLInputElement;
-	"input[type=button]": "inputInput";
-	"input[type=reset]": "resetInput";
-	"input[type=submit]": "submitInput";
-	// "month": HTMLInputElement;
-	// "number": HTMLInputElement;
-	// "password": HTMLInputElement;
-	// "radio": HTMLInputElement;
-	// "range": HTMLInputElement;
-	// "reset": HTMLInputElement;
-	// "search": HTMLInputElement;
-	// "submit": HTMLInputElement;
-	// "tel": HTMLInputElement;
-	// "text": HTMLInputElement;
-	// "time": HTMLInputElement;
-	// "url": HTMLInputElement;
-	// "week": HTMLInputElement;
-}
-
 // SOURCE: https://www.w3.org/TR/selectors-3/#lex
 const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*$/i;
 
@@ -38,7 +8,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<HTMLElementAttributes extends keyof HTMLElementAttributesMap, TagNameMap extends keyof ExtendedTopLevelHTMLElementMap & { [Key in keyof typeof NodeTagNameMap]: Key }, TagName extends TagNameMap>(tagName: TagName): NodeTagNameMap[TagName] {
+function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap, NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
 	switch (tagName) {
 
 		/**

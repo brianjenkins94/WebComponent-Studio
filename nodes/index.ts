@@ -12,7 +12,7 @@ import { TextLevelNode } from "./TextLevelNode";
 import type { Node } from "../abstract/Node";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
-function primeConstructor<TagName extends keyof TopLevelHTMLElementMap, NodeType extends Node, ArgsType extends any[]>(Node: new (type: TagName, ...args: ArgsType) => NodeType, type: TagName) {
+function primeConstructor<TagName extends keyof TopLevelHTMLElementMap, NodeType extends Node, ArgsType extends unknown[]>(Node: new (type: TagName, ...args: ArgsType) => NodeType, type: TagName) {
 	return function(...args: ArgsType) {
 		return new Node(type, ...args);
 	};
