@@ -7,8 +7,8 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 // SOURCE: https://tools.ietf.org/html/rfc3986#appendix-B
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
-// eslint-disable-next-line complexity
-function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
+// eslint-disable-next-line complexity, no-underscore-dangle
+function _createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): any {
 	switch (tagName) {
 
 		/**
@@ -745,6 +745,10 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		default:
 			throw new Error("Unrecognized element `" + tagName + "`.");
 	}
+}
+
+function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
+	return _createPrimitive(tagName);
 }
 
 export const b = createPrimitive("b");
