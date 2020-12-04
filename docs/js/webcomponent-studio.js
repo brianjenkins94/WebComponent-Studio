@@ -323,11 +323,11 @@ const NodeTagNameMap = {
     "fieldset": primeConstructor(FieldSetNode, "fieldset"),
     // Button-like
     "button": primeConstructor(GroupingNode, "button"),
-    "buttonInput": primeConstructor(GroupingNode, "input"),
+    "inputButton": primeConstructor(GroupingNode, "input"),
     "reset": primeConstructor(GroupingNode, "input"),
-    "resetInput": primeConstructor(GroupingNode, "input"),
+    "inputReset": primeConstructor(GroupingNode, "input"),
     "submit": primeConstructor(GroupingNode, "input"),
-    "submitInput": primeConstructor(GroupingNode, "input"),
+    "inputSubmit": primeConstructor(GroupingNode, "input"),
     "search": primeConstructor(GroupingNode, "input"),
     // File
     "file": primeConstructor(GroupingNode, "input"),
@@ -698,10 +698,10 @@ function createPrimitive(tagName) {
                 tagName = "inputButton";
             }
         case "input[type=reset]":
-        case "reset":
             if (tagName === "input[type=reset]") {
                 tagName = "inputReset";
             }
+        case "reset":
         case "input[type=submit]":
             if (tagName === "input[type=submit]") {
                 tagName = "inputSubmit";
@@ -1151,18 +1151,18 @@ const fieldset = createPrimitive("fieldset");
 globalThis.fieldset = fieldset;
 const form = createPrimitive("form");
 globalThis.form = form;
-const button = createPrimitive("button[type=button]");
+const button = createPrimitive("button");
 globalThis.button = button;
-const reset = createPrimitive("button[type=reset]");
+const reset = createPrimitive("reset");
 globalThis.reset = reset;
-const submit = createPrimitive("button[type=submit]");
+const submit = createPrimitive("submit");
 globalThis.submit = submit;
-const buttonInput = createPrimitive("input[type=button]");
-globalThis.buttonInput = buttonInput;
-const resetInput = createPrimitive("input[type=reset]");
-globalThis.resetInput = resetInput;
-const submitInput = createPrimitive("input[type=submit]");
-globalThis.submitInput = submitInput;
+const inputButton = createPrimitive("inputButton");
+globalThis.inputButton = inputButton;
+const inputReset = createPrimitive("inputReset");
+globalThis.inputReset = inputReset;
+const inputSubmit = createPrimitive("inputSubmit");
+globalThis.inputSubmit = inputSubmit;
 const search = createPrimitive("search");
 globalThis.search = search;
 const file = createPrimitive("file");
@@ -1210,4 +1210,4 @@ globalThis.table = table;
 const a = createPrimitive("a");
 globalThis.a = a;
 
-//export { a, article, aside, audio, b, blockquote, br, button, buttonInput, canvas, checkbox, code, color, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, img, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, resetInput, s, search, section, select, small, span, strong, sub, submit, submitInput, sup, table, tel, text, textarea, time, u, ul, url, video, week };
+//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, img, inputButton, inputReset, inputSubmit, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };

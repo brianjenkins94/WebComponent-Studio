@@ -170,19 +170,19 @@ document.getElementById("form").after(form(".form", "GET", "/", "application/x-w
 document.getElementById("button");
 
 // input[type=button]
-document.getElementById("buttonInput");
+document.getElementById("inputButton");
 
 // button[type=reset]
 document.getElementById("reset");
 
 // input[type=reset]
-document.getElementById("resetInput");
+document.getElementById("inputReset");
 
 // button[type=submit]
 document.getElementById("submit");
 
 // input[type=submit]
-document.getElementById("submitInput");
+document.getElementById("inputSubmit");
 
 // input[type=search]
 document.getElementById("search");

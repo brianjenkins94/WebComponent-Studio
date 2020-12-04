@@ -83,11 +83,11 @@ export const NodeTagNameMap = {
 
 	// Button-like
 	"button": primeConstructor(GroupingNode, "button"),
-	"buttonInput": primeConstructor(GroupingNode, "input"), // Childless
+	"inputButton": primeConstructor(GroupingNode, "input"), // Childless
 	"reset": primeConstructor(GroupingNode, "input"),
-	"resetInput": primeConstructor(GroupingNode, "input"), // Childless
+	"inputReset": primeConstructor(GroupingNode, "input"), // Childless
 	"submit": primeConstructor(GroupingNode, "input"),
-	"submitInput": primeConstructor(GroupingNode, "input"), // Childless
+	"inputSubmit": primeConstructor(GroupingNode, "input"), // Childless
 	"search": primeConstructor(GroupingNode, "input"), // Childless
 
 	// File

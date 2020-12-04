@@ -8,7 +8,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap, NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
+function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
 	switch (tagName) {
 
 		/**
@@ -44,7 +44,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		case "sub":
 		case "sup":
 		case "u":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], textContent?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -83,7 +83,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?, for, textContent, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "label":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], forValue?: string | HTMLElementAttributesMap[HTMLElementAttributes], textContent?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], forValue?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -118,7 +118,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		case "img":
 		case "picture":
 		case "video":
-			return function(selectors?: string | string[] | HTMLElementAttributesMap[HTMLElementAttributes], sources?: string | string[] | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | string[] | HTMLElementAttributesMap[NodeTagName], sources?: string | string[] | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -176,7 +176,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		case "section":
 		case "textarea":
 		case "ul":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -208,7 +208,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 */
 		case "iframe":
 		case "image":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], source?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], source?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -247,7 +247,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "fieldset":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], legend?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], legend?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -288,7 +288,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "form":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], method?: string | HTMLElementAttributesMap[HTMLElementAttributes], action?: string | HTMLElementAttributesMap[HTMLElementAttributes], encoding?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], method?: string | HTMLElementAttributesMap[NodeTagName], action?: string | HTMLElementAttributesMap[NodeTagName], encoding?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -361,16 +361,16 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 				tagName = "inputButton";
 			}
 		case "input[type=reset]":
-		case "reset":
 			if (tagName === "input[type=reset]") {
 				tagName = "inputReset";
 			}
+		case "reset":
 		case "input[type=submit]":
 			if (tagName === "input[type=submit]") {
 				tagName = "inputSubmit";
 			}
 		case "search":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], value?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], value?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -411,7 +411,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "file":
-			return function(selectors?: string | boolean | HTMLElementAttributesMap[HTMLElementAttributes], name?: string | boolean | HTMLElementAttributesMap[HTMLElementAttributes], accept?: string | boolean | HTMLElementAttributesMap[HTMLElementAttributes], required?: string | boolean | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | boolean | HTMLElementAttributesMap[NodeTagName], name?: string | boolean | HTMLElementAttributesMap[NodeTagName], accept?: string | boolean | HTMLElementAttributesMap[NodeTagName], required?: string | boolean | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -489,7 +489,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		case "time":
 		case "url":
 		case "week":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], name?: string | HTMLElementAttributesMap[HTMLElementAttributes], value?: string | HTMLElementAttributesMap[HTMLElementAttributes], required?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], name?: string | HTMLElementAttributesMap[NodeTagName], value?: string | HTMLElementAttributesMap[NodeTagName], required?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -546,7 +546,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "select":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], options?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], options?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -585,7 +585,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "figure":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], figcaption?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], figcaption?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -624,7 +624,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "details":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], summary?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], summary?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -665,7 +665,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "table":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], caption?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], caption?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -705,7 +705,7 @@ function createPrimitive<HTMLElementAttributes extends HTMLElementAttributesMap,
 		 * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "a":
-			return function(selectors?: string | HTMLElementAttributesMap[HTMLElementAttributes], textContent?: string | HTMLElementAttributesMap[HTMLElementAttributes], href?: string | HTMLElementAttributesMap[HTMLElementAttributes], extras: HTMLElementAttributesMap[HTMLElementAttributes] = {}) {
+			return function(selectors?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], href?: string | HTMLElementAttributesMap[NodeTagName], extras: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
 					for (const selector of selectors.split(/#|\./g)) {
 						if (selector.startsWith("#")) {
@@ -854,18 +854,18 @@ globalThis.fieldset = fieldset;
 export const form = createPrimitive("form");
 globalThis.form = form;
 
-export const button = createPrimitive("button[type=button]");
+export const button = createPrimitive("button");
 globalThis.button = button;
-export const reset = createPrimitive("button[type=reset]");
+export const reset = createPrimitive("reset");
 globalThis.reset = reset;
-export const submit = createPrimitive("button[type=submit]");
+export const submit = createPrimitive("submit");
 globalThis.submit = submit;
-export const buttonInput = createPrimitive("input[type=button]");
-globalThis.buttonInput = buttonInput;
-export const resetInput = createPrimitive("input[type=reset]");
-globalThis.resetInput = resetInput;
-export const submitInput = createPrimitive("input[type=submit]");
-globalThis.submitInput = submitInput;
+export const inputButton = createPrimitive("inputButton");
+globalThis.inputButton = inputButton;
+export const inputReset = createPrimitive("inputReset");
+globalThis.inputReset = inputReset;
+export const inputSubmit = createPrimitive("inputSubmit");
+globalThis.inputSubmit = inputSubmit;
 export const search = createPrimitive("search");
 globalThis.search = search;
 
