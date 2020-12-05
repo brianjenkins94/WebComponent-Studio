@@ -5,7 +5,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <source> should be a part of a <picture>, <audio> or <video>
 // <track> should be a part of a <audio> or <video>
 
-export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly sources: string[];
 
 	public constructor(tagName: TagName, sources: string[], extras: HTMLElementAttributesMap[TagName]) {

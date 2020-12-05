@@ -5,7 +5,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <optgroup> should be part of a <select>
 // <option> should be part of a <select> or <optgroup>
 
-export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly options: object;
 
 	public constructor(tagName: TagName, options: object, extras: HTMLElementAttributesMap[TagName]) {

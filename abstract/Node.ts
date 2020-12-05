@@ -1,10 +1,10 @@
 import { EventEmitter } from "./EventEmitter";
+import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
-export abstract class Node extends EventEmitter {
+export abstract class Node<TagName extends keyof TopLevelHTMLElementMap> extends EventEmitter {
 	protected cachedFragment: DocumentFragment;
-	protected attributes = {};
-	// FIXME: ~~~~~~~~~~ Surely this can be typed
+	protected attributes: HTMLElementAttributesMap[TagName] = {};
 	protected readonly type: keyof TopLevelHTMLElementMap;
 	private readonly children = [];
 
@@ -14,13 +14,13 @@ export abstract class Node extends EventEmitter {
 		this.type = type;
 	}
 
-	public push(...items: Node[]): this {
+	public push(...items: Node<TagName>[]): this {
 		this.children.push(...items);
 
 		return this;
 	}
 
-	public unshift(...items: Node[]): this {
+	public unshift(...items: Node<TagName>[]): this {
 		this.children.unshift(...items);
 
 		return this;

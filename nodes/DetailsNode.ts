@@ -4,7 +4,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <summary> should be part of a <details>
 
-export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly summary: string;
 
 	public constructor(tagName: TagName, summary: string, extras: HTMLElementAttributesMap[TagName]) {

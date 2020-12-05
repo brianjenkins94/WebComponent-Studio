@@ -4,7 +4,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <figcaption> should be part of a <figure>
 
-export class FigureNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+export class FigureNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly caption: string;
 
 	public constructor(tagName: TagName, caption: string, extras: HTMLElementAttributesMap[TagName]) {

@@ -2,7 +2,7 @@ import { Node } from "../abstract/Node";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
-export class TextLevelNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+export class TextLevelNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly textContent: string;
 
 	public constructor(tagName: TagName, textContent: string, extras: HTMLElementAttributesMap[TagName]) {

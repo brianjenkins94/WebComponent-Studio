@@ -4,7 +4,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <legend> should be part of a <fieldset>
 
-export class FieldSetNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+export class FieldSetNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly legend: string;
 
 	public constructor(tagName: TagName, legend: string, extras: HTMLElementAttributesMap[TagName]) {

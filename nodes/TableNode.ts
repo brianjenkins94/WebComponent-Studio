@@ -12,7 +12,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
-export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Node {
+export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly caption: string;
 
 	public constructor(tagName: TagName, caption: string, extras: HTMLElementAttributesMap[TagName]) {

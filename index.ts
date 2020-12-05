@@ -8,7 +8,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
+function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName) /* : typeof NodeTagNameMap[NodeTagName] */ {
 	switch (tagName) {
 
 		/**

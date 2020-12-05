@@ -324,9 +324,9 @@ const NodeTagNameMap = {
     // Button-like
     "button": primeConstructor(GroupingNode, "button"),
     "inputButton": primeConstructor(GroupingNode, "input"),
-    "reset": primeConstructor(GroupingNode, "input"),
+    "reset": primeConstructor(GroupingNode, "button"),
     "inputReset": primeConstructor(GroupingNode, "input"),
-    "submit": primeConstructor(GroupingNode, "input"),
+    "submit": primeConstructor(GroupingNode, "button"),
     "inputSubmit": primeConstructor(GroupingNode, "input"),
     "search": primeConstructor(GroupingNode, "input"),
     // File
@@ -689,10 +689,10 @@ function createPrimitive(tagName) {
             }
         case "button":
         case "button[type=submit]":
-        case "submit":
             if (tagName === "button[type=submit]") {
                 tagName = "submit";
             }
+        case "submit":
         case "input[type=button]":
             if (tagName === "input[type=button]") {
                 tagName = "inputButton";
@@ -1157,11 +1157,11 @@ const reset = createPrimitive("reset");
 globalThis.reset = reset;
 const submit = createPrimitive("submit");
 globalThis.submit = submit;
-const inputButton = createPrimitive("inputButton");
+const inputButton = createPrimitive("input[type=button]");
 globalThis.inputButton = inputButton;
-const inputReset = createPrimitive("inputReset");
+const inputReset = createPrimitive("input[type=reset]");
 globalThis.inputReset = inputReset;
-const inputSubmit = createPrimitive("inputSubmit");
+const inputSubmit = createPrimitive("input[type=submit]");
 globalThis.inputSubmit = inputSubmit;
 const search = createPrimitive("search");
 globalThis.search = search;
