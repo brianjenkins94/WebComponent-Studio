@@ -131,7 +131,7 @@ document.getElementById("nav").after(nav(".nav").fragment);
 const orderedList = ol(".ol");
 orderedList.push(listItem);
 
-document.getElementById("ol").after(orderedList);
+document.getElementById("ol").after(orderedList.fragment);
 
 // section
 document.getElementById("section").after(section(".section").fragment);
@@ -140,7 +140,7 @@ document.getElementById("section").after(section(".section").fragment);
 const unorderedList = ul(".ul");
 unorderedList.push(listItem);
 
-document.getElementById("ol").after(unorderedList);
+document.getElementById("ul").after(unorderedList.fragment);
 
 // Form-associated
 
@@ -157,94 +157,94 @@ document.getElementById("textarea").after(textarea(".textarea").fragment);
 document.getElementById("iframe").after(iframe(".iframe", window.location.href).fragment);
 
 // Field Set
-document.getElementById("fieldset").after(fieldset(".fieldset", "This is a legend.").fragment);
+document.getElementById("fieldset").after(fieldset(".fieldset", "fieldset").fragment);
 
 // Form
-document.getElementById("form").after(form(".form", "GET", "/", "application/x-www-form-urlencoded").fragment);
+document.getElementById("form").after(form(".form").fragment);
 
 // Input
 
 // Button-like
 
 // button[type=button]
-document.getElementById("button");
+document.getElementById("button").after(button(".button", "This is a button.").fragment);
 
 // input[type=button]
-document.getElementById("inputButton");
+document.getElementById("inputButton").after(inputButton(".inputButton", "This is an input[type=button].").fragment);
 
 // button[type=reset]
-document.getElementById("reset");
+document.getElementById("reset").after(reset(".reset", "This is a reset button.").fragment);
 
 // input[type=reset]
-document.getElementById("inputReset");
+document.getElementById("inputReset").after(inputReset(".inputReset", "This is an input[type=reset].").fragment);
 
 // button[type=submit]
-document.getElementById("submit");
+document.getElementById("submit").after(submit(".submit", "This is a submit button.").fragment);
 
 // input[type=submit]
-document.getElementById("inputSubmit");
+document.getElementById("inputSubmit").after(inputSubmit(".inputSubmit", "This is an input[type=submit].").fragment);
 
 // input[type=search]
-document.getElementById("search");
+document.getElementById("search").after(search(".search", "This is a search query.").fragment);
 
 // File
-document.getElementById("file");
+document.getElementById("file").after(file(".file", "image/*", true).fragment);
 
 // Input
 
 // input[type=checkbox]
-document.getElementById("checkbox");
+document.getElementById("checkbox").after(checkbox(".checkbox", "checkbox", "checkbox", true).fragment);
 
 // input[type=color]
-document.getElementById("color");
+document.getElementById("color").after(color(".color", "color", "#000000", true).fragment);
 
 // input[type=date]
-document.getElementById("date");
+document.getElementById("date").after(date(".date", "date", "1969-04-20", true).fragment);
 
 // input[type=datetime]
-document.getElementById("datetime");
+document.getElementById("datetime").after(datetime(".datetime", "datetime", "1969-04-20T16:20", true).fragment);
 
 // input[type=email]
-document.getElementById("email");
+document.getElementById("email").after(email(".email", "email", "foo@bar.com", true).fragment);
 
 // input[type=hidden]
-document.getElementById("hidden");
+document.getElementById("hidden").after(hidden(".hidden", "hidden", "The Secret lies with Charlotte.", true).fragment);
 
 // input[type=image]
-document.getElementById("image");
+document.getElementById("image").after(image(".image", window.location.href).fragment);
 
 // input[type=month]
-document.getElementById("month");
+document.getElementById("month").after(month(".month", "month", "1969-04").fragment);
 
 // input[type=number]
-document.getElementById("number");
+document.getElementById("number").after(number(".number", "number", 420, true).fragment);
 
 // input[type=password]
-document.getElementById("password");
+document.getElementById("password").after(password(".password", "password", "********", true).fragment);
 
 // input[type=radio]
-document.getElementById("radio");
+document.getElementById("radio").after(radio(".radio", "radio", "radio", true).fragment);
 
 // input[type=range]
-document.getElementById("range");
+document.getElementById("range").after(range(".range", "range", 69, true).fragment);
 
 // input[type=tel]
-document.getElementById("tel");
+document.getElementById("tel").after(tel(".tel", "tel", "+1 (800) 867-5309", true).fragment);
 
 // input[type=text]
-document.getElementById("text");
+document.getElementById("text").after(text(".text", "text", "The Secret lies with Charlotte.", true).fragment);
 
 // input[type=time]
-document.getElementById("time");
+document.getElementById("time").after(time(".time", "time", "16:20").fragment);
 
 // input[type=url]
-document.getElementById("url");
+document.getElementById("url").after(url(".url", "url", window.location.href, true).fragment);
 
 // input[type=week]
-document.getElementById("week");
+document.getElementById("week").after(week(".week", "week", "2004-W20", true).fragment);
 
 // Select
-document.getElementById("select").after(select(".select", {}).fragment);
+document.getElementById("select").after(select(".select", "select", [{ "key": "Item 1", "value": [{ "key": "Item 1.1" }] }, { "key": "--", "disabled": true }, { "key": "Item 2" }], true).fragment);
 
 // Figure
 document.getElementById("figure").after(figure(".figure", "This is a caption.").fragment);

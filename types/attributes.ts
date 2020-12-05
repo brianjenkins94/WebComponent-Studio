@@ -13,7 +13,7 @@ export interface HTMLElementAttributesMap {
 	"col": HTMLTableColElementAttributes;
 	"color": HTMLColorInputElementAttributes;
 	"date": HTMLDateInputElementAttributes;
-	"datetime": HTMLDatetimeLocalInputElementAttributes;
+	"datetime-local": HTMLDatetimeLocalInputElementAttributes;
 	"del": HTMLModElementAttributes;
 	"details": HTMLDetailsElementAttributes;
 	"div": HTMLElementAttributes;

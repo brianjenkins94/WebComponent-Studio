@@ -18,6 +18,10 @@ export class GroupingNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 			groupingNode.setAttribute(key, String(value));
 		}
 
+		for (const childNode of this.children) {
+			groupingNode.appendChild(childNode.fragment);
+		}
+
 		this.cachedFragment.appendChild(groupingNode);
 
 		return this.cachedFragment;

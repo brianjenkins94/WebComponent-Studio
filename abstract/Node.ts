@@ -6,7 +6,7 @@ export abstract class Node<TagName extends keyof TopLevelHTMLElementMap> extends
 	protected cachedFragment: DocumentFragment;
 	protected attributes: HTMLElementAttributesMap[TagName] = {};
 	protected readonly type: keyof TopLevelHTMLElementMap;
-	private readonly children = [];
+	protected readonly children = [];
 
 	public constructor(type: keyof TopLevelHTMLElementMap) {
 		super();

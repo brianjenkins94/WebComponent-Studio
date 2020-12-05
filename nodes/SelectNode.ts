@@ -6,9 +6,9 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <option> should be part of a <select> or <optgroup>
 
 export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	private readonly options: object;
+	private readonly options: object[];
 
-	public constructor(tagName: TagName, options: object, extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, options: object[], extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.options = options;
@@ -17,6 +17,52 @@ export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 	}
 
 	public get fragment(): DocumentFragment {
-		// TODO
+		this.cachedFragment = document.createDocumentFragment();
+
+		const selectNode = document.createElement(this.type);
+
+		(function recurse(options, parent) {
+			for (const option of options) {
+				let node;
+
+				if (Array.isArray(option["value"])) {
+					node = document.createElement("optgroup");
+
+					node.setAttribute("label", option["key"]);
+
+					recurse(option["value"], node);
+				} else {
+					node = document.createElement("option");
+
+					if (option["key"] !== undefined) {
+						node.appendChild(document.createTextNode(option["key"]));
+					}
+
+					if (option["value"] !== undefined) {
+						node.value = option["value"];
+					} else {
+						node.value = option["key"];
+					}
+				}
+
+				if (option["disabled"] === true) {
+					node.setAttribute("disabled", true);
+				}
+
+				if (option["required"] === true) {
+					node.setAttribute("required", true);
+				}
+
+				if (option["selected"] === true) {
+					node.setAttribute("selected", true);
+				}
+
+				parent.appendChild(node);
+			}
+		})(this.options, selectNode);
+
+		this.cachedFragment.appendChild(selectNode);
+
+		return this.cachedFragment;
 	}
 }

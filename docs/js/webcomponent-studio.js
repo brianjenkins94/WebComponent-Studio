@@ -142,9 +142,9 @@ class FieldSetNode extends Node {
         this.cachedFragment = document.createDocumentFragment();
         const fieldSetNode = document.createElement(this.type);
         if (this.legend !== undefined) {
-            const legend = document.createElement("legend");
-            legend.innerHTML = this.legend;
-            fieldSetNode.append(legend);
+            const legendNode = document.createElement("legend");
+            legendNode.innerHTML = this.legend;
+            fieldSetNode.append(legendNode);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
             fieldSetNode.setAttribute(key, String(value));
@@ -188,6 +188,9 @@ class GroupingNode extends Node {
         for (const [key, value] of Object.entries(this.attributes)) {
             groupingNode.setAttribute(key, String(value));
         }
+        for (const childNode of this.children) {
+            groupingNode.appendChild(childNode.fragment);
+        }
         this.cachedFragment.appendChild(groupingNode);
         return this.cachedFragment;
     }
@@ -202,7 +205,42 @@ class SelectNode extends Node {
         this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
     }
     get fragment() {
-        // TODO
+        this.cachedFragment = document.createDocumentFragment();
+        const selectNode = document.createElement(this.type);
+        (function recurse(options, parent) {
+            for (const option of options) {
+                let node;
+                if (Array.isArray(option["value"])) {
+                    node = document.createElement("optgroup");
+                    node.setAttribute("label", option["key"]);
+                    recurse(option["value"], node);
+                }
+                else {
+                    node = document.createElement("option");
+                    if (option["key"] !== undefined) {
+                        node.appendChild(document.createTextNode(option["key"]));
+                    }
+                    if (option["value"] !== undefined) {
+                        node.value = option["value"];
+                    }
+                    else {
+                        node.value = option["key"];
+                    }
+                }
+                if (option["disabled"] === true) {
+                    node.setAttribute("disabled", true);
+                }
+                if (option["required"] === true) {
+                    node.setAttribute("required", true);
+                }
+                if (option["selected"] === true) {
+                    node.setAttribute("selected", true);
+                }
+                parent.appendChild(node);
+            }
+        })(this.options, selectNode);
+        this.cachedFragment.appendChild(selectNode);
+        return this.cachedFragment;
     }
 }
 
@@ -268,6 +306,9 @@ const NodeTagNameMap = {
     // Text-Level
     "b": primeConstructor(TextLevelNode, "b"),
     "blockquote": primeConstructor(TextLevelNode, "blockquote"),
+    "button": primeConstructor(TextLevelNode, "button"),
+    "reset": primeConstructor(TextLevelNode, "button"),
+    "submit": primeConstructor(TextLevelNode, "button"),
     "code": primeConstructor(TextLevelNode, "code"),
     "del": primeConstructor(TextLevelNode, "del"),
     "em": primeConstructor(TextLevelNode, "em"),
@@ -322,12 +363,10 @@ const NodeTagNameMap = {
     // FieldSet
     "fieldset": primeConstructor(FieldSetNode, "fieldset"),
     // Button-like
-    "button": primeConstructor(GroupingNode, "button"),
     "inputButton": primeConstructor(GroupingNode, "input"),
-    "reset": primeConstructor(GroupingNode, "button"),
     "inputReset": primeConstructor(GroupingNode, "input"),
-    "submit": primeConstructor(GroupingNode, "button"),
     "inputSubmit": primeConstructor(GroupingNode, "input"),
+    // Search
     "search": primeConstructor(GroupingNode, "input"),
     // File
     "file": primeConstructor(GroupingNode, "input"),
@@ -335,7 +374,7 @@ const NodeTagNameMap = {
     "checkbox": primeConstructor(GroupingNode, "input"),
     "color": primeConstructor(GroupingNode, "input"),
     "date": primeConstructor(GroupingNode, "input"),
-    "datetime": primeConstructor(GroupingNode, "input"),
+    "datetime-local": primeConstructor(GroupingNode, "input"),
     "email": primeConstructor(GroupingNode, "input"),
     "hidden": primeConstructor(GroupingNode, "input"),
     "image": primeConstructor(GroupingNode, "input"),
@@ -377,6 +416,21 @@ function createPrimitive(tagName) {
          */
         case "b":
         case "blockquote":
+        case "button":
+        case "button[type=button]":
+            if (tagName === "button[type=button]") {
+                tagName = "button";
+            }
+        case "reset":
+        case "button[type=reset]":
+            if (tagName === "button[type=reset]") {
+                tagName = "reset";
+            }
+        case "submit":
+        case "button[type=submit]":
+            if (tagName === "button[type=submit]") {
+                tagName = "submit";
+            }
         case "code":
         case "del":
         case "em":
@@ -547,7 +601,7 @@ function createPrimitive(tagName) {
                 return NodeTagNameMap[tagName](extras);
             };
         /**
-         * IFrame, Image
+         * IFrame
          *
          * (): NodeTagNameMap[NodeTagName]
          * (selectors: string): NodeTagNameMap[NodeTagName]
@@ -555,7 +609,6 @@ function createPrimitive(tagName) {
          * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "iframe":
-        case "image":
             return function (selectors, source, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
                     for (const selector of selectors.split(/#|\./g)) {
@@ -679,20 +732,6 @@ function createPrimitive(tagName) {
          * (selectors?: string, value: string): NodeTagNameMap[NodeTagName]
          * (selectors?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
-        case "button[type=button]":
-            if (tagName === "button[type=button]") {
-                tagName = "button";
-            }
-        case "button[type=reset]":
-            if (tagName === "button[type=reset]") {
-                tagName = "reset";
-            }
-        case "button":
-        case "button[type=submit]":
-            if (tagName === "button[type=submit]") {
-                tagName = "submit";
-            }
-        case "submit":
         case "input[type=button]":
             if (tagName === "input[type=button]") {
                 tagName = "inputButton";
@@ -701,11 +740,45 @@ function createPrimitive(tagName) {
             if (tagName === "input[type=reset]") {
                 tagName = "inputReset";
             }
-        case "reset":
         case "input[type=submit]":
             if (tagName === "input[type=submit]") {
                 tagName = "inputSubmit";
             }
+            return function (selectors, value, extras = {}) {
+                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+                    for (const selector of selectors.split(/#|\./g)) {
+                        if (selector.startsWith("#")) {
+                            extras.id = selector;
+                        }
+                        else if (selector.startsWith(".")) {
+                            if (extras.class === undefined) {
+                                extras.class = "";
+                            }
+                            extras.class += " " + selector;
+                        }
+                    }
+                }
+                else {
+                    value = selectors;
+                }
+                // value
+                if (value !== undefined && typeof value === "string") {
+                    extras.value = value;
+                }
+                else if (typeof value === "object") {
+                    extras = Object.assign(Object.assign({}, value), extras);
+                }
+                // extras
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName.substring("input".length).toLowerCase() }));
+            };
+        /**
+         * Search
+         *
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, value: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
+         */
         case "search":
             return function (selectors, value, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
@@ -725,14 +798,14 @@ function createPrimitive(tagName) {
                     value = selectors;
                 }
                 // value
-                if (value !== undefined && Array.isArray(value)) {
-                    return NodeTagNameMap[tagName](value, extras);
+                if (value !== undefined && typeof value === "string") {
+                    extras.value = value;
                 }
                 else if (typeof value === "object") {
                     extras = Object.assign(Object.assign({}, value), extras);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
             };
         /**
          * File
@@ -789,7 +862,7 @@ function createPrimitive(tagName) {
                     extras.required = required;
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
             };
         /**
          * Input
@@ -805,6 +878,10 @@ function createPrimitive(tagName) {
         case "color":
         case "date":
         case "datetime":
+            if (tagName === "datetime") {
+                tagName = "datetime-local";
+            }
+        case "datetime-local":
         case "email":
         case "hidden":
         case "month":
@@ -845,7 +922,7 @@ function createPrimitive(tagName) {
                     value = name;
                 }
                 // value
-                if (value !== undefined && typeof value === "string") {
+                if (value !== undefined && typeof value === "string" || !isNaN(Number(value))) {
                     extras.value = value;
                 }
                 else {
@@ -856,18 +933,55 @@ function createPrimitive(tagName) {
                     extras.required = required;
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
+            };
+        /**
+         * Image Input
+         *
+         * (): NodeTagNameMap[NodeTagName]
+         * (selectors: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, source: string[]): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
+         */
+        case "image":
+            return function (selectors, source, extras = {}) {
+                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
+                    for (const selector of selectors.split(/#|\./g)) {
+                        if (selector.startsWith("#")) {
+                            extras.id = selector;
+                        }
+                        else if (selector.startsWith(".")) {
+                            if (extras.class === undefined) {
+                                extras.class = "";
+                            }
+                            extras.class += " " + selector;
+                        }
+                    }
+                }
+                else {
+                    source = selectors;
+                }
+                // source
+                if (typeof source === "string" && URL_PATHNAME.test(source)) {
+                    extras.src = source;
+                }
+                else if (typeof source === "object") {
+                    extras = Object.assign(Object.assign({}, source), extras);
+                }
+                // extras
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
             };
         /**
          * Select
          *
          * (): NodeTagNameMap[NodeTagName]
          * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, options: object[]): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selectors: string, name: string): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, options: object[]): NodeTagNameMap[NodeTagName]
+         * (selectors?: string, name?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "select":
-            return function (selectors, options, extras = {}) {
+            return function (selectors, name, options, required, extras = {}) {
                 if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
                     for (const selector of selectors.split(/#|\./g)) {
                         if (selector.startsWith("#")) {
@@ -884,15 +998,24 @@ function createPrimitive(tagName) {
                 else {
                     options = selectors;
                 }
-                // method
-                if (options !== undefined && Array.isArray(options)) {
-                    return NodeTagNameMap[tagName](extras).push(options);
+                // name
+                if (name !== undefined && typeof name === "string" && typeof options !== "string") {
+                    extras.name = name;
                 }
-                else if (typeof options === "object") {
-                    extras = Object.assign(Object.assign({}, options), extras);
+                else if (Array.isArray(name)) {
+                    options = name;
+                }
+                // options
+                if (options !== undefined && Array.isArray(options)) ;
+                else if (typeof options === "boolean") {
+                    required = options;
+                }
+                // required
+                if (required !== undefined && typeof required === "boolean") {
+                    extras.required = required;
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](options, Object.assign(Object.assign({}, extras), { "type": tagName }));
             };
         /**
          * Figure
@@ -952,7 +1075,13 @@ function createPrimitive(tagName) {
                             extras.class += " " + selector;
                         }
                     }
-                    return NodeTagNameMap[tagName]();
+                    if (summary !== undefined && typeof summary === "string") {
+                        return NodeTagNameMap[tagName](summary, extras);
+                    }
+                    else if (typeof summary === "object") {
+                        summary = extras;
+                    }
+                    return NodeTagNameMap[tagName](extras);
                 }
                 else {
                     summary = selectors;
@@ -965,7 +1094,7 @@ function createPrimitive(tagName) {
                     extras = Object.assign(Object.assign({}, summary), extras);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](undefined, extras);
             };
         /**
          * Table
@@ -1179,6 +1308,8 @@ const email = createPrimitive("email");
 globalThis.email = email;
 const hidden = createPrimitive("hidden");
 globalThis.hidden = hidden;
+const image = createPrimitive("image");
+globalThis.image = image;
 const month = createPrimitive("month");
 globalThis.month = month;
 const number = createPrimitive("number");
@@ -1210,4 +1341,4 @@ globalThis.table = table;
 const a = createPrimitive("a");
 globalThis.a = a;
 
-//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, img, inputButton, inputReset, inputSubmit, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };
+//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, image, img, inputButton, inputReset, inputSubmit, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };

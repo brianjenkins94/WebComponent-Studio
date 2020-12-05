@@ -22,6 +22,9 @@ export const NodeTagNameMap = {
 	// Text-Level
 	"b": primeConstructor(TextLevelNode, "b"),
 	"blockquote": primeConstructor(TextLevelNode, "blockquote"),
+	"button": primeConstructor(TextLevelNode, "button"),
+	"reset": primeConstructor(TextLevelNode, "button"),
+	"submit": primeConstructor(TextLevelNode, "button"),
 	"code": primeConstructor(TextLevelNode, "code"),
 	"del": primeConstructor(TextLevelNode, "del"),
 	"em": primeConstructor(TextLevelNode, "em"),
@@ -82,12 +85,11 @@ export const NodeTagNameMap = {
 	"fieldset": primeConstructor(FieldSetNode, "fieldset"),
 
 	// Button-like
-	"button": primeConstructor(GroupingNode, "button"),
 	"inputButton": primeConstructor(GroupingNode, "input"), // Childless
-	"reset": primeConstructor(GroupingNode, "button"),
 	"inputReset": primeConstructor(GroupingNode, "input"), // Childless
-	"submit": primeConstructor(GroupingNode, "button"),
 	"inputSubmit": primeConstructor(GroupingNode, "input"), // Childless
+
+	// Search
 	"search": primeConstructor(GroupingNode, "input"), // Childless
 
 	// File
@@ -97,7 +99,7 @@ export const NodeTagNameMap = {
 	"checkbox": primeConstructor(GroupingNode, "input"), // Childless
 	"color": primeConstructor(GroupingNode, "input"), // Childless
 	"date": primeConstructor(GroupingNode, "input"), // Childless
-	"datetime": primeConstructor(GroupingNode, "input"), // Childless
+	"datetime-local": primeConstructor(GroupingNode, "input"), // Childless
 	"email": primeConstructor(GroupingNode, "input"), // Childless
 	"hidden": primeConstructor(GroupingNode, "input"), // Childless
 	"image": primeConstructor(GroupingNode, "input"), // Childless
