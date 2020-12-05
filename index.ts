@@ -1,5 +1,6 @@
 import { NodeTagNameMap } from "./nodes";
 import type { HTMLElementAttributesMap } from "./types/attributes";
+import type { TopLevelHTMLElementMap } from "./types/elements";
 
 // SOURCE: https://www.w3.org/TR/selectors-3/#lex
 const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*$/i;
@@ -8,7 +9,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity
-function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName) /* : typeof NodeTagNameMap[NodeTagName] */ {
+function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: keyof TopLevelHTMLElementMap | NodeTagName) /* : typeof NodeTagNameMap[NodeTagName] */ {
 	switch (tagName) {
 
 		/**
