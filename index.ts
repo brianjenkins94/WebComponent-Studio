@@ -8,7 +8,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 // eslint-disable-next-line complexity, no-underscore-dangle
-function _createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): any {
+function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
 	switch (tagName) {
 
 		/**
@@ -352,10 +352,10 @@ function _createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNa
 			}
 		case "button":
 		case "button[type=submit]":
-		case "submit":
 			if (tagName === "button[type=submit]") {
 				tagName = "submit";
 			}
+		case "submit":
 		case "input[type=button]":
 			if (tagName === "input[type=button]") {
 				tagName = "inputButton";
@@ -745,10 +745,6 @@ function _createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNa
 		default:
 			throw new Error("Unrecognized element `" + tagName + "`.");
 	}
-}
-
-function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
-	return _createPrimitive(tagName);
 }
 
 export const b = createPrimitive("b");
