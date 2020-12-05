@@ -21,7 +21,7 @@ export abstract class EventEmitter {
 		}
 	}
 
-	public emit(event: string, ...args: any[]): void {
+	public emit(event: string, ...args: unknown[]): void {
 		if (this.events[event] !== undefined) {
 			for (const listener of this.events[event]) {
 				listener(...args);

@@ -21,7 +21,6 @@ interface FormAssociatedContent {
 	"button": HTMLButtonElement;
 	"fieldset": HTMLFieldSetElement;
 	"form": HTMLFormElement;
-	"input": HTMLInputElement;
 	"label": HTMLLabelElement;
 	"meter": HTMLMeterElement;
 	"progress": HTMLProgressElement;
@@ -30,6 +29,7 @@ interface FormAssociatedContent {
 }
 
 interface AbstractFormAssociatedContent {
+	"input": HTMLInputElement;
 	"legend": HTMLLegendElement;
 	"optgroup": HTMLOptGroupElement;
 	"option": HTMLOptionElement;

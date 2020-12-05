@@ -52,7 +52,7 @@ export interface HTMLElementAttributesMap {
 	"number": HTMLNumberInputElementAttributes;
 	"ol": HTMLOListElementAttributes;
 	"optgroup": HTMLOptGroupElementAttributes;
-	"options": HTMLOptionElementAttributes;
+	"option": HTMLOptionElementAttributes;
 	"p": HTMLElementAttributes;
 	"password": HTMLPasswordInputElementAttributes;
 	"picture": HTMLElementAttributes;

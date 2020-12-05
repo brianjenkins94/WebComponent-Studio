@@ -7,7 +7,7 @@ const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9
 // SOURCE: https://tools.ietf.org/html/rfc3986#appendix-B
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
-// eslint-disable-next-line complexity, no-underscore-dangle
+// eslint-disable-next-line complexity
 function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName): typeof NodeTagNameMap[NodeTagName] {
 	switch (tagName) {
 
@@ -860,11 +860,11 @@ export const reset = createPrimitive("reset");
 globalThis.reset = reset;
 export const submit = createPrimitive("submit");
 globalThis.submit = submit;
-export const inputButton = createPrimitive("inputButton");
+export const inputButton = createPrimitive("input[type=button]");
 globalThis.inputButton = inputButton;
-export const inputReset = createPrimitive("inputReset");
+export const inputReset = createPrimitive("input[type=reset]");
 globalThis.inputReset = inputReset;
-export const inputSubmit = createPrimitive("inputSubmit");
+export const inputSubmit = createPrimitive("input[type=submit]");
 globalThis.inputSubmit = inputSubmit;
 export const search = createPrimitive("search");
 globalThis.search = search;
