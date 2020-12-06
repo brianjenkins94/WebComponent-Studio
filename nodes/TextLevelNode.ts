@@ -20,7 +20,9 @@ export class TextLevelNode<TagName extends keyof TopLevelHTMLElementMap> extends
 		textLevelNode.innerHTML = this.textContent;
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			textLevelNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				textLevelNode.setAttribute(key, value);
+			}
 		}
 
 		this.cachedFragment.appendChild(textLevelNode);

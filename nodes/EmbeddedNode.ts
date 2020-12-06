@@ -35,7 +35,9 @@ export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 		}
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			embeddedNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				embeddedNode.setAttribute(key, value);
+			}
 		}
 
 		this.cachedFragment.appendChild(embeddedNode);

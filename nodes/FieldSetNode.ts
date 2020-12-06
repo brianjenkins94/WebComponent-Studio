@@ -28,7 +28,9 @@ export class FieldSetNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 		}
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			fieldSetNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				fieldSetNode.setAttribute(key, value);
+			}
 		}
 
 		this.cachedFragment.appendChild(fieldSetNode);

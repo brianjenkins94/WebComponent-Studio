@@ -21,6 +21,12 @@ export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 
 		const selectNode = document.createElement(this.type);
 
+		for (const [key, value] of Object.entries(this.attributes)) {
+			if (value !== undefined) {
+				selectNode.setAttribute(key, value);
+			}
+		}
+
 		(function recurse(options, parent) {
 			for (const option of options) {
 				let node;

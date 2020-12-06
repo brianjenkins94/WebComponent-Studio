@@ -40,7 +40,9 @@ export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Nod
 		tableNode.append(document.createElement("tfoot"));
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			tableNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				tableNode.setAttribute(key, value);
+			}
 		}
 
 		this.cachedFragment.appendChild(tableNode);

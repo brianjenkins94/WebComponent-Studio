@@ -15,7 +15,9 @@ export class GroupingNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 		const groupingNode = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			groupingNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				groupingNode.setAttribute(key, value);
+			}
 		}
 
 		for (const childNode of this.children) {

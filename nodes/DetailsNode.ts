@@ -28,7 +28,9 @@ export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends N
 		}
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			detailsNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				detailsNode.setAttribute(key, value);
+			}
 		}
 
 		this.cachedFragment.appendChild(detailsNode);

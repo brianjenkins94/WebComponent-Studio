@@ -70,7 +70,9 @@ class AnchorNode extends Node {
         const anchorNode = document.createElement(this.type);
         anchorNode.textContent = this.textContent;
         for (const [key, value] of Object.entries(this.attributes)) {
-            anchorNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                anchorNode.setAttribute(key, value);
+            }
         }
         this.cachedFragment.appendChild(anchorNode);
         return this.cachedFragment;
@@ -93,7 +95,9 @@ class DetailsNode extends Node {
             detailsNode.append(summary);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            detailsNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                detailsNode.setAttribute(key, value);
+            }
         }
         this.cachedFragment.appendChild(detailsNode);
         return this.cachedFragment;
@@ -124,7 +128,9 @@ class EmbeddedNode extends Node {
             embeddedNode.setAttribute("src", this.sources[0]);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            embeddedNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                embeddedNode.setAttribute(key, value);
+            }
         }
         this.cachedFragment.appendChild(embeddedNode);
         return this.cachedFragment;
@@ -147,7 +153,9 @@ class FieldSetNode extends Node {
             fieldSetNode.append(legendNode);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            fieldSetNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                fieldSetNode.setAttribute(key, value);
+            }
         }
         this.cachedFragment.appendChild(fieldSetNode);
         return this.cachedFragment;
@@ -170,7 +178,9 @@ class FigureNode extends Node {
             figureNode.append(caption);
         }
         for (const [key, value] of Object.entries(this.attributes)) {
-            figureNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                figureNode.setAttribute(key, value);
+            }
         }
         this.cachedFragment.appendChild(figureNode);
         return this.cachedFragment;
@@ -186,7 +196,9 @@ class GroupingNode extends Node {
         this.cachedFragment = document.createDocumentFragment();
         const groupingNode = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            groupingNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                groupingNode.setAttribute(key, value);
+            }
         }
         for (const childNode of this.children) {
             groupingNode.appendChild(childNode.fragment);
@@ -207,6 +219,11 @@ class SelectNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const selectNode = document.createElement(this.type);
+        for (const [key, value] of Object.entries(this.attributes)) {
+            if (value !== undefined) {
+                selectNode.setAttribute(key, value);
+            }
+        }
         (function recurse(options, parent) {
             for (const option of options) {
                 let node;
@@ -271,7 +288,9 @@ class TableNode extends Node {
         tableNode.append(document.createElement("tbody"));
         tableNode.append(document.createElement("tfoot"));
         for (const [key, value] of Object.entries(this.attributes)) {
-            tableNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                tableNode.setAttribute(key, value);
+            }
         }
         this.cachedFragment.appendChild(tableNode);
         return this.cachedFragment;
@@ -289,7 +308,9 @@ class TextLevelNode extends Node {
         const textLevelNode = document.createElement(this.type);
         textLevelNode.innerHTML = this.textContent;
         for (const [key, value] of Object.entries(this.attributes)) {
-            textLevelNode.setAttribute(key, String(value));
+            if (value !== undefined) {
+                textLevelNode.setAttribute(key, value);
+            }
         }
         this.cachedFragment.appendChild(textLevelNode);
         return this.cachedFragment;
@@ -377,7 +398,6 @@ const NodeTagNameMap = {
     "datetime-local": primeConstructor(GroupingNode, "input"),
     "email": primeConstructor(GroupingNode, "input"),
     "hidden": primeConstructor(GroupingNode, "input"),
-    "image": primeConstructor(GroupingNode, "input"),
     "month": primeConstructor(GroupingNode, "input"),
     "number": primeConstructor(GroupingNode, "input"),
     "password": primeConstructor(GroupingNode, "input"),
@@ -388,6 +408,8 @@ const NodeTagNameMap = {
     "time": primeConstructor(GroupingNode, "input"),
     "url": primeConstructor(GroupingNode, "input"),
     "week": primeConstructor(GroupingNode, "input"),
+    // Image Input
+    "image": primeConstructor(GroupingNode, "input"),
     // Select
     "select": primeConstructor(SelectNode, "select"),
     // Figure
@@ -400,19 +422,35 @@ const NodeTagNameMap = {
     "a": primeConstructor(AnchorNode, "a")
 };
 
-// SOURCE: https://www.w3.org/TR/selectors-3/#lex
-const CSS_SELECTOR = /^(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*$/i;
+// SOURCE: https://www.w3.org/TR/selector-3/#lex
+const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*)+$/i;
 // SOURCE: https://tools.ietf.org/html/rfc3986#appendix-B
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
+function parseSelector(selector) {
+    let id;
+    const classes = [];
+    for (const match of selector.replace(/\s+/g, " ").split(/(?=#|\.)/)) {
+        if (match.startsWith("#")) {
+            id = match.substring(1);
+        }
+        else if (match.startsWith(".")) {
+            classes.push(match.substring(1));
+        }
+    }
+    return {
+        "id": id,
+        "classes": classes
+    };
+}
 // eslint-disable-next-line complexity
 function createPrimitive(tagName) {
     switch (tagName) {
         /**
          * Text-level
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, textContent: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, textContent?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, textContent: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, textContent?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "b":
         case "blockquote":
@@ -455,114 +493,88 @@ function createPrimitive(tagName) {
         case "sub":
         case "sup":
         case "u":
-            return function (selectors, textContent, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, textContent, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    textContent = selectors;
+                    textContent = selector;
                 }
                 // textContent
                 if (textContent !== undefined && typeof textContent !== "object") {
-                    return NodeTagNameMap[tagName](textContent, extras);
+                    return NodeTagNameMap[tagName](textContent, attributes);
                 }
                 else if (typeof textContent === "object") {
-                    extras = Object.assign(Object.assign({}, textContent), extras);
+                    attributes = Object.assign(Object.assign({}, textContent), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         /**
          * Label
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors): NodeTagNameMap[NodeTagName]
-         * (selectors?, for, textContent): NodeTagNameMap[NodeTagName]
-         * (selectors?, for, textContent, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector): NodeTagNameMap[NodeTagName]
+         * (selector?, for, textContent): NodeTagNameMap[NodeTagName]
+         * (selector?, for, textContent, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "label":
-            return function (selectors, forValue, textContent, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, forValue, textContent, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    forValue = selectors;
+                    forValue = selector;
                     textContent = forValue;
                 }
                 // extras
-                return NodeTagNameMap[tagName](forValue, textContent, extras);
+                return NodeTagNameMap[tagName](forValue, textContent, attributes);
             };
         /**
          * Embedded
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, sources: string | string[]): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, sources?: string | string[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, sources: string | string[]): NodeTagNameMap[NodeTagName]
+         * (selector?: string, sources?: string | string[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "audio":
         case "img":
         case "picture":
         case "video":
-            return function (selectors, sources, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, sources, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
                     // eslint-disable-next-line no-lonely-if
                     if (Array.isArray(sources)) {
-                        sources = selectors;
+                        sources = selector;
                     }
-                    else if (typeof selectors === "string") {
-                        sources = [selectors];
+                    else if (typeof selector === "string") {
+                        sources = [selector];
                     }
                 }
                 // sources
-                if (sources !== undefined && Array.isArray(sources)) {
-                    return NodeTagNameMap[tagName](sources, extras);
-                }
+                if (sources !== undefined && Array.isArray(sources)) ;
                 else if (typeof sources === "object") {
-                    extras = Object.assign(Object.assign({}, sources), extras);
+                    attributes = Object.assign(Object.assign({}, sources), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](undefined, extras);
+                return NodeTagNameMap[tagName](sources, attributes);
             };
         /**
          * Grouping (+Sectioning/Form-associated)
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "article":
         case "aside":
@@ -580,157 +592,125 @@ function createPrimitive(tagName) {
         case "section":
         case "textarea":
         case "ul":
-            return function (selectors, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
-                else if (typeof selectors === "object") {
-                    extras = Object.assign(Object.assign({}, selectors), extras);
+                else if (typeof selector === "object") {
+                    attributes = Object.assign(Object.assign({}, selector), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         /**
          * IFrame
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, source: string[]): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
+         * (selector?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "iframe":
-            return function (selectors, source, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, source, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    source = selectors;
+                    source = selector;
                 }
                 // source
                 if (typeof source === "string" && URL_PATHNAME.test(source)) {
-                    extras.src = source;
+                    attributes.src = source;
                 }
                 else if (typeof source === "object") {
-                    extras = Object.assign(Object.assign({}, source), extras);
+                    attributes = Object.assign(Object.assign({}, source), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         /**
          * Field Set
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, legend: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, legend?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, legend: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, legend?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "fieldset":
-            return function (selectors, legend, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, legend, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    legend = selectors;
+                    legend = selector;
                 }
                 // source
                 if (typeof legend === "string") {
-                    return NodeTagNameMap[tagName](legend, extras);
+                    return NodeTagNameMap[tagName](legend, attributes);
                 }
                 else {
-                    extras = Object.assign(Object.assign({}, legend), extras);
+                    attributes = Object.assign(Object.assign({}, legend), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         /**
          * Form
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, method: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "form":
-            return function (selectors, method, action, encoding, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, method, action, encoding, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    method = selectors;
+                    method = selector;
                 }
                 // method
                 if (method !== undefined && typeof method === "string" && /^post|get|dialog$/i.test(method)) {
-                    extras.method = method;
+                    attributes.method = method;
                 }
                 else {
                     action = method;
                 }
                 // action
                 if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
-                    extras.action = action;
+                    attributes.action = action;
                 }
                 else {
                     action = encoding;
                 }
                 // encoding
                 if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
-                    extras.enctype = action;
+                    attributes.enctype = action;
                 }
                 else if (typeof encoding === "object") {
-                    extras = Object.assign(Object.assign({}, encoding), extras);
+                    attributes = Object.assign(Object.assign({}, encoding), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         /**
          * Button-like
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, value: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "input[type=button]":
             if (tagName === "input[type=button]") {
@@ -744,104 +724,80 @@ function createPrimitive(tagName) {
             if (tagName === "input[type=submit]") {
                 tagName = "inputSubmit";
             }
-            return function (selectors, value, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, value, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    value = selectors;
+                    value = selector;
                 }
                 // value
                 if (value !== undefined && typeof value === "string") {
-                    extras.value = value;
+                    attributes.value = value;
                 }
                 else if (typeof value === "object") {
-                    extras = Object.assign(Object.assign({}, value), extras);
+                    attributes = Object.assign(Object.assign({}, value), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName.substring("input".length).toLowerCase() }));
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName.substring("input".length).toLowerCase() }));
             };
         /**
          * Search
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, value: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "search":
-            return function (selectors, value, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, value, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    value = selectors;
+                    value = selector;
                 }
                 // value
                 if (value !== undefined && typeof value === "string") {
-                    extras.value = value;
+                    attributes.value = value;
                 }
                 else if (typeof value === "object") {
-                    extras = Object.assign(Object.assign({}, value), extras);
+                    attributes = Object.assign(Object.assign({}, value), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * File
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, accept: string | string[]): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, accept: string | string[]): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "file":
-            return function (selectors, name, accept, required, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
-                    if (extras.id !== undefined) {
-                        extras.name = extras.id;
+            return function (selector, name, accept, required, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
+                    if (attributes.id !== undefined) {
+                        attributes.name = attributes.id;
                     }
                 }
                 else {
-                    name = selectors;
+                    name = selector;
                 }
                 // name
                 if (name !== undefined && typeof name === "string") {
                     if (/\w+/i.test(name)) {
-                        extras.name = name;
+                        attributes.name = name;
                     }
                     else if (name.startsWith(".") || name.includes("/")) {
                         accept = name;
@@ -852,27 +808,27 @@ function createPrimitive(tagName) {
                 }
                 // accept
                 if (accept !== undefined && typeof accept === "string") {
-                    extras.accept = accept;
+                    attributes.accept = accept;
                 }
                 else {
                     required = accept;
                 }
                 // required
                 if (required !== undefined && typeof required === "boolean") {
-                    extras.required = required;
+                    attributes.required = required;
                 }
                 // extras
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Input
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, value: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, value: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "checkbox":
         case "color":
@@ -894,113 +850,89 @@ function createPrimitive(tagName) {
         case "time":
         case "url":
         case "week":
-            return function (selectors, name, value, required, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
-                    if (extras.id !== undefined) {
-                        extras.name = extras.id;
+            return function (selector, name, value, required, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
+                    if (attributes.id !== undefined) {
+                        attributes.name = attributes.id;
                     }
                 }
                 else {
-                    name = selectors;
+                    name = selector;
                 }
                 // name
                 if (name !== undefined && typeof name === "string" && typeof value !== "string") {
-                    extras.name = name;
+                    attributes.name = name;
                 }
                 else if (typeof name === "boolean") {
                     value = name;
                 }
                 // value
                 if (value !== undefined && typeof value === "string" || !isNaN(Number(value))) {
-                    extras.value = value;
+                    attributes.value = value;
                 }
                 else {
                     required = value;
                 }
                 // required
                 if (required !== undefined && typeof required === "boolean") {
-                    extras.required = required;
+                    attributes.required = required;
                 }
                 // extras
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Image Input
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, source: string[]): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
+         * (selector?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "image":
-            return function (selectors, source, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, source, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    source = selectors;
+                    source = selector;
                 }
                 // source
                 if (typeof source === "string" && URL_PATHNAME.test(source)) {
-                    extras.src = source;
+                    attributes.src = source;
                 }
                 else if (typeof source === "object") {
-                    extras = Object.assign(Object.assign({}, source), extras);
+                    attributes = Object.assign(Object.assign({}, source), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, extras), { "type": tagName }));
+                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Select
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors: string, name: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, options: object[]): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, name?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector: string, name: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, options: object[]): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
          */
         case "select":
-            return function (selectors, name, options, required, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, name, options, required, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    options = selectors;
+                    options = selector;
                 }
                 // name
                 if (name !== undefined && typeof name === "string" && typeof options !== "string") {
-                    extras.name = name;
+                    attributes.name = name;
                 }
                 else if (Array.isArray(name)) {
                     options = name;
@@ -1012,169 +944,137 @@ function createPrimitive(tagName) {
                 }
                 // required
                 if (required !== undefined && typeof required === "boolean") {
-                    extras.required = required;
+                    attributes.required = required;
                 }
                 // extras
-                return NodeTagNameMap[tagName](options, Object.assign(Object.assign({}, extras), { "type": tagName }));
+                return NodeTagNameMap[tagName](options, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Figure
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, figcaption: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, figcaption?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector): NodeTagNameMap[NodeTagName]
+         * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, figcaption?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "figure":
-            return function (selectors, figcaption, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, figcaption, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    figcaption = selectors;
+                    figcaption = selector;
                 }
                 // figcaption
                 if (figcaption !== undefined && typeof figcaption === "string") {
-                    return NodeTagNameMap[tagName](figcaption, extras);
+                    return NodeTagNameMap[tagName](figcaption, attributes);
                 }
                 else if (typeof figcaption === "object") {
-                    extras = Object.assign(Object.assign({}, figcaption), extras);
+                    attributes = Object.assign(Object.assign({}, figcaption), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         /**
          * Details
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, summary: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, summary?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, summary?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "details":
-            return function (selectors, summary, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, summary, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                     if (summary !== undefined && typeof summary === "string") {
-                        return NodeTagNameMap[tagName](summary, extras);
+                        return NodeTagNameMap[tagName](summary, attributes);
                     }
                     else if (typeof summary === "object") {
-                        summary = extras;
+                        summary = attributes;
                     }
-                    return NodeTagNameMap[tagName](extras);
+                    return NodeTagNameMap[tagName](attributes);
                 }
                 else {
-                    summary = selectors;
+                    summary = selector;
                 }
                 // summary
                 if (summary !== undefined && typeof summary === "string") {
-                    return NodeTagNameMap[tagName](summary, extras);
+                    return NodeTagNameMap[tagName](summary, attributes);
                 }
                 else if (typeof summary === "object") {
-                    extras = Object.assign(Object.assign({}, summary), extras);
+                    attributes = Object.assign(Object.assign({}, summary), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](undefined, extras);
+                return NodeTagNameMap[tagName](undefined, attributes);
             };
         /**
          * Table
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, caption: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, caption?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, caption: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, caption?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "table":
-            return function (selectors, caption, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, caption, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    caption = selectors;
+                    caption = selector;
                 }
                 // caption
                 if (caption !== undefined && typeof caption === "string") {
-                    return NodeTagNameMap[tagName](caption, extras);
+                    return NodeTagNameMap[tagName](caption, attributes);
                 }
                 else if (typeof caption === "object") {
-                    extras = Object.assign(Object.assign({}, caption), extras);
+                    attributes = Object.assign(Object.assign({}, caption), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         /**
          * Anchor
          *
          * (): NodeTagNameMap[NodeTagName]
-         * (selectors: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, href): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
-         * (selectors?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, href): NodeTagNameMap[NodeTagName]
+         * (selector?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[NodeTagName]
          */
         case "a":
-            return function (selectors, textContent, href, extras = {}) {
-                if (selectors !== undefined && typeof selectors === "string" && CSS_SELECTOR.test(selectors)) {
-                    for (const selector of selectors.split(/#|\./g)) {
-                        if (selector.startsWith("#")) {
-                            extras.id = selector;
-                        }
-                        else if (selector.startsWith(".")) {
-                            if (extras.class === undefined) {
-                                extras.class = "";
-                            }
-                            extras.class += " " + selector;
-                        }
-                    }
+            return function (selector, textContent, href, attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    const { id, classes } = parseSelector(selector);
+                    attributes.id = id;
+                    attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    textContent = selectors;
+                    textContent = selector;
                 }
                 // textContent
                 if (textContent !== undefined && typeof textContent === "string") {
-                    return NodeTagNameMap[tagName](textContent, href, extras);
+                    return NodeTagNameMap[tagName](textContent, href, attributes);
                 }
                 else {
                     href = textContent;
                 }
                 // href
                 if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-                    return NodeTagNameMap[tagName](href, href, extras);
+                    return NodeTagNameMap[tagName](href, href, attributes);
                 }
                 else if (typeof textContent === "object") {
-                    extras = Object.assign(Object.assign({}, textContent), extras);
+                    attributes = Object.assign(Object.assign({}, textContent), attributes);
                 }
                 // extras
-                return NodeTagNameMap[tagName](extras);
+                return NodeTagNameMap[tagName](attributes);
             };
         default:
             throw new Error("Unrecognized element `" + tagName + "`.");
@@ -1302,7 +1202,7 @@ const color = createPrimitive("color");
 globalThis.color = color;
 const date = createPrimitive("date");
 globalThis.date = date;
-const datetime = createPrimitive("datetime");
+const datetime = createPrimitive("datetime-local");
 globalThis.datetime = datetime;
 const email = createPrimitive("email");
 globalThis.email = email;

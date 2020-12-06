@@ -84,16 +84,16 @@ document.getElementById("u").after(u(".u", "This is some underlined text.").frag
 // Embedded
 
 // audio
-document.getElementById("audio").after(audio(".audio", []).fragment);
+document.getElementById("audio").after(audio(".audio", [window.location.href]).fragment);
 
 // img
-document.getElementById("img").after(img(".img", []).fragment);
+document.getElementById("img").after(img(".img", [window.location.href]).fragment);
 
 // picture
-document.getElementById("picture").after(picture(".picture", []).fragment);
+document.getElementById("picture").after(picture(".picture", [window.location.href]).fragment);
 
 // video
-document.getElementById("video").after(video(".video", []).fragment);
+document.getElementById("video").after(video(".video", [window.location.href]).fragment);
 
 // Grouping
 

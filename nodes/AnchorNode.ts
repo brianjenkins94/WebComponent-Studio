@@ -22,7 +22,9 @@ export class AnchorNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 		anchorNode.textContent = this.textContent;
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			anchorNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				anchorNode.setAttribute(key, value);
+			}
 		}
 
 		this.cachedFragment.appendChild(anchorNode);

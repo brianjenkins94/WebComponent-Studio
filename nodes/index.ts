@@ -102,7 +102,6 @@ export const NodeTagNameMap = {
 	"datetime-local": primeConstructor(GroupingNode, "input"), // Childless
 	"email": primeConstructor(GroupingNode, "input"), // Childless
 	"hidden": primeConstructor(GroupingNode, "input"), // Childless
-	"image": primeConstructor(GroupingNode, "input"), // Childless
 	"month": primeConstructor(GroupingNode, "input"), // Childless
 	"number": primeConstructor(GroupingNode, "input"), // Childless
 	"password": primeConstructor(GroupingNode, "input"), // Childless
@@ -113,6 +112,9 @@ export const NodeTagNameMap = {
 	"time": primeConstructor(GroupingNode, "input"), // Childless
 	"url": primeConstructor(GroupingNode, "input"), // Childless
 	"week": primeConstructor(GroupingNode, "input"), // Childless
+
+	// Image Input
+	"image": primeConstructor(GroupingNode, "input"), // Childless
 
 	// Select
 	"select": primeConstructor(SelectNode, "select"),

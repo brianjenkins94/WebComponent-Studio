@@ -28,7 +28,9 @@ export class FigureNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 		}
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			figureNode.setAttribute(key, String(value));
+			if (value !== undefined) {
+				figureNode.setAttribute(key, value);
+			}
 		}
 
 		this.cachedFragment.appendChild(figureNode);
