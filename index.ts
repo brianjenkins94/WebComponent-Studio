@@ -934,6 +934,8 @@ export function createTemplate(tagName: string, options: ElementDefinitionOption
 	}
 
 	customElements.define(tagName, class extends HTMLElement implements EventEmitter {
+		private events = {};
+
 		public constructor() {
 			super();
 		}

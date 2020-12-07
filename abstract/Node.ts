@@ -7,6 +7,7 @@ export abstract class Node<TagName extends keyof TopLevelHTMLElementMap> impleme
 	protected attributes: HTMLElementAttributesMap[TagName] = {};
 	protected readonly type: keyof TopLevelHTMLElementMap;
 	protected readonly children = [];
+	private events = {};
 
 	public constructor(type: keyof TopLevelHTMLElementMap) {
 		this.type = type;
