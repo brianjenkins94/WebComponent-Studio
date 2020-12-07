@@ -1,49 +1,20 @@
-class EventEmitter {
-    constructor() {
-        this.events = {};
-    }
-    on(event, listener) {
-        if (this.events[event] === undefined) {
-            this.events[event] = [];
-        }
-        this.events[event].push(listener);
-        return listener;
-    }
-    off(event, listener) {
-        if (event === undefined && listener === undefined) {
-            this.events = {};
-        }
-        else if (listener === undefined) {
-            delete this.events[event];
-        }
-        else if (this.events[event].indexOf(listener) !== -1) {
-            this.events[event].splice(this.events[event].indexOf(listener), 1);
-        }
-    }
-    emit(event, ...args) {
-        if (this.events[event] !== undefined) {
-            for (const listener of this.events[event]) {
-                listener(...args);
-            }
-        }
-        if (event !== "*") {
-            this.emit("*", ...args);
-        }
-    }
-    once(event, listener) {
-        return this.on(event, () => {
-            this.emit(event);
-            this.off(event, listener);
-        });
-    }
-}
-
-class Node extends EventEmitter {
+class Node {
     constructor(type) {
-        super();
         this.attributes = {};
         this.children = [];
         this.type = type;
+    }
+    on(event, listener) {
+        throw new Error("Method not implemented.");
+    }
+    off(event, listener) {
+        throw new Error("Method not implemented.");
+    }
+    emit(event, ...args) {
+        throw new Error("Method not implemented.");
+    }
+    once(event, listener) {
+        throw new Error("Method not implemented.");
     }
     push(...items) {
         this.children.push(...items);
@@ -89,15 +60,15 @@ class DetailsNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const detailsNode = document.createElement(this.type);
-        if (this.summary !== undefined) {
-            const summary = document.createElement("summary");
-            summary.innerHTML = this.summary;
-            detailsNode.append(summary);
-        }
         for (const [key, value] of Object.entries(this.attributes)) {
             if (value !== undefined) {
                 detailsNode.setAttribute(key, value);
             }
+        }
+        if (this.summary !== undefined) {
+            const summary = document.createElement("summary");
+            summary.append(this.summary);
+            detailsNode.appendChild(summary);
         }
         this.cachedFragment.appendChild(detailsNode);
         return this.cachedFragment;
@@ -115,22 +86,22 @@ class EmbeddedNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const embeddedNode = document.createElement(this.type);
+        for (const [key, value] of Object.entries(this.attributes)) {
+            if (value !== undefined) {
+                embeddedNode.setAttribute(key, value);
+            }
+        }
         if (/^audio|picture|video$/i.test(this.type)) {
             // TODO: Handle type
             for (const source of this.sources) {
                 const sourceNode = document.createElement("source");
                 sourceNode.setAttribute("src", source);
-                embeddedNode.append(sourceNode);
+                embeddedNode.appendChild(sourceNode);
             }
         }
         else {
             // TODO: Handle multiple `src`s
             embeddedNode.setAttribute("src", this.sources[0]);
-        }
-        for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
-                embeddedNode.setAttribute(key, value);
-            }
         }
         this.cachedFragment.appendChild(embeddedNode);
         return this.cachedFragment;
@@ -147,15 +118,15 @@ class FieldSetNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const fieldSetNode = document.createElement(this.type);
-        if (this.legend !== undefined) {
-            const legendNode = document.createElement("legend");
-            legendNode.innerHTML = this.legend;
-            fieldSetNode.append(legendNode);
-        }
         for (const [key, value] of Object.entries(this.attributes)) {
             if (value !== undefined) {
                 fieldSetNode.setAttribute(key, value);
             }
+        }
+        if (this.legend !== undefined) {
+            const legendNode = document.createElement("legend");
+            legendNode.append(this.legend);
+            fieldSetNode.appendChild(legendNode);
         }
         this.cachedFragment.appendChild(fieldSetNode);
         return this.cachedFragment;
@@ -172,15 +143,15 @@ class FigureNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const figureNode = document.createElement(this.type);
-        if (this.caption !== undefined) {
-            const caption = document.createElement("caption");
-            caption.innerHTML = this.caption;
-            figureNode.append(caption);
-        }
         for (const [key, value] of Object.entries(this.attributes)) {
             if (value !== undefined) {
                 figureNode.setAttribute(key, value);
             }
+        }
+        if (this.caption !== undefined) {
+            const caption = document.createElement("caption");
+            caption.append(this.caption);
+            figureNode.appendChild(caption);
         }
         this.cachedFragment.appendChild(figureNode);
         return this.cachedFragment;
@@ -235,7 +206,7 @@ class SelectNode extends Node {
                 else {
                     node = document.createElement("option");
                     if (option["key"] !== undefined) {
-                        node.appendChild(document.createTextNode(option["key"]));
+                        node.textContent = option["key"];
                     }
                     if (option["value"] !== undefined) {
                         node.value = option["value"];
@@ -279,19 +250,19 @@ class TableNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const tableNode = document.createElement(this.type);
-        if (this.caption !== undefined) {
-            const caption = document.createElement("caption");
-            caption.innerHTML = this.caption;
-            tableNode.append(caption);
-        }
-        tableNode.append(document.createElement("thead"));
-        tableNode.append(document.createElement("tbody"));
-        tableNode.append(document.createElement("tfoot"));
         for (const [key, value] of Object.entries(this.attributes)) {
             if (value !== undefined) {
                 tableNode.setAttribute(key, value);
             }
         }
+        if (this.caption !== undefined) {
+            const caption = document.createElement("caption");
+            caption.append(this.caption);
+            tableNode.appendChild(caption);
+        }
+        tableNode.appendChild(document.createElement("thead"));
+        tableNode.appendChild(document.createElement("tbody"));
+        tableNode.appendChild(document.createElement("tfoot"));
         this.cachedFragment.appendChild(tableNode);
         return this.cachedFragment;
     }
@@ -306,7 +277,7 @@ class TextLevelNode extends Node {
     get fragment() {
         this.cachedFragment = document.createDocumentFragment();
         const textLevelNode = document.createElement(this.type);
-        textLevelNode.innerHTML = this.textContent;
+        textLevelNode.append(this.textContent);
         for (const [key, value] of Object.entries(this.attributes)) {
             if (value !== undefined) {
                 textLevelNode.setAttribute(key, value);
@@ -429,7 +400,7 @@ const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 function parseSelector(selector) {
     let id;
     const classes = [];
-    for (const match of selector.replace(/\s+/g, " ").split(/(?=#|\.)/)) {
+    for (const match of selector.split(/(?=#|\.)/)) {
         if (match.startsWith("#")) {
             id = match.substring(1);
         }
@@ -450,7 +421,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, textContent: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, textContent?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, textContent?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "b":
         case "blockquote":
@@ -517,8 +488,8 @@ function createPrimitive(tagName) {
          *
          * (): NodeTagNameMap[NodeTagName]
          * (selector): NodeTagNameMap[NodeTagName]
-         * (selector?, for, textContent): NodeTagNameMap[NodeTagName]
-         * (selector?, for, textContent, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?, forValue: string, textContent): NodeTagNameMap[NodeTagName]
+         * (selector?, forValue: string, textContent, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "label":
             return function (selector, forValue, textContent, attributes = {}) {
@@ -540,7 +511,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, sources: string | string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, sources?: string | string[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, sources?: string | string[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "audio":
         case "img":
@@ -574,7 +545,7 @@ function createPrimitive(tagName) {
          *
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "article":
         case "aside":
@@ -610,7 +581,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "iframe":
             return function (selector, source, attributes = {}) {
@@ -638,7 +609,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, legend: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, legend?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, legend?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "fieldset":
             return function (selector, legend, attributes = {}) {
@@ -668,7 +639,7 @@ function createPrimitive(tagName) {
          * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "form":
             return function (selector, method, action, encoding, attributes = {}) {
@@ -710,7 +681,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "input[type=button]":
             if (tagName === "input[type=button]") {
@@ -749,7 +720,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "search":
             return function (selector, value, attributes = {}) {
@@ -779,7 +750,7 @@ function createPrimitive(tagName) {
          * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, name?: string, accept: string | string[]): NodeTagNameMap[NodeTagName]
          * (selector?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "file":
             return function (selector, name, accept, required, attributes = {}) {
@@ -828,7 +799,7 @@ function createPrimitive(tagName) {
          * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, name?: string, value: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "checkbox":
         case "color":
@@ -889,7 +860,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "image":
             return function (selector, source, attributes = {}) {
@@ -918,7 +889,8 @@ function createPrimitive(tagName) {
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector: string, name: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, name?: string, options: object[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, options?: object[], required: boolean): NodeTagNameMap[NodeTagName]
+         * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "select":
             return function (selector, name, options, required, attributes = {}) {
@@ -955,7 +927,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector): NodeTagNameMap[NodeTagName]
          * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, figcaption?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, figcaption?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "figure":
             return function (selector, figcaption, attributes = {}) {
@@ -983,7 +955,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, summary?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, summary?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "details":
             return function (selector, summary, attributes = {}) {
@@ -1018,7 +990,7 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, caption: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, caption?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, caption?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "table":
             return function (selector, caption, attributes = {}) {
@@ -1047,7 +1019,7 @@ function createPrimitive(tagName) {
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, href): NodeTagNameMap[NodeTagName]
          * (selector?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, textContent?: string, href?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "a":
             return function (selector, textContent, href, attributes = {}) {
@@ -1240,5 +1212,39 @@ const table = createPrimitive("table");
 globalThis.table = table;
 const a = createPrimitive("a");
 globalThis.a = a;
+function createTemplate(tagName, options) {
+    if (!tagName.includes("-")) {
+        tagName += "-component";
+    }
+    customElements.define(tagName, class extends HTMLElement {
+        constructor() {
+            super();
+        }
+        on(event, listener) {
+            throw new Error("Method not implemented.");
+        }
+        off(event, listener) {
+            throw new Error("Method not implemented.");
+        }
+        emit(event, ...args) {
+            throw new Error("Method not implemented.");
+        }
+        once(event, listener) {
+            throw new Error("Method not implemented.");
+        }
+        connectedCallback() {
+        }
+        disconnectedCallback() {
+        }
+        adoptedCallback() {
+        }
+        attributeChangedCallback() {
+        }
+    }, options);
+    return function (...args) {
+        return new (customElements.get(tagName))(...args);
+    };
+}
+globalThis.createTemplate = createTemplate;
 
-//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, image, img, inputButton, inputReset, inputSubmit, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };
+//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, createTemplate, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, image, img, inputButton, inputReset, inputSubmit, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };

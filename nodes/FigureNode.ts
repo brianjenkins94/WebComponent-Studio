@@ -20,17 +20,17 @@ export class FigureNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 
 		const figureNode = document.createElement(this.type);
 
-		if (this.caption !== undefined) {
-			const caption = document.createElement("caption");
-			caption.innerHTML = this.caption;
-
-			figureNode.append(caption);
-		}
-
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
 				figureNode.setAttribute(key, value);
 			}
+		}
+
+		if (this.caption !== undefined) {
+			const caption = document.createElement("caption");
+			caption.append(this.caption);
+
+			figureNode.appendChild(caption);
 		}
 
 		this.cachedFragment.appendChild(figureNode);

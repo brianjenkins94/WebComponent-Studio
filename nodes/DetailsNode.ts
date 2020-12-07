@@ -20,17 +20,17 @@ export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends N
 
 		const detailsNode = document.createElement(this.type);
 
-		if (this.summary !== undefined) {
-			const summary = document.createElement("summary");
-			summary.innerHTML = this.summary;
-
-			detailsNode.append(summary);
-		}
-
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
 				detailsNode.setAttribute(key, value);
 			}
+		}
+
+		if (this.summary !== undefined) {
+			const summary = document.createElement("summary");
+			summary.append(this.summary);
+
+			detailsNode.appendChild(summary);
 		}
 
 		this.cachedFragment.appendChild(detailsNode);

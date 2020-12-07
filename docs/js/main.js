@@ -257,3 +257,8 @@ document.getElementById("table").after(table(".table", "This is a table.").fragm
 
 // Anchor
 document.getElementById("a").after(a(".a", "This is an anchor.", window.location.href).fragment);
+
+// createTemplate()
+const foo = createTemplate("foo");
+
+console.dir(foo());

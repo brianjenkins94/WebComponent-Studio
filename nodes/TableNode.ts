@@ -28,22 +28,22 @@ export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Nod
 
 		const tableNode = document.createElement(this.type);
 
-		if (this.caption !== undefined) {
-			const caption = document.createElement("caption");
-			caption.innerHTML = this.caption;
-
-			tableNode.append(caption);
-		}
-
-		tableNode.append(document.createElement("thead"));
-		tableNode.append(document.createElement("tbody"));
-		tableNode.append(document.createElement("tfoot"));
-
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
 				tableNode.setAttribute(key, value);
 			}
 		}
+
+		if (this.caption !== undefined) {
+			const caption = document.createElement("caption");
+			caption.append(this.caption);
+
+			tableNode.appendChild(caption);
+		}
+
+		tableNode.appendChild(document.createElement("thead"));
+		tableNode.appendChild(document.createElement("tbody"));
+		tableNode.appendChild(document.createElement("tfoot"));
 
 		this.cachedFragment.appendChild(tableNode);
 

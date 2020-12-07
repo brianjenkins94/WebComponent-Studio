@@ -17,7 +17,7 @@ export class TextLevelNode<TagName extends keyof TopLevelHTMLElementMap> extends
 		this.cachedFragment = document.createDocumentFragment();
 
 		const textLevelNode = document.createElement(this.type);
-		textLevelNode.innerHTML = this.textContent;
+		textLevelNode.append(this.textContent);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {

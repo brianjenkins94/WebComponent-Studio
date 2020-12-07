@@ -20,17 +20,17 @@ export class FieldSetNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 
 		const fieldSetNode = document.createElement(this.type);
 
-		if (this.legend !== undefined) {
-			const legendNode = document.createElement("legend");
-			legendNode.innerHTML = this.legend;
-
-			fieldSetNode.append(legendNode);
-		}
-
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
 				fieldSetNode.setAttribute(key, value);
 			}
+		}
+
+		if (this.legend !== undefined) {
+			const legendNode = document.createElement("legend");
+			legendNode.append(this.legend);
+
+			fieldSetNode.appendChild(legendNode);
 		}
 
 		this.cachedFragment.appendChild(fieldSetNode);

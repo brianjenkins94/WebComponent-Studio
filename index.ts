@@ -1,4 +1,5 @@
 import { NodeTagNameMap } from "./nodes";
+import type { EventEmitter } from "./abstract/EventEmitter";
 import type { HTMLElementAttributesMap } from "./types/attributes";
 
 // SOURCE: https://www.w3.org/TR/selector-3/#lex
@@ -11,7 +12,7 @@ function parseSelector(selector) {
 	let id;
 	const classes = [];
 
-	for (const match of selector.replace(/\s+/g, " ").split(/(?=#|\.)/)) {
+	for (const match of selector.split(/(?=#|\.)/)) {
 		if (match.startsWith("#")) {
 			id = match.substring(1);
 		} else if (match.startsWith(".")) {
@@ -34,7 +35,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, textContent: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, textContent?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, textContent?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "b":
 		case "blockquote":
@@ -105,8 +106,8 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 *
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector): NodeTagNameMap[NodeTagName]
-		 * (selector?, for, textContent): NodeTagNameMap[NodeTagName]
-		 * (selector?, for, textContent, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue: string, textContent): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue: string, textContent, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "label":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], forValue?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -131,7 +132,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, sources: string | string[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, sources?: string | string[], extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, sources?: string | string[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "audio":
 		case "img":
@@ -170,7 +171,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 *
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "article":
 		case "aside":
@@ -209,7 +210,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "iframe":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], source?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -241,7 +242,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, legend: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, legend?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, legend?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "fieldset":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], legend?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -275,7 +276,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "form":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], method?: string | HTMLElementAttributesMap[NodeTagName], action?: string | HTMLElementAttributesMap[NodeTagName], encoding?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -323,7 +324,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "input[type=button]":
 			if (tagName === "input[type=button]") {
@@ -366,7 +367,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, value?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "search":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], value?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -400,7 +401,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, name?: string, accept: string | string[]): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, name?: string, accept?: string | string[], required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "file":
 			return function(selector?: string | boolean | HTMLElementAttributesMap[NodeTagName], name?: string | boolean | HTMLElementAttributesMap[NodeTagName], accept?: string | boolean | HTMLElementAttributesMap[NodeTagName], required?: string | boolean | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -456,7 +457,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, name?: string, value: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, name?: string, value?: string, required?: boolean, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "checkbox":
 		case "color":
@@ -525,7 +526,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source?: string[], extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "image":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], source?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -558,7 +559,8 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector: string, name: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, name?: string, options: object[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, name?: string, options?: object[], extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, name?: string, options?: object[], required: boolean): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "select":
 			return function(selector?: string | string[] | boolean | HTMLElementAttributesMap[NodeTagName], name?: string | string[] | boolean | HTMLElementAttributesMap[NodeTagName], options?: string[] | boolean | HTMLElementAttributesMap[NodeTagName], required?: boolean | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -604,7 +606,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, figcaption?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, figcaption?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "figure":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], figcaption?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -636,7 +638,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, summary?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, summary?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "details":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], summary?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -676,7 +678,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, caption: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, caption?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, caption?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "table":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], caption?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -709,7 +711,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, href): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, textContent?: string, href?: string, extras: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, textContent?: string, href?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "a":
 			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], href?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
@@ -922,12 +924,55 @@ globalThis.table = table;
 export const a = createPrimitive("a");
 globalThis.a = a;
 
-//
-
-function createTemplate(tagName) {
-	tagName.name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-
-	customElements.define(tagName, target);
-
-	return customElements.get(tagName);
+class FventFmitter {
+	private foobar = [];
 }
+
+export function createTemplate(tagName: string, options: ElementDefinitionOptions) {
+	if (!tagName.includes("-")) {
+		tagName += "-component";
+	}
+
+	customElements.define(tagName, class extends HTMLElement implements EventEmitter {
+		public constructor() {
+			super();
+		}
+
+		public on(event: string, listener: () => void): () => void {
+			throw new Error("Method not implemented.");
+		}
+
+		public off(event?: string, listener?: () => void): void {
+			throw new Error("Method not implemented.");
+		}
+
+		public emit(event: string, ...args: unknown[]): void {
+			throw new Error("Method not implemented.");
+		}
+
+		public once(event: string, listener: () => void): () => void {
+			throw new Error("Method not implemented.");
+		}
+
+		public connectedCallback() {
+
+		}
+
+		public disconnectedCallback() {
+
+		}
+
+		public adoptedCallback() {
+
+		}
+
+		public attributeChangedCallback() {
+
+		}
+	}, options);
+
+	return function(...args) {
+		return new (customElements.get(tagName))(...args);
+	};
+}
+globalThis.createTemplate = createTemplate;

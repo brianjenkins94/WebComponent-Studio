@@ -21,23 +21,23 @@ export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 
 		const embeddedNode = document.createElement(this.type);
 
+		for (const [key, value] of Object.entries(this.attributes)) {
+			if (value !== undefined) {
+				embeddedNode.setAttribute(key, value);
+			}
+		}
+
 		if (/^audio|picture|video$/i.test(this.type)) {
 			// TODO: Handle type
 			for (const source of this.sources) {
 				const sourceNode = document.createElement("source");
 				sourceNode.setAttribute("src", source);
 
-				embeddedNode.append(sourceNode);
+				embeddedNode.appendChild(sourceNode);
 			}
 		} else {
 			// TODO: Handle multiple `src`s
 			embeddedNode.setAttribute("src", this.sources[0]);
-		}
-
-		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined) {
-				embeddedNode.setAttribute(key, value);
-			}
 		}
 
 		this.cachedFragment.appendChild(embeddedNode);

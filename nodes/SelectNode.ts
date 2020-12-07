@@ -41,7 +41,7 @@ export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 					node = document.createElement("option");
 
 					if (option["key"] !== undefined) {
-						node.appendChild(document.createTextNode(option["key"]));
+						node.textContent = option["key"];
 					}
 
 					if (option["value"] !== undefined) {
