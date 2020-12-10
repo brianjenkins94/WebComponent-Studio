@@ -3,29 +3,27 @@ import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
 export class GroupingNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	public constructor(tagName: TagName, extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, children: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
+
+		this.children.push(...children);
 
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const groupingNode = document.createElement(this.type);
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				groupingNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
 		for (const childNode of this.children) {
-			groupingNode.appendChild(childNode.fragment);
+			this.template.innerHTML += childNode;
 		}
 
-		this.cachedFragment.appendChild(groupingNode);
-
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }

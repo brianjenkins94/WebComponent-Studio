@@ -37,9 +37,6 @@ export interface HTMLElementAttributesMap {
 	"iframe": HTMLIFrameElementAttributes;
 	"image": HTMLImageInputElementAttributes;
 	"img": HTMLImageElementAttributes;
-	"inputButton": HTMLButtonInputElementAttributes;
-	"inputReset": HTMLResetInputElementAttributes;
-	"inputSubmit": HTMLSubmitInputElementAttributes;
 	"ins": HTMLModElementAttributes;
 	"kbd": HTMLElementAttributes;
 	"label": HTMLLabelElementAttributes;

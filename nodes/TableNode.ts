@@ -13,40 +13,34 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
 export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	private readonly caption: string;
-
-	public constructor(tagName: TagName, caption: string, extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, caption: string, tableHeader: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		this.caption = caption;
+		const captionNode = document.createElement("caption");
+		captionNode.append(caption);
+
+		this.children.push(captionNode);
 
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const tableNode = document.createElement(this.type);
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				tableNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
-		if (this.caption !== undefined) {
-			const caption = document.createElement("caption");
-			caption.append(this.caption);
+		this.template.appendChild(document.createElement("thead"));
+		this.template.appendChild(document.createElement("tbody"));
+		this.template.appendChild(document.createElement("tfoot"));
 
-			tableNode.appendChild(caption);
+		for (const childNode of this.children) {
+			this.template.innerHTML += childNode;
 		}
 
-		tableNode.appendChild(document.createElement("thead"));
-		tableNode.appendChild(document.createElement("tbody"));
-		tableNode.appendChild(document.createElement("tfoot"));
-
-		this.cachedFragment.appendChild(tableNode);
-
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }

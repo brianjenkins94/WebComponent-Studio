@@ -3,7 +3,7 @@ import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
 export abstract class Node<TagName extends keyof TopLevelHTMLElementMap> implements EventEmitter {
-	protected cachedFragment: DocumentFragment;
+	protected template: HTMLElement;
 	protected attributes: HTMLElementAttributesMap[TagName] = {};
 	protected readonly type: keyof TopLevelHTMLElementMap;
 	protected readonly children = [];
@@ -11,22 +11,48 @@ export abstract class Node<TagName extends keyof TopLevelHTMLElementMap> impleme
 
 	public constructor(type: keyof TopLevelHTMLElementMap) {
 		this.type = type;
+
+		this.template = document.createElement(this.type);
 	}
 
 	public on(event: string, listener: () => void): () => void {
-		throw new Error("Method not implemented.");
+		if (this.events[event] === undefined) {
+			this.events[event] = [];
+		}
+
+		this.events[event].push(listener);
+
+		return listener;
 	}
 
 	public off(event?: string, listener?: () => void): void {
-		throw new Error("Method not implemented.");
+		if (event === undefined && listener === undefined) {
+			this.events = {};
+		} else if (listener === undefined) {
+			delete this.events[event];
+		} else if (this.events[event].indexOf(listener) !== -1) {
+			this.events[event].splice(this.events[event].indexOf(listener), 1);
+		}
 	}
 
 	public emit(event: string, ...args: unknown[]): void {
-		throw new Error("Method not implemented.");
+		if (this.events[event] !== undefined) {
+			for (const listener of this.events[event]) {
+				listener(...args);
+			}
+		}
+
+		if (event !== "*") {
+			this.emit("*", ...args);
+		}
 	}
 
 	public once(event: string, listener: () => void): () => void {
-		throw new Error("Method not implemented.");
+		return this.on(event, () => {
+			this.emit(event);
+
+			this.off(event, listener);
+		});
 	}
 
 	public push(...items: Node<TagName>[]): this {

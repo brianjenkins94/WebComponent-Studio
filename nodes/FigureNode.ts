@@ -5,36 +5,30 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <figcaption> should be part of a <figure>
 
 export class FigureNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	private readonly caption: string;
-
-	public constructor(tagName: TagName, caption: string, extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, caption: string, children: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		this.caption = caption;
+		const captionNode = document.createElement("caption");
+		captionNode.append(caption);
+
+		this.children.push(captionNode, ...children);
 
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const figureNode = document.createElement(this.type);
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				figureNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
-		if (this.caption !== undefined) {
-			const caption = document.createElement("caption");
-			caption.append(this.caption);
-
-			figureNode.appendChild(caption);
+		for (const childNode of this.children) {
+			this.template.innerHTML += childNode;
 		}
 
-		this.cachedFragment.appendChild(figureNode);
-
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }

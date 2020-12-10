@@ -3,32 +3,33 @@ import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
 export class AnchorNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	private readonly textContent: string;
-
-	public constructor(tagName: TagName, textContent: string, href: string, extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, textContent: string | (string | HTMLElement)[], href: string, extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		this.textContent = textContent;
+		if (typeof textContent === "string") {
+			this.children.push(textContent);
+		} else {
+			this.children.push([...textContent]);
+		}
 
 		this.attributes.href = href;
 
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const anchorNode = document.createElement(this.type);
-		anchorNode.textContent = this.textContent;
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				anchorNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
-		this.cachedFragment.appendChild(anchorNode);
+		for (const childNode of this.children) {
+			this.template.innerHTML += childNode;
+		}
 
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }

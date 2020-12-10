@@ -5,36 +5,30 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <legend> should be part of a <fieldset>
 
 export class FieldSetNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	private readonly legend: string;
-
-	public constructor(tagName: TagName, legend: string, extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, legend: string, children: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		this.legend = legend;
+		const legendNode = document.createElement("legend");
+		legendNode.append(legend);
+
+		this.children.push(legendNode, ...children);
 
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const fieldSetNode = document.createElement(this.type);
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				fieldSetNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
-		if (this.legend !== undefined) {
-			const legendNode = document.createElement("legend");
-			legendNode.append(this.legend);
-
-			fieldSetNode.appendChild(legendNode);
+		for (const childNode of this.children) {
+			this.template.innerHTML += childNode;
 		}
 
-		this.cachedFragment.appendChild(fieldSetNode);
-
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }

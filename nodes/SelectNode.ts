@@ -16,14 +16,12 @@ export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const selectNode = document.createElement(this.type);
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				selectNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
@@ -65,10 +63,12 @@ export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 
 				parent.appendChild(node);
 			}
-		})(this.options, selectNode);
+		})(this.options, this.template);
 
-		this.cachedFragment.appendChild(selectNode);
+		for (const childNode of this.children) {
+			this.template.innerHTML += childNode;
+		}
 
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }

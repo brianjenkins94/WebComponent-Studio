@@ -16,14 +16,12 @@ export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const embeddedNode = document.createElement(this.type);
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				embeddedNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
@@ -33,15 +31,17 @@ export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 				const sourceNode = document.createElement("source");
 				sourceNode.setAttribute("src", source);
 
-				embeddedNode.appendChild(sourceNode);
+				this.template.appendChild(sourceNode);
 			}
 		} else {
 			// TODO: Handle multiple `src`s
-			embeddedNode.setAttribute("src", this.sources[0]);
+			this.template.setAttribute("src", this.sources[0]);
 		}
 
-		this.cachedFragment.appendChild(embeddedNode);
+		for (const childNode of this.children) {
+			this.template.innerHTML += childNode;
+		}
 
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }

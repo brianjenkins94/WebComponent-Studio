@@ -31,14 +31,104 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 	switch (tagName) {
 
 		/**
-		 * Text-level
+		 * Anchor
+		 *
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, textContent: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, textContent?: string, attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, href): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, textContent?: string, href?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
+		case "a":
+			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], href?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+				} else {
+					textContent = selector;
+				}
+
+				// textContent
+
+				if (textContent !== undefined && typeof textContent === "string") {
+					return NodeTagNameMap[tagName](textContent, href, attributes);
+				} else {
+					href = textContent;
+				}
+
+				// href
+
+				if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
+					return NodeTagNameMap[tagName](href, href, attributes);
+				} else if (typeof textContent === "object") {
+					attributes = { ...textContent, ...attributes };
+				}
+
+				// attributes
+
+				return NodeTagNameMap[tagName](attributes);
+			};
+
+		/**
+		 * Details
+		 *
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, summary?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, summary?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "details":
+			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], summary?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+
+					if (summary !== undefined && typeof summary === "string") {
+						return NodeTagNameMap[tagName](summary, attributes);
+					} else if (typeof summary === "object") {
+						summary = attributes;
+					}
+
+					return NodeTagNameMap[tagName](attributes);
+				} else {
+					summary = selector;
+				}
+
+				// summary
+
+				if (summary !== undefined && typeof summary === "string") {
+					return NodeTagNameMap[tagName](summary, attributes);
+				} else if (typeof summary === "object") {
+					attributes = { ...summary, ...attributes };
+				}
+
+				// children
+
+				// TODO
+
+				// attributes
+
+				return NodeTagNameMap[tagName](undefined, attributes);
+			};
+
+		/**
+		 * Form-associated/Grouping/Text-level
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children: (string | HTMLElement)[]): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "article":
+		case "aside":
 		case "b":
 		case "blockquote":
+		case "br":
 		case "button":
 		case "button[type=button]":
 			if (tagName === "button[type=button]") {
@@ -54,31 +144,44 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 			if (tagName === "button[type=submit]") {
 				tagName = "submit";
 			}
+		case "canvas":
 		case "code":
 		case "del":
+		case "div":
 		case "em":
+		case "footer":
 		case "h1":
 		case "h2":
 		case "h3":
 		case "h4":
 		case "h5":
 		case "h6":
+		case "header":
+		case "hr":
 		case "i":
 		case "ins":
 		case "kbd":
 		case "li":
+		case "main":
 		case "mark":
+		case "meter":
+		case "nav":
+		case "ol":
 		case "p":
 		case "pre":
+		case "progress":
 		case "q":
 		case "s":
+		case "section":
 		case "small":
 		case "span":
 		case "strong":
 		case "sub":
 		case "sup":
+		case "textarea":
 		case "u":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+		case "ul":
+			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -88,42 +191,17 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					textContent = selector;
 				}
 
-				// textContent
+				// children
 
 				if (textContent !== undefined && typeof textContent !== "object") {
-					return NodeTagNameMap[tagName](textContent, attributes);
+					//textContent = textContent;
 				} else if (typeof textContent === "object") {
 					attributes = { ...textContent, ...attributes };
 				}
 
-				// extras
+				// attributes
 
-				return NodeTagNameMap[tagName](attributes);
-			};
-
-		/**
-		 * Label
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector): NodeTagNameMap[NodeTagName]
-		 * (selector?, forValue: string, textContent): NodeTagNameMap[NodeTagName]
-		 * (selector?, forValue: string, textContent, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "label":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], forValue?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					forValue = selector;
-					textContent = forValue;
-				}
-
-				// extras
-
-				return NodeTagNameMap[tagName](forValue, textContent, attributes);
+				return NodeTagNameMap[tagName](textContent, attributes);
 			};
 
 		/**
@@ -161,79 +239,9 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					attributes = { ...sources, ...attributes };
 				}
 
-				// extras
+				// attributes
 
 				return NodeTagNameMap[tagName](sources, attributes);
-			};
-
-		/**
-		 * Grouping (+Sectioning/Form-associated)
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "article":
-		case "aside":
-		case "br":
-		case "canvas":
-		case "div":
-		case "footer":
-		case "header":
-		case "hr":
-		case "main":
-		case "meter":
-		case "nav":
-		case "ol":
-		case "progress":
-		case "section":
-		case "textarea":
-		case "ul":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else if (typeof selector === "object") {
-					attributes = { ...selector, ...attributes };
-				}
-
-				// extras
-
-				return NodeTagNameMap[tagName](attributes);
-			};
-
-		/**
-		 * IFrame
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "iframe":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], source?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					source = selector;
-				}
-
-				// source
-
-				if (typeof source === "string" && URL_PATHNAME.test(source)) {
-					attributes.src = source;
-				} else if (typeof source === "object") {
-					attributes = { ...source, ...attributes };
-				}
-
-				// extras
-
-				return NodeTagNameMap[tagName](attributes);
 			};
 
 		/**
@@ -242,10 +250,11 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, legend: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, legend?: string, attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, legend?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, legend?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "fieldset":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], legend?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], legend?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -255,7 +264,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					legend = selector;
 				}
 
-				// source
+				// legend
 
 				if (typeof legend === "string") {
 					return NodeTagNameMap[tagName](legend, attributes);
@@ -263,134 +272,50 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					attributes = { ...legend, ...attributes };
 				}
 
-				// extras
+				// children
+
+				// TODO
+
+				// attributes
 
 				return NodeTagNameMap[tagName](attributes);
 			};
 
 		/**
-		 * Form
+		 * Figure
 		 *
 		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, figcaption?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, figcaption?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
-		case "form":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], method?: string | HTMLElementAttributesMap[NodeTagName], action?: string | HTMLElementAttributesMap[NodeTagName], encoding?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+		case "figure":
+			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], figcaption?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
 					attributes.id = id;
 					attributes.class = classes && classes.join(" ");
 				} else {
-					method = selector;
+					figcaption = selector;
 				}
 
-				// method
+				// figcaption
 
-				if (method !== undefined && typeof method === "string" && /^post|get|dialog$/i.test(method)) {
-					attributes.method = method;
-				} else {
-					action = method;
+				if (figcaption !== undefined && typeof figcaption === "string") {
+					return NodeTagNameMap[tagName](figcaption, attributes);
+				} else if (typeof figcaption === "object") {
+					attributes = { ...figcaption, ...attributes };
 				}
 
-				// action
+				// children
 
-				if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
-					attributes.action = action;
-				} else {
-					action = encoding;
-				}
+				// TODO
 
-				// encoding
-
-				if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
-					attributes.enctype = action;
-				} else if (typeof encoding === "object") {
-					attributes = { ...encoding, ...attributes };
-				}
-
-				// extras
+				// attributes
 
 				return NodeTagNameMap[tagName](attributes);
-			};
-
-		/**
-		 * Button-like
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "input[type=button]":
-			if (tagName === "input[type=button]") {
-				tagName = "inputButton";
-			}
-		case "input[type=reset]":
-			if (tagName === "input[type=reset]") {
-				tagName = "inputReset";
-			}
-		case "input[type=submit]":
-			if (tagName === "input[type=submit]") {
-				tagName = "inputSubmit";
-			}
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], value?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					value = selector;
-				}
-
-				// value
-
-				if (value !== undefined && typeof value === "string") {
-					attributes.value = value;
-				} else if (typeof value === "object") {
-					attributes = { ...value, ...attributes };
-				}
-
-				// extras
-
-				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName.substring("input".length).toLowerCase() });
-			};
-
-		/**
-		 * Search
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "search":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], value?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					value = selector;
-				}
-
-				// value
-
-				if (value !== undefined && typeof value === "string") {
-					attributes.value = value;
-				} else if (typeof value === "object") {
-					attributes = { ...value, ...attributes };
-				}
-
-				// extras
-
-				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName });
 			};
 
 		/**
@@ -444,7 +369,151 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					attributes.required = required;
 				}
 
-				// extras
+				// attributes
+
+				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName });
+			};
+
+		/**
+		 * Form
+		 *
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "form":
+			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], method?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], action?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], encoding?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+				} else {
+					method = selector;
+				}
+
+				// method
+
+				if (method !== undefined && typeof method === "string" && /^post|get|dialog$/i.test(method)) {
+					attributes.method = method;
+				} else {
+					action = method;
+				}
+
+				// action
+
+				if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
+					attributes.action = action;
+				} else {
+					action = encoding;
+				}
+
+				// encoding
+
+				if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
+					attributes.enctype = action;
+				} else if (typeof encoding === "object") {
+					attributes = { ...encoding, ...attributes };
+				}
+
+				// children
+
+				// TODO
+
+				// attributes
+
+				return NodeTagNameMap[tagName](attributes);
+			};
+
+		/**
+		 * IFrame
+		 *
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "iframe":
+			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], source?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+				} else {
+					source = selector;
+				}
+
+				// source
+
+				if (typeof source === "string" && URL_PATHNAME.test(source)) {
+					attributes.src = source;
+				} else if (typeof source === "object") {
+					attributes = { ...source, ...attributes };
+				}
+
+				// attributes
+
+				return NodeTagNameMap[tagName](attributes);
+			};
+
+		/**
+		 * Label
+		 *
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue: string, textContent: string): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue: string, textContent: string, attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "label":
+			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], forValue?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+				} else {
+					forValue = selector;
+					textContent = forValue;
+				}
+
+				// attributes
+
+				return NodeTagNameMap[tagName](forValue, textContent, attributes);
+			};
+
+		/**
+		 * Image Input
+		 *
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "image":
+			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], source?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+				} else {
+					source = selector;
+				}
+
+				// source
+
+				if (typeof source === "string" && URL_PATHNAME.test(source)) {
+					attributes.src = source;
+				} else if (typeof source === "object") {
+					attributes = { ...source, ...attributes };
+				}
+
+				// attributes
 
 				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName });
 			};
@@ -515,39 +584,39 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					attributes.required = required;
 				}
 
-				// extras
+				// attributes
 
 				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName });
 			};
 
 		/**
-		 * Image Input
+		 * Search
 		 *
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
-		case "image":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], source?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+		case "search":
+			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], value?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
 					attributes.id = id;
 					attributes.class = classes && classes.join(" ");
 				} else {
-					source = selector;
+					value = selector;
 				}
 
-				// source
+				// value
 
-				if (typeof source === "string" && URL_PATHNAME.test(source)) {
-					attributes.src = source;
-				} else if (typeof source === "object") {
-					attributes = { ...source, ...attributes };
+				if (value !== undefined && typeof value === "string") {
+					attributes.value = value;
+				} else if (typeof value === "object") {
+					attributes = { ...value, ...attributes };
 				}
 
-				// extras
+				// attributes
 
 				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName });
 			};
@@ -595,81 +664,9 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					attributes.required = required;
 				}
 
-				// extras
+				// attributes
 
 				return NodeTagNameMap[tagName](options, { ...attributes, "type": tagName });
-			};
-
-		/**
-		 * Figure
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, figcaption?: string, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "figure":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], figcaption?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					figcaption = selector;
-				}
-
-				// figcaption
-
-				if (figcaption !== undefined && typeof figcaption === "string") {
-					return NodeTagNameMap[tagName](figcaption, attributes);
-				} else if (typeof figcaption === "object") {
-					attributes = { ...figcaption, ...attributes };
-				}
-
-				// extras
-
-				return NodeTagNameMap[tagName](attributes);
-			};
-
-		/**
-		 * Details
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, summary?: string, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "details":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], summary?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-
-					if (summary !== undefined && typeof summary === "string") {
-						return NodeTagNameMap[tagName](summary, attributes);
-					} else if (typeof summary === "object") {
-						summary = attributes;
-					}
-
-					return NodeTagNameMap[tagName](attributes);
-				} else {
-					summary = selector;
-				}
-
-				// summary
-
-				if (summary !== undefined && typeof summary === "string") {
-					return NodeTagNameMap[tagName](summary, attributes);
-				} else if (typeof summary === "object") {
-					attributes = { ...summary, ...attributes };
-				}
-
-				// extras
-
-				return NodeTagNameMap[tagName](undefined, attributes);
 			};
 
 		/**
@@ -678,10 +675,11 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, caption: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, caption?: string, attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, caption?: string, tableHeader: string[]): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, caption?: string, tableHeader: string[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "table":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], caption?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | string[] | HTMLElementAttributesMap[NodeTagName], caption?: string | string[] | HTMLElementAttributesMap[NodeTagName], tableHeader?: string[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -699,48 +697,11 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					attributes = { ...caption, ...attributes };
 				}
 
-				// extras
+				// tableHeader
 
-				return NodeTagNameMap[tagName](attributes);
-			};
+				// TODO
 
-		/**
-		 * Anchor
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, href): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, textContent?: string, href?: string, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "a":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], href?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					textContent = selector;
-				}
-
-				// textContent
-
-				if (textContent !== undefined && typeof textContent === "string") {
-					return NodeTagNameMap[tagName](textContent, href, attributes);
-				} else {
-					href = textContent;
-				}
-
-				// href
-
-				if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-					return NodeTagNameMap[tagName](href, href, attributes);
-				} else if (typeof textContent === "object") {
-					attributes = { ...textContent, ...attributes };
-				}
-
-				// extras
+				// attributes
 
 				return NodeTagNameMap[tagName](attributes);
 			};
@@ -749,184 +710,161 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 	}
 }
 
-export const b = createPrimitive("b");
-globalThis.b = b;
-export const blockquote = createPrimitive("blockquote");
-globalThis.blockquote = blockquote;
-export const code = createPrimitive("code");
-globalThis.code = code;
-export const del = createPrimitive("del");
-globalThis.del = del;
-export const em = createPrimitive("em");
-globalThis.em = em;
-export const h1 = createPrimitive("h1");
-globalThis.h1 = h1;
-export const h2 = createPrimitive("h2");
-globalThis.h2 = h2;
-export const h3 = createPrimitive("h3");
-globalThis.h3 = h3;
-export const h4 = createPrimitive("h4");
-globalThis.h4 = h4;
-export const h5 = createPrimitive("h5");
-globalThis.h5 = h5;
-export const h6 = createPrimitive("h6");
-globalThis.h6 = h6;
-export const i = createPrimitive("i");
-globalThis.i = i;
-export const ins = createPrimitive("ins");
-globalThis.ins = ins;
-export const kbd = createPrimitive("kbd");
-globalThis.kbd = kbd;
-export const li = createPrimitive("li");
-globalThis.li = li;
-export const mark = createPrimitive("mark");
-globalThis.mark = mark;
-export const p = createPrimitive("p");
-globalThis.p = p;
-export const pre = createPrimitive("pre");
-globalThis.pre = pre;
-export const q = createPrimitive("q");
-globalThis.q = q;
-export const s = createPrimitive("s");
-globalThis.s = s;
-export const small = createPrimitive("small");
-globalThis.small = small;
-export const span = createPrimitive("span");
-globalThis.span = span;
-export const strong = createPrimitive("strong");
-globalThis.strong = strong;
-export const sub = createPrimitive("sub");
-globalThis.sub = sub;
-export const sup = createPrimitive("sup");
-globalThis.sup = sup;
-export const u = createPrimitive("u");
-globalThis.u = u;
-
-export const label = createPrimitive("label");
-globalThis.label = label;
-
-export const audio = createPrimitive("audio");
-globalThis.audio = audio;
-export const img = createPrimitive("img");
-globalThis.img = img;
-export const picture = createPrimitive("picture");
-globalThis.picture = picture;
-export const video = createPrimitive("video");
-globalThis.video = video;
-
-export const article = createPrimitive("article");
-globalThis.article = article;
-export const aside = createPrimitive("aside");
-globalThis.aside = aside;
-export const br = createPrimitive("br");
-globalThis.br = br;
-export const canvas = createPrimitive("canvas");
-globalThis.canvas = canvas;
-export const div = createPrimitive("div");
-globalThis.div = div;
-export const footer = createPrimitive("footer");
-globalThis.footer = footer;
-export const header = createPrimitive("header");
-globalThis.header = header;
-export const hr = createPrimitive("hr");
-globalThis.hr = hr;
-export const main = createPrimitive("main");
-globalThis.main = main;
-export const meter = createPrimitive("meter");
-globalThis.meter = meter;
-export const nav = createPrimitive("nav");
-globalThis.nav = nav;
-export const ol = createPrimitive("ol");
-globalThis.ol = ol;
-export const progress = createPrimitive("progress");
-globalThis.progress = progress;
-export const section = createPrimitive("section");
-globalThis.section = section;
-export const textarea = createPrimitive("textarea");
-globalThis.textarea = textarea;
-export const ul = createPrimitive("ul");
-globalThis.ul = ul;
-
-export const iframe = createPrimitive("iframe");
-globalThis.iframe = iframe;
-
-export const fieldset = createPrimitive("fieldset");
-globalThis.fieldset = fieldset;
-
-export const form = createPrimitive("form");
-globalThis.form = form;
-
-export const button = createPrimitive("button");
-globalThis.button = button;
-export const reset = createPrimitive("reset");
-globalThis.reset = reset;
-export const submit = createPrimitive("submit");
-globalThis.submit = submit;
-export const inputButton = createPrimitive("input[type=button]");
-globalThis.inputButton = inputButton;
-export const inputReset = createPrimitive("input[type=reset]");
-globalThis.inputReset = inputReset;
-export const inputSubmit = createPrimitive("input[type=submit]");
-globalThis.inputSubmit = inputSubmit;
-export const search = createPrimitive("search");
-globalThis.search = search;
-
-export const file = createPrimitive("file");
-globalThis.file = file;
-
-export const checkbox = createPrimitive("checkbox");
-globalThis.checkbox = checkbox;
-export const color = createPrimitive("color");
-globalThis.color = color;
-export const date = createPrimitive("date");
-globalThis.date = date;
-export const datetime = createPrimitive("datetime-local");
-globalThis.datetime = datetime;
-export const email = createPrimitive("email");
-globalThis.email = email;
-export const hidden = createPrimitive("hidden");
-globalThis.hidden = hidden;
-export const image = createPrimitive("image");
-globalThis.image = image;
-export const month = createPrimitive("month");
-globalThis.month = month;
-export const number = createPrimitive("number");
-globalThis.number = number;
-export const password = createPrimitive("password");
-globalThis.password = password;
-export const radio = createPrimitive("radio");
-globalThis.radio = radio;
-export const range = createPrimitive("range");
-globalThis.range = range;
-export const tel = createPrimitive("tel");
-globalThis.tel = tel;
-export const text = createPrimitive("text");
-globalThis.text = text;
-export const time = createPrimitive("time");
-globalThis.time = time;
-export const url = createPrimitive("url");
-globalThis.url = url;
-export const week = createPrimitive("week");
-globalThis.week = week;
-
-export const select = createPrimitive("select");
-globalThis.select = select;
-
-export const figure = createPrimitive("figure");
-globalThis.figure = figure;
-
-export const details = createPrimitive("details");
-globalThis.details = details;
-
-export const table = createPrimitive("table");
-globalThis.table = table;
-
 export const a = createPrimitive("a");
-globalThis.a = a;
+export const article = createPrimitive("article");
+export const aside = createPrimitive("aside");
+export const audio = createPrimitive("audio");
+export const b = createPrimitive("b");
+export const blockquote = createPrimitive("blockquote");
+export const br = createPrimitive("br");
+export const button = createPrimitive("button");
+export const canvas = createPrimitive("canvas");
+export const checkbox = createPrimitive("checkbox");
+export const code = createPrimitive("code");
+export const color = createPrimitive("color");
+export const date = createPrimitive("date");
+export const datetime = createPrimitive("datetime-local");
+export const del = createPrimitive("del");
+export const details = createPrimitive("details");
+export const div = createPrimitive("div");
+export const em = createPrimitive("em");
+export const email = createPrimitive("email");
+export const fieldset = createPrimitive("fieldset");
+export const figure = createPrimitive("figure");
+export const file = createPrimitive("file");
+export const footer = createPrimitive("footer");
+export const form = createPrimitive("form");
+export const h1 = createPrimitive("h1");
+export const h2 = createPrimitive("h2");
+export const h3 = createPrimitive("h3");
+export const h4 = createPrimitive("h4");
+export const h5 = createPrimitive("h5");
+export const h6 = createPrimitive("h6");
+export const header = createPrimitive("header");
+export const hidden = createPrimitive("hidden");
+export const hr = createPrimitive("hr");
+export const i = createPrimitive("i");
+export const iframe = createPrimitive("iframe");
+export const image = createPrimitive("image");
+export const img = createPrimitive("img");
+export const ins = createPrimitive("ins");
+export const kbd = createPrimitive("kbd");
+export const label = createPrimitive("label");
+export const li = createPrimitive("li");
+export const main = createPrimitive("main");
+export const mark = createPrimitive("mark");
+export const meter = createPrimitive("meter");
+export const month = createPrimitive("month");
+export const nav = createPrimitive("nav");
+export const number = createPrimitive("number");
+export const ol = createPrimitive("ol");
+export const p = createPrimitive("p");
+export const password = createPrimitive("password");
+export const picture = createPrimitive("picture");
+export const pre = createPrimitive("pre");
+export const progress = createPrimitive("progress");
+export const q = createPrimitive("q");
+export const radio = createPrimitive("radio");
+export const range = createPrimitive("range");
+export const reset = createPrimitive("reset");
+export const s = createPrimitive("s");
+export const search = createPrimitive("search");
+export const section = createPrimitive("section");
+export const select = createPrimitive("select");
+export const small = createPrimitive("small");
+export const span = createPrimitive("span");
+export const strong = createPrimitive("strong");
+export const sub = createPrimitive("sub");
+export const submit = createPrimitive("submit");
+export const sup = createPrimitive("sup");
+export const table = createPrimitive("table");
+export const tel = createPrimitive("tel");
+export const text = createPrimitive("text");
+export const textarea = createPrimitive("textarea");
+export const time = createPrimitive("time");
+export const u = createPrimitive("u");
+export const ul = createPrimitive("ul");
+export const url = createPrimitive("url");
+export const video = createPrimitive("video");
+export const week = createPrimitive("week");
 
-class FventFmitter {
-	private foobar = [];
-}
+globalThis.a = a;
+globalThis.article = article;
+globalThis.aside = aside;
+globalThis.audio = audio;
+globalThis.b = b;
+globalThis.blockquote = blockquote;
+globalThis.br = br;
+globalThis.button = button;
+globalThis.canvas = canvas;
+globalThis.checkbox = checkbox;
+globalThis.code = code;
+globalThis.color = color;
+globalThis.date = date;
+globalThis.datetime = datetime;
+globalThis.del = del;
+globalThis.details = details;
+globalThis.div = div;
+globalThis.em = em;
+globalThis.email = email;
+globalThis.fieldset = fieldset;
+globalThis.figure = figure;
+globalThis.file = file;
+globalThis.footer = footer;
+globalThis.form = form;
+globalThis.h1 = h1;
+globalThis.h2 = h2;
+globalThis.h3 = h3;
+globalThis.h4 = h4;
+globalThis.h5 = h5;
+globalThis.h6 = h6;
+globalThis.header = header;
+globalThis.hidden = hidden;
+globalThis.hr = hr;
+globalThis.i = i;
+globalThis.iframe = iframe;
+globalThis.image = image;
+globalThis.img = img;
+globalThis.ins = ins;
+globalThis.kbd = kbd;
+globalThis.label = label;
+globalThis.li = li;
+globalThis.main = main;
+globalThis.mark = mark;
+globalThis.meter = meter;
+globalThis.month = month;
+globalThis.nav = nav;
+globalThis.number = number;
+globalThis.ol = ol;
+globalThis.p = p;
+globalThis.password = password;
+globalThis.picture = picture;
+globalThis.pre = pre;
+globalThis.progress = progress;
+globalThis.q = q;
+globalThis.radio = radio;
+globalThis.range = range;
+globalThis.reset = reset;
+globalThis.s = s;
+globalThis.search = search;
+globalThis.section = section;
+globalThis.select = select;
+globalThis.small = small;
+globalThis.span = span;
+globalThis.strong = strong;
+globalThis.sub = sub;
+globalThis.submit = submit;
+globalThis.sup = sup;
+globalThis.table = table;
+globalThis.tel = tel;
+globalThis.text = text;
+globalThis.textarea = textarea;
+globalThis.time = time;
+globalThis.u = u;
+globalThis.ul = ul;
+globalThis.url = url;
+globalThis.video = video;
+globalThis.week = week;
 
 export function createTemplate(tagName: string, options: ElementDefinitionOptions) {
 	if (!tagName.includes("-")) {
@@ -941,33 +879,73 @@ export function createTemplate(tagName: string, options: ElementDefinitionOption
 		}
 
 		public on(event: string, listener: () => void): () => void {
-			throw new Error("Method not implemented.");
+			if (this.events[event] === undefined) {
+				this.events[event] = [];
+			}
+
+			this.events[event].push(listener);
+
+			return listener;
 		}
 
 		public off(event?: string, listener?: () => void): void {
-			throw new Error("Method not implemented.");
+			if (event === undefined && listener === undefined) {
+				this.events = {};
+			} else if (listener === undefined) {
+				delete this.events[event];
+			} else if (this.events[event].indexOf(listener) !== -1) {
+				this.events[event].splice(this.events[event].indexOf(listener), 1);
+			}
 		}
 
 		public emit(event: string, ...args: unknown[]): void {
-			throw new Error("Method not implemented.");
+			if (this.events[event] !== undefined) {
+				for (const listener of this.events[event]) {
+					listener(...args);
+				}
+			}
+
+			if (event !== "*") {
+				this.emit("*", ...args);
+			}
 		}
 
 		public once(event: string, listener: () => void): () => void {
-			throw new Error("Method not implemented.");
+			return this.on(event, () => {
+				this.emit(event);
+
+				this.off(event, listener);
+			});
 		}
 
+		/**
+		 * Invoked each time the custom element is appended into a document-connected element. This
+		 * will happen each time the node is moved, and may happen before the element's contents
+		 * have been fully parsed.
+		 */
 		public connectedCallback() {
 
 		}
 
+		/**
+		 * Invoked each time the custom element is disconnected from the document's DOM.
+		 */
 		public disconnectedCallback() {
 
 		}
 
+		/**
+		 * Invoked each time the custom element is moved to a new document.
+		 */
 		public adoptedCallback() {
 
 		}
 
+		/**
+		 * Invoked each time one of the custom element's attributes is added, removed, or changed.
+		 * Which attributes to notice change for is specified in a static get `observedAttributes`
+		 * method.
+		 */
 		public attributeChangedCallback() {
 
 		}
@@ -977,4 +955,5 @@ export function createTemplate(tagName: string, options: ElementDefinitionOption
 		return new (customElements.get(tagName))(...args);
 	};
 }
+
 globalThis.createTemplate = createTemplate;

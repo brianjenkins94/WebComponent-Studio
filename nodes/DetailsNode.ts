@@ -5,36 +5,30 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <summary> should be part of a <details>
 
 export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	private readonly summary: string;
-
-	public constructor(tagName: TagName, summary: string, extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, summary: string, children: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		this.summary = summary;
+		const summaryNode = document.createElement("summary");
+		summaryNode.append(summary);
+
+		this.children.push(summaryNode, ...children);
 
 		this.attributes = { ...extras, ...this.attributes };
 	}
 
-	public get fragment(): DocumentFragment {
-		this.cachedFragment = document.createDocumentFragment();
-
-		const detailsNode = document.createElement(this.type);
+	public toString(): string {
+		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
 			if (value !== undefined) {
-				detailsNode.setAttribute(key, value);
+				this.template.setAttribute(key, value);
 			}
 		}
 
-		if (this.summary !== undefined) {
-			const summary = document.createElement("summary");
-			summary.append(this.summary);
-
-			detailsNode.appendChild(summary);
+		for (const childNode of this.children) {
+			this.template.innerHTML += childNode;
 		}
 
-		this.cachedFragment.appendChild(detailsNode);
-
-		return this.cachedFragment;
+		return this.template.outerHTML;
 	}
 }
