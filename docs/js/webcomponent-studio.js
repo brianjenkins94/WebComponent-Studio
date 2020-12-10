@@ -1,4 +1,4 @@
-class Node {
+class Node$1 {
     constructor(type) {
         this.attributes = {};
         this.children = [];
@@ -53,22 +53,16 @@ class Node {
     }
 }
 
-class AnchorNode extends Node {
-    constructor(tagName, textContent, href, extras) {
+class AnchorNode extends Node$1 {
+    constructor(tagName, textContent, attributes) {
         super(tagName);
-        if (typeof textContent === "string") {
-            this.children.push(textContent);
-        }
-        else {
-            this.children.push([...textContent]);
-        }
-        this.attributes.href = href;
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.children.push(...textContent);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -80,18 +74,18 @@ class AnchorNode extends Node {
 }
 
 // <summary> should be part of a <details>
-class DetailsNode extends Node {
-    constructor(tagName, summary, children, extras) {
+class DetailsNode extends Node$1 {
+    constructor(tagName, summary, children, attributes) {
         super(tagName);
         const summaryNode = document.createElement("summary");
-        summaryNode.append(summary);
+        summaryNode.append(...summary);
         this.children.push(summaryNode, ...children);
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -104,16 +98,16 @@ class DetailsNode extends Node {
 
 // <source> should be a part of a <picture>, <audio> or <video>
 // <track> should be a part of a <audio> or <video>
-class EmbeddedNode extends Node {
-    constructor(tagName, sources, extras) {
+class EmbeddedNode extends Node$1 {
+    constructor(tagName, sources, attributes) {
         super(tagName);
         this.sources = sources;
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -137,18 +131,18 @@ class EmbeddedNode extends Node {
 }
 
 // <legend> should be part of a <fieldset>
-class FieldSetNode extends Node {
-    constructor(tagName, legend, children, extras) {
+class FieldSetNode extends Node$1 {
+    constructor(tagName, legend, children, attributes) {
         super(tagName);
         const legendNode = document.createElement("legend");
         legendNode.append(legend);
         this.children.push(legendNode, ...children);
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -160,18 +154,18 @@ class FieldSetNode extends Node {
 }
 
 // <figcaption> should be part of a <figure>
-class FigureNode extends Node {
-    constructor(tagName, caption, children, extras) {
+class FigureNode extends Node$1 {
+    constructor(tagName, caption, children, attributes) {
         super(tagName);
         const captionNode = document.createElement("caption");
         captionNode.append(caption);
         this.children.push(captionNode, ...children);
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -182,16 +176,16 @@ class FigureNode extends Node {
     }
 }
 
-class GroupingNode extends Node {
-    constructor(tagName, children, extras) {
+class GroupingNode extends Node$1 {
+    constructor(tagName, children, attributes) {
         super(tagName);
         this.children.push(...children);
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -204,16 +198,16 @@ class GroupingNode extends Node {
 
 // <optgroup> should be part of a <select>
 // <option> should be part of a <select> or <optgroup>
-class SelectNode extends Node {
-    constructor(tagName, options, extras) {
+class SelectNode extends Node$1 {
+    constructor(tagName, options, attributes) {
         super(tagName);
         this.options = options;
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -265,18 +259,18 @@ class SelectNode extends Node {
 // <th> should be part of a <tr>
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
-class TableNode extends Node {
-    constructor(tagName, caption, tableHeader, extras) {
+class TableNode extends Node$1 {
+    constructor(tagName, caption, tableHeader, attributes) {
         super(tagName);
         const captionNode = document.createElement("caption");
         captionNode.append(caption);
         this.children.push(captionNode);
-        this.attributes = Object.assign(Object.assign({}, extras), this.attributes);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && value !== "") {
                 this.template.setAttribute(key, value);
             }
         }
@@ -391,6 +385,7 @@ const NodeTagNameMap = {
     "table": primeConstructor(TableNode, "table")
 };
 
+/* eslint-disable complexity */
 const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*)+$/i;
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 function parseSelector(selector) {
@@ -409,7 +404,9 @@ function parseSelector(selector) {
         "classes": classes
     };
 }
-// eslint-disable-next-line complexity
+function isPrototypeOf(a, b) {
+    return Object.prototype.isPrototypeOf.call(a, b);
+}
 function createPrimitive(tagName) {
     switch (tagName) {
         /**
@@ -432,21 +429,26 @@ function createPrimitive(tagName) {
                     textContent = selector;
                 }
                 // textContent
-                if (textContent !== undefined && typeof textContent === "string") {
-                    return NodeTagNameMap[tagName](textContent, href, attributes);
+                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+                    textContent = [textContent];
                 }
+                else if (textContent !== undefined && Array.isArray(textContent)) ;
                 else {
                     href = textContent;
+                    textContent = undefined;
                 }
                 // href
                 if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-                    return NodeTagNameMap[tagName](href, href, attributes);
+                    //href = href;
+                    if (textContent === undefined) {
+                        textContent = [href];
+                    }
                 }
-                else if (typeof textContent === "object") {
-                    attributes = Object.assign(Object.assign({}, textContent), attributes);
+                else if (href !== undefined && typeof href === "object") {
+                    attributes = Object.assign(Object.assign({}, href), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](attributes);
+                return NodeTagNameMap[tagName](textContent, attributes);
             };
         /**
          * Details
@@ -454,8 +456,8 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, summary?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, summary?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, summary?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, summary?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "details":
             return function (selector, summary, children, attributes = {}) {
@@ -463,28 +465,25 @@ function createPrimitive(tagName) {
                     const { id, classes } = parseSelector(selector);
                     attributes.id = id;
                     attributes.class = classes && classes.join(" ");
-                    if (summary !== undefined && typeof summary === "string") {
-                        return NodeTagNameMap[tagName](summary, attributes);
-                    }
-                    else if (typeof summary === "object") {
-                        summary = attributes;
-                    }
-                    return NodeTagNameMap[tagName](attributes);
                 }
                 else {
                     summary = selector;
                 }
                 // summary
-                if (summary !== undefined && typeof summary === "string") {
-                    return NodeTagNameMap[tagName](summary, attributes);
-                }
-                else if (typeof summary === "object") {
-                    attributes = Object.assign(Object.assign({}, summary), attributes);
+                if (summary !== undefined && typeof summary === "string") ;
+                else {
+                    children = summary;
                 }
                 // children
-                // TODO
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                    children = [children];
+                }
+                else if (children !== undefined && Array.isArray(children)) ;
+                else if (children !== undefined && typeof children === "object") {
+                    attributes = Object.assign(Object.assign({}, children), attributes);
+                }
                 // attributes
-                return NodeTagNameMap[tagName](undefined, attributes);
+                return NodeTagNameMap[tagName](summary, children, attributes);
             };
         /**
          * Form
@@ -494,8 +493,8 @@ function createPrimitive(tagName) {
          * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "form":
             return function (selector, method, action, encoding, children, attributes = {}) {
@@ -529,17 +528,23 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, encoding), attributes);
                 }
                 // children
-                // TODO
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                    children = [children];
+                }
+                else if (children !== undefined && Array.isArray(children)) ;
+                else if (children !== undefined && typeof children === "object") {
+                    attributes = Object.assign(Object.assign({}, children), attributes);
+                }
                 // attributes
-                return NodeTagNameMap[tagName](attributes);
+                return NodeTagNameMap[tagName](children, attributes);
             };
         /**
          * Form-associated/Grouping/Text-level
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children: (string | HTMLElement)[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
+         * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "article":
         case "aside":
@@ -605,15 +610,24 @@ function createPrimitive(tagName) {
                     attributes.class = classes && classes.join(" ");
                 }
                 else {
-                    textContent = selector;
+                    // eslint-disable-next-line no-lonely-if
+                    if (Array.isArray(selector)) {
+                        children = selector;
+                    }
+                    else if (typeof selector === "string") {
+                        children = [selector];
+                    }
                 }
                 // children
-                if (textContent !== undefined && typeof textContent !== "object") ;
-                else if (typeof textContent === "object") {
-                    attributes = Object.assign(Object.assign({}, textContent), attributes);
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                    children = [children];
+                }
+                else if (children !== undefined && Array.isArray(children)) ;
+                else if (children !== undefined && typeof children === "object") {
+                    attributes = Object.assign(Object.assign({}, children), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](textContent, attributes);
+                return NodeTagNameMap[tagName](children, attributes);
             };
         /**
          * Embedded
@@ -656,8 +670,8 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, legend: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, legend?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, legend?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, legend?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, legend?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "fieldset":
             return function (selector, legend, children, attributes = {}) {
@@ -670,16 +684,20 @@ function createPrimitive(tagName) {
                     legend = selector;
                 }
                 // legend
-                if (typeof legend === "string") {
-                    return NodeTagNameMap[tagName](legend, attributes);
-                }
+                if (typeof legend === "string") ;
                 else {
                     attributes = Object.assign(Object.assign({}, legend), attributes);
                 }
                 // children
-                // TODO
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                    children = [children];
+                }
+                else if (children !== undefined && Array.isArray(children)) ;
+                else if (children !== undefined && typeof children === "object") {
+                    attributes = Object.assign(Object.assign({}, children), attributes);
+                }
                 // attributes
-                return NodeTagNameMap[tagName](attributes);
+                return NodeTagNameMap[tagName](legend, children, attributes);
             };
         /**
          * Figure
@@ -687,8 +705,8 @@ function createPrimitive(tagName) {
          * (): NodeTagNameMap[NodeTagName]
          * (selector): NodeTagNameMap[NodeTagName]
          * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, figcaption?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, figcaption?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, figcaption?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?: string, figcaption?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "figure":
             return function (selector, figcaption, children, attributes = {}) {
@@ -701,16 +719,20 @@ function createPrimitive(tagName) {
                     figcaption = selector;
                 }
                 // figcaption
-                if (figcaption !== undefined && typeof figcaption === "string") {
-                    return NodeTagNameMap[tagName](figcaption, attributes);
-                }
+                if (figcaption !== undefined && typeof figcaption === "string") ;
                 else if (typeof figcaption === "object") {
                     attributes = Object.assign(Object.assign({}, figcaption), attributes);
                 }
                 // children
-                // TODO
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                    children = [children];
+                }
+                else if (children !== undefined && Array.isArray(children)) ;
+                else if (children !== undefined && typeof children === "object") {
+                    attributes = Object.assign(Object.assign({}, children), attributes);
+                }
                 // attributes
-                return NodeTagNameMap[tagName](attributes);
+                return NodeTagNameMap[tagName](figcaption, children, attributes);
             };
         /**
          * File
@@ -787,7 +809,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, source), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](attributes);
+                return NodeTagNameMap[tagName]([], attributes);
             };
         /**
          * Image Input
@@ -815,7 +837,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, source), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return NodeTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Input
@@ -885,8 +907,8 @@ function createPrimitive(tagName) {
          *
          * (): NodeTagNameMap[NodeTagName]
          * (selector): NodeTagNameMap[NodeTagName]
-         * (selector?, forValue: string, textContent: string): NodeTagNameMap[NodeTagName]
-         * (selector?, forValue: string, textContent: string, attributes: object): NodeTagNameMap[NodeTagName]
+         * (selector?, forValue: string, textContent: string | (string | Node)[]): NodeTagNameMap[NodeTagName]
+         * (selector?, forValue?: string, textContent?: string | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "label":
             return function (selector, forValue, textContent, attributes = {}) {
@@ -899,8 +921,16 @@ function createPrimitive(tagName) {
                     forValue = selector;
                     textContent = forValue;
                 }
+                // children
+                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+                    textContent = [textContent];
+                }
+                else if (textContent !== undefined && Array.isArray(textContent)) ;
+                else if (textContent !== undefined && typeof textContent === "object") {
+                    attributes = Object.assign(Object.assign({}, textContent), attributes);
+                }
                 // attributes
-                return NodeTagNameMap[tagName](forValue, textContent, attributes);
+                return NodeTagNameMap[tagName](textContent, attributes);
             };
         /**
          * Search
@@ -989,16 +1019,17 @@ function createPrimitive(tagName) {
                     caption = selector;
                 }
                 // caption
-                if (caption !== undefined && typeof caption === "string") {
-                    return NodeTagNameMap[tagName](caption, attributes);
-                }
-                else if (typeof caption === "object") {
-                    attributes = Object.assign(Object.assign({}, caption), attributes);
+                if (caption !== undefined && typeof caption === "string") ;
+                else if (Array.isArray(caption)) {
+                    tableHeader = caption;
                 }
                 // tableHeader
-                // TODO
+                if (Array.isArray(tableHeader)) ;
+                else if (typeof tableHeader === "object") {
+                    attributes = Object.assign(Object.assign({}, tableHeader), attributes);
+                }
                 // attributes
-                return NodeTagNameMap[tagName](attributes);
+                return NodeTagNameMap[tagName](caption, tableHeader, attributes);
             };
         default:
             throw new Error("Unrecognized element `" + tagName + "`.");

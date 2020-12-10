@@ -13,7 +13,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
 export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	public constructor(tagName: TagName, caption: string, tableHeader: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, caption: string, tableHeader: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		const captionNode = document.createElement("caption");
@@ -21,14 +21,14 @@ export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Nod
 
 		this.children.push(captionNode);
 
-		this.attributes = { ...extras, ...this.attributes };
+		this.attributes = { ...attributes, ...this.attributes };
 	}
 
 	public toString(): string {
 		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined) {
+			if (value !== undefined && value !== "") {
 				this.template.setAttribute(key, value);
 			}
 		}

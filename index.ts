@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+
 import { NodeTagNameMap } from "./nodes";
 import type { EventEmitter } from "./abstract/EventEmitter";
 import type { HTMLElementAttributesMap } from "./types/attributes";
@@ -24,7 +26,10 @@ function parseSelector(selector) {
 	};
 }
 
-// eslint-disable-next-line complexity
+function isPrototypeOf(a, b) {
+	return Object.prototype.isPrototypeOf.call(a, b);
+}
+
 function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagName: NodeTagName) /* : typeof NodeTagNameMap[NodeTagName] */ {
 	switch (tagName) {
 
@@ -38,7 +43,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (selector?: string, textContent?: string, href?: string, attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "a":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], href?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], textContent?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], href?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -50,23 +55,31 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 
 				// textContent
 
-				if (textContent !== undefined && typeof textContent === "string") {
-					return NodeTagNameMap[tagName](textContent, href, attributes);
+				if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+					textContent = [textContent];
+				} else if (textContent !== undefined && Array.isArray(textContent)) {
+					//textContent = textContent;
 				} else {
 					href = textContent;
+
+					textContent = undefined;
 				}
 
 				// href
 
 				if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-					return NodeTagNameMap[tagName](href, href, attributes);
-				} else if (typeof textContent === "object") {
-					attributes = { ...textContent, ...attributes };
+					//href = href;
+
+					if (textContent === undefined) {
+						textContent = [href];
+					}
+				} else if (href !== undefined && typeof href === "object") {
+					attributes = { ...href, ...attributes };
 				}
 
 				// attributes
 
-				return NodeTagNameMap[tagName](attributes);
+				return NodeTagNameMap[tagName](textContent, attributes);
 			};
 
 		/**
@@ -75,24 +88,16 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, summary?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, summary?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, summary?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, summary?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "details":
-			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], summary?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], summary?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], children?: Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
 					attributes.id = id;
 					attributes.class = classes && classes.join(" ");
-
-					if (summary !== undefined && typeof summary === "string") {
-						return NodeTagNameMap[tagName](summary, attributes);
-					} else if (typeof summary === "object") {
-						summary = attributes;
-					}
-
-					return NodeTagNameMap[tagName](attributes);
 				} else {
 					summary = selector;
 				}
@@ -100,18 +105,24 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 				// summary
 
 				if (summary !== undefined && typeof summary === "string") {
-					return NodeTagNameMap[tagName](summary, attributes);
-				} else if (typeof summary === "object") {
-					attributes = { ...summary, ...attributes };
+					//summary = summary;
+				} else {
+					children = summary;
 				}
 
 				// children
 
-				// TODO
+				if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+					children = [children];
+				} else if (children !== undefined && Array.isArray(children)) {
+					//children = children;
+				} else if (children !== undefined && typeof children === "object") {
+					attributes = { ...children, ...attributes };
+				}
 
 				// attributes
 
-				return NodeTagNameMap[tagName](undefined, attributes);
+				return NodeTagNameMap[tagName](summary, children, attributes);
 			};
 
 		/**
@@ -122,11 +133,11 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "form":
-			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], method?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], action?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], encoding?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], method?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], action?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], encoding?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], children?: Node | (string | Node)[], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -162,20 +173,26 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 
 				// children
 
-				// TODO
+				if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+					children = [children];
+				} else if (children !== undefined && Array.isArray(children)) {
+					//children = children;
+				} else if (children !== undefined && typeof children === "object") {
+					attributes = { ...children, ...attributes };
+				}
 
 				// attributes
 
-				return NodeTagNameMap[tagName](attributes);
+				return NodeTagNameMap[tagName](children, attributes);
 			};
 
 		/**
 		 * Form-associated/Grouping/Text-level
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, children: (string | HTMLElement)[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "article":
 		case "aside":
@@ -234,27 +251,34 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		case "textarea":
 		case "u":
 		case "ul":
-			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], children?: Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
 					attributes.id = id;
 					attributes.class = classes && classes.join(" ");
 				} else {
-					textContent = selector;
+					// eslint-disable-next-line no-lonely-if
+					if (Array.isArray(selector)) {
+						children = selector;
+					} else if (typeof selector === "string") {
+						children = [selector];
+					}
 				}
 
 				// children
 
-				if (textContent !== undefined && typeof textContent !== "object") {
-					//textContent = textContent;
-				} else if (typeof textContent === "object") {
-					attributes = { ...textContent, ...attributes };
+				if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+					children = [children];
+				} else if (children !== undefined && Array.isArray(children)) {
+					//children = children;
+				} else if (children !== undefined && typeof children === "object") {
+					attributes = { ...children, ...attributes };
 				}
 
 				// attributes
 
-				return NodeTagNameMap[tagName](textContent, attributes);
+				return NodeTagNameMap[tagName](children, attributes);
 			};
 
 		/**
@@ -303,11 +327,11 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, legend: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, legend?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, legend?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, legend?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, legend?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "fieldset":
-			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], legend?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], legend?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], children?: Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -320,18 +344,23 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 				// legend
 
 				if (typeof legend === "string") {
-					return NodeTagNameMap[tagName](legend, attributes);
+					//legend = legend;
 				} else {
 					attributes = { ...legend, ...attributes };
 				}
 
 				// children
 
-				// TODO
-
+				if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+					children = [children];
+				} else if (children !== undefined && Array.isArray(children)) {
+					//children = children;
+				} else if (children !== undefined && typeof children === "object") {
+					attributes = { ...children, ...attributes };
+				}
 				// attributes
 
-				return NodeTagNameMap[tagName](attributes);
+				return NodeTagNameMap[tagName](legend, children, attributes);
 			};
 
 		/**
@@ -340,11 +369,11 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, figcaption?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, figcaption?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, figcaption?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, figcaption?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "figure":
-			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], figcaption?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], figcaption?: string | Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], children?: Node | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -357,18 +386,24 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 				// figcaption
 
 				if (figcaption !== undefined && typeof figcaption === "string") {
-					return NodeTagNameMap[tagName](figcaption, attributes);
+					//figcaption = figcaption;
 				} else if (typeof figcaption === "object") {
 					attributes = { ...figcaption, ...attributes };
 				}
 
 				// children
 
-				// TODO
+				if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+					children = [children];
+				} else if (children !== undefined && Array.isArray(children)) {
+					//children = children;
+				} else if (children !== undefined && typeof children === "object") {
+					attributes = { ...children, ...attributes };
+				}
 
 				// attributes
 
-				return NodeTagNameMap[tagName](attributes);
+				return NodeTagNameMap[tagName](figcaption, children, attributes);
 			};
 
 		/**
@@ -456,7 +491,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 
 				// attributes
 
-				return NodeTagNameMap[tagName](attributes);
+				return NodeTagNameMap[tagName]([], attributes);
 			};
 
 
@@ -489,7 +524,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 
 				// attributes
 
-				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName });
+				return NodeTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
 		/**
@@ -568,11 +603,11 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 		 *
 		 * (): NodeTagNameMap[NodeTagName]
 		 * (selector): NodeTagNameMap[NodeTagName]
-		 * (selector?, forValue: string, textContent: string): NodeTagNameMap[NodeTagName]
-		 * (selector?, forValue: string, textContent: string, attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue: string, textContent: string | (string | Node)[]): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue?: string, textContent?: string | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "label":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], forValue?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+			return function(selector?: string | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], forValue?: string | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], textContent?: string | (string | Node)[] | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					const { id, classes } = parseSelector(selector);
 
@@ -583,9 +618,19 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					textContent = forValue;
 				}
 
+				// children
+
+				if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+					textContent = [textContent];
+				} else if (textContent !== undefined && Array.isArray(textContent)) {
+					//children = children;
+				} else if (textContent !== undefined && typeof textContent === "object") {
+					attributes = { ...textContent, ...attributes };
+				}
+
 				// attributes
 
-				return NodeTagNameMap[tagName](forValue, textContent, attributes);
+				return NodeTagNameMap[tagName](textContent, attributes);
 			};
 
 		/**
@@ -691,18 +736,22 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 				// caption
 
 				if (caption !== undefined && typeof caption === "string") {
-					return NodeTagNameMap[tagName](caption, attributes);
-				} else if (typeof caption === "object") {
-					attributes = { ...caption, ...attributes };
+					//caption = caption;
+				} else if (Array.isArray(caption)) {
+					tableHeader = caption;
 				}
 
 				// tableHeader
 
-				// TODO
+				if (Array.isArray(tableHeader)) {
+					//tableHeader = tableHeader;
+				} else if (typeof tableHeader === "object") {
+					attributes = { ...tableHeader, ...attributes };
+				}
 
 				// attributes
 
-				return NodeTagNameMap[tagName](attributes);
+				return NodeTagNameMap[tagName](caption, tableHeader, attributes);
 			};
 		default:
 			throw new Error("Unrecognized element `" + tagName + "`.");

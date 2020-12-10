@@ -8,19 +8,19 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
 	private readonly sources: string[];
 
-	public constructor(tagName: TagName, sources: string[], extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, sources: string[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.sources = sources;
 
-		this.attributes = { ...extras, ...this.attributes };
+		this.attributes = { ...attributes, ...this.attributes };
 	}
 
 	public toString(): string {
 		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined) {
+			if (value !== undefined && value !== "") {
 				this.template.setAttribute(key, value);
 			}
 		}

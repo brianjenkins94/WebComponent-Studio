@@ -5,7 +5,7 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <legend> should be part of a <fieldset>
 
 export class FieldSetNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	public constructor(tagName: TagName, legend: string, children: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, legend: string, children: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		const legendNode = document.createElement("legend");
@@ -13,14 +13,14 @@ export class FieldSetNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 
 		this.children.push(legendNode, ...children);
 
-		this.attributes = { ...extras, ...this.attributes };
+		this.attributes = { ...attributes, ...this.attributes };
 	}
 
 	public toString(): string {
 		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined) {
+			if (value !== undefined && value !== "") {
 				this.template.setAttribute(key, value);
 			}
 		}

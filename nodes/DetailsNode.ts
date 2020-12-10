@@ -5,22 +5,22 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <summary> should be part of a <details>
 
 export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
-	public constructor(tagName: TagName, summary: string, children: (string | HTMLElement)[], extras: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, summary: (string | Node)[], children: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
 		const summaryNode = document.createElement("summary");
-		summaryNode.append(summary);
+		summaryNode.append(...summary);
 
 		this.children.push(summaryNode, ...children);
 
-		this.attributes = { ...extras, ...this.attributes };
+		this.attributes = { ...attributes, ...this.attributes };
 	}
 
 	public toString(): string {
 		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined) {
+			if (value !== undefined && value !== "") {
 				this.template.setAttribute(key, value);
 			}
 		}
