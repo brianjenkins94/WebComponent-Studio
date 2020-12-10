@@ -2,10 +2,8 @@ import { NodeTagNameMap } from "./nodes";
 import type { EventEmitter } from "./abstract/EventEmitter";
 import type { HTMLElementAttributesMap } from "./types/attributes";
 
-// SOURCE: https://www.w3.org/TR/selector-3/#lex
 const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*)+$/i;
 
-// SOURCE: https://tools.ietf.org/html/rfc3986#appendix-B
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 function parseSelector(selector) {
@@ -114,6 +112,61 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 				// attributes
 
 				return NodeTagNameMap[tagName](undefined, attributes);
+			};
+
+		/**
+		 * Form
+		 *
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "form":
+			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], method?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], action?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], encoding?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+				} else {
+					method = selector;
+				}
+
+				// method
+
+				if (method !== undefined && typeof method === "string" && /^post|get|dialog$/i.test(method)) {
+					attributes.method = method;
+				} else {
+					action = method;
+				}
+
+				// action
+
+				if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
+					attributes.action = action;
+				} else {
+					action = encoding;
+				}
+
+				// encoding
+
+				if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
+					attributes.enctype = action;
+				} else if (typeof encoding === "object") {
+					attributes = { ...encoding, ...attributes };
+				}
+
+				// children
+
+				// TODO
+
+				// attributes
+
+				return NodeTagNameMap[tagName](attributes);
 			};
 
 		/**
@@ -375,61 +428,6 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 			};
 
 		/**
-		 * Form
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, children: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: (string | HTMLElement)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "form":
-			return function(selector?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], method?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], action?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], encoding?: string | (string | HTMLElement)[] | HTMLElementAttributesMap[NodeTagName], children?: (string | HTMLElement)[], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					method = selector;
-				}
-
-				// method
-
-				if (method !== undefined && typeof method === "string" && /^post|get|dialog$/i.test(method)) {
-					attributes.method = method;
-				} else {
-					action = method;
-				}
-
-				// action
-
-				if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
-					attributes.action = action;
-				} else {
-					action = encoding;
-				}
-
-				// encoding
-
-				if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
-					attributes.enctype = action;
-				} else if (typeof encoding === "object") {
-					attributes = { ...encoding, ...attributes };
-				}
-
-				// children
-
-				// TODO
-
-				// attributes
-
-				return NodeTagNameMap[tagName](attributes);
-			};
-
-		/**
 		 * IFrame
 		 *
 		 * (): NodeTagNameMap[NodeTagName]
@@ -461,30 +459,6 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 				return NodeTagNameMap[tagName](attributes);
 			};
 
-		/**
-		 * Label
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector): NodeTagNameMap[NodeTagName]
-		 * (selector?, forValue: string, textContent: string): NodeTagNameMap[NodeTagName]
-		 * (selector?, forValue: string, textContent: string, attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "label":
-			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], forValue?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					forValue = selector;
-					textContent = forValue;
-				}
-
-				// attributes
-
-				return NodeTagNameMap[tagName](forValue, textContent, attributes);
-			};
 
 		/**
 		 * Image Input
@@ -587,6 +561,31 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 				// attributes
 
 				return NodeTagNameMap[tagName]({ ...attributes, "type": tagName });
+			};
+
+		/**
+		 * Label
+		 *
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue: string, textContent: string): NodeTagNameMap[NodeTagName]
+		 * (selector?, forValue: string, textContent: string, attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "label":
+			return function(selector?: string | HTMLElementAttributesMap[NodeTagName], forValue?: string | HTMLElementAttributesMap[NodeTagName], textContent?: string | HTMLElementAttributesMap[NodeTagName], attributes: HTMLElementAttributesMap[NodeTagName] = {}) {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					const { id, classes } = parseSelector(selector);
+
+					attributes.id = id;
+					attributes.class = classes && classes.join(" ");
+				} else {
+					forValue = selector;
+					textContent = forValue;
+				}
+
+				// attributes
+
+				return NodeTagNameMap[tagName](forValue, textContent, attributes);
 			};
 
 		/**

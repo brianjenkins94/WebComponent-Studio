@@ -21,6 +21,9 @@ export const NodeTagNameMap = {
 	// Anchor
 	"a": primeConstructor(AnchorNode, "a"),
 
+	// Details
+	"details": primeConstructor(DetailsNode, "details"),
+
 	// Form-associated
 	"form": primeConstructor(GroupingNode, "form"),
 	"meter": primeConstructor(GroupingNode, "meter"),
@@ -73,9 +76,6 @@ export const NodeTagNameMap = {
 	"sub": primeConstructor(GroupingNode, "sub"),
 	"sup": primeConstructor(GroupingNode, "sup"),
 	"u": primeConstructor(GroupingNode, "u"),
-
-	// Details
-	"details": primeConstructor(DetailsNode, "details"),
 
 	// Embedded
 	"audio": primeConstructor(EmbeddedNode, "audio"),
