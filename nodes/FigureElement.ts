@@ -1,17 +1,17 @@
-import { Node } from "../abstract/Node";
+import { Element } from "../abstract/Element";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <figcaption> should be part of a <figure>
 
-export class FigureNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
+export class FigureElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
 	public constructor(tagName: TagName, caption: string, children: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		const captionNode = document.createElement("caption");
-		captionNode.append(caption);
+		const captionElement = document.createElement("caption");
+		captionElement.append(caption);
 
-		this.children.push(captionNode, ...children);
+		this.children.push(captionElement, ...children);
 
 		this.attributes = { ...attributes, ...this.attributes };
 	}
@@ -25,8 +25,8 @@ export class FigureNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 			}
 		}
 
-		for (const childNode of this.children) {
-			this.template.innerHTML += childNode;
+		for (const child of this.children) {
+			this.template.innerHTML += child;
 		}
 
 		return this.template.outerHTML;

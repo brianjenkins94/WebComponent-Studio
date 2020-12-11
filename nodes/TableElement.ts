@@ -1,4 +1,4 @@
-import { Node } from "../abstract/Node";
+import { Element } from "../abstract/Element";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
@@ -12,14 +12,14 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
-export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
+export class TableElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
 	public constructor(tagName: TagName, caption: string, tableHeader: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		const captionNode = document.createElement("caption");
-		captionNode.append(caption);
+		const captionElement = document.createElement("caption");
+		captionElement.append(caption);
 
-		this.children.push(captionNode);
+		this.children.push(captionElement);
 
 		this.attributes = { ...attributes, ...this.attributes };
 	}
@@ -37,8 +37,8 @@ export class TableNode<TagName extends keyof TopLevelHTMLElementMap> extends Nod
 		this.template.appendChild(document.createElement("tbody"));
 		this.template.appendChild(document.createElement("tfoot"));
 
-		for (const childNode of this.children) {
-			this.template.innerHTML += childNode;
+		for (const child of this.children) {
+			this.template.innerHTML += child;
 		}
 
 		return this.template.outerHTML;

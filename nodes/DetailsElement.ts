@@ -1,17 +1,17 @@
-import { Node } from "../abstract/Node";
+import { Element } from "../abstract/Element";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <summary> should be part of a <details>
 
-export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
+export class DetailsElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
 	public constructor(tagName: TagName, summary: (string | Node)[], children: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
-		const summaryNode = document.createElement("summary");
-		summaryNode.append(...summary);
+		const summaryElement = document.createElement("summary");
+		summaryElement.append(...summary);
 
-		this.children.push(summaryNode, ...children);
+		this.children.push(summaryElement, ...children);
 
 		this.attributes = { ...attributes, ...this.attributes };
 	}
@@ -25,8 +25,8 @@ export class DetailsNode<TagName extends keyof TopLevelHTMLElementMap> extends N
 			}
 		}
 
-		for (const childNode of this.children) {
-			this.template.innerHTML += childNode;
+		for (const child of this.children) {
+			this.template.innerHTML += child;
 		}
 
 		return this.template.outerHTML;

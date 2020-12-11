@@ -1,8 +1,8 @@
-import { Node } from "../abstract/Node";
+import { Element } from "../abstract/Element";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
-export class GroupingNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
+export class GroupingElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
 	public constructor(tagName: TagName, children: (string | HTMLElement)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
@@ -20,8 +20,8 @@ export class GroupingNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 			}
 		}
 
-		for (const childNode of this.children) {
-			this.template.innerHTML += childNode;
+		for (const child of this.children) {
+			this.template.innerHTML += child;
 		}
 
 		return this.template.outerHTML;

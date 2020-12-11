@@ -1,11 +1,11 @@
-import { Node } from "../abstract/Node";
+import { Element } from "../abstract/Element";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <source> should be a part of a <picture>, <audio> or <video>
 // <track> should be a part of a <audio> or <video>
 
-export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
+export class EmbeddedElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
 	private readonly sources: string[];
 
 	public constructor(tagName: TagName, sources: string[], attributes: HTMLElementAttributesMap[TagName]) {
@@ -28,18 +28,18 @@ export class EmbeddedNode<TagName extends keyof TopLevelHTMLElementMap> extends 
 		if (/^audio|picture|video$/i.test(this.type)) {
 			// TODO: Handle type
 			for (const source of this.sources) {
-				const sourceNode = document.createElement("source");
-				sourceNode.setAttribute("src", source);
+				const sourceElement = document.createElement("source");
+				sourceElement.setAttribute("src", source);
 
-				this.template.appendChild(sourceNode);
+				this.template.appendChild(sourceElement);
 			}
 		} else {
 			// TODO: Handle multiple `src`s
 			this.template.setAttribute("src", this.sources[0]);
 		}
 
-		for (const childNode of this.children) {
-			this.template.innerHTML += childNode;
+		for (const child of this.children) {
+			this.template.innerHTML += child;
 		}
 
 		return this.template.outerHTML;

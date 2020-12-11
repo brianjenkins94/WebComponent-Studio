@@ -75,6 +75,8 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					}
 				} else if (href !== undefined && typeof href === "object") {
 					attributes = { ...href, ...attributes };
+
+					href = [];
 				}
 
 				// attributes
@@ -116,8 +118,10 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					children = [children];
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
-				} else if (children !== undefined && typeof children === "object") {
+				} else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
 					attributes = { ...children, ...attributes };
+
+					children = [];
 				}
 
 				// attributes
@@ -177,8 +181,10 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					children = [children];
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
-				} else if (children !== undefined && typeof children === "object") {
+				} else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
 					attributes = { ...children, ...attributes };
+
+					children = [];
 				}
 
 				// attributes
@@ -272,13 +278,15 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					children = [children];
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
-				} else if (children !== undefined && typeof children === "object") {
+				} else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
 					attributes = { ...children, ...attributes };
+
+					children = [];
 				}
 
 				// attributes
-
-				return NodeTagNameMap[tagName](children, attributes);
+				console.log(attributes);
+				return NodeTagNameMap[tagName](children || [], attributes);
 			};
 
 		/**
@@ -314,6 +322,8 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					//sources = sources;
 				} else if (typeof sources === "object") {
 					attributes = { ...sources, ...attributes };
+
+					sources = [];
 				}
 
 				// attributes
@@ -355,7 +365,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					children = [children];
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
-				} else if (children !== undefined && typeof children === "object") {
+				} else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
 					attributes = { ...children, ...attributes };
 				}
 				// attributes
@@ -397,7 +407,7 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					children = [children];
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
-				} else if (children !== undefined && typeof children === "object") {
+				} else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
 					attributes = { ...children, ...attributes };
 				}
 
@@ -626,6 +636,8 @@ function createPrimitive<NodeTagName extends keyof typeof NodeTagNameMap>(tagNam
 					//children = children;
 				} else if (textContent !== undefined && typeof textContent === "object") {
 					attributes = { ...textContent, ...attributes };
+
+					textContent = [];
 				}
 
 				// attributes

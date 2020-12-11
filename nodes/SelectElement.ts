@@ -1,11 +1,11 @@
-import { Node } from "../abstract/Node";
+import { Element } from "../abstract/Element";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
 // <optgroup> should be part of a <select>
 // <option> should be part of a <select> or <optgroup>
 
-export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
+export class SelectElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
 	private readonly options: object[];
 
 	public constructor(tagName: TagName, options: object[], attributes: HTMLElementAttributesMap[TagName]) {
@@ -27,46 +27,46 @@ export class SelectNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 
 		(function recurse(options, parent) {
 			for (const option of options) {
-				let node;
+				let element;
 
 				if (Array.isArray(option["value"])) {
-					node = document.createElement("optgroup");
+					element = document.createElement("optgroup");
 
-					node.setAttribute("label", option["key"]);
+					element.setAttribute("label", option["key"]);
 
-					recurse(option["value"], node);
+					recurse(option["value"], element);
 				} else {
-					node = document.createElement("option");
+					element = document.createElement("option");
 
 					if (option["key"] !== undefined) {
-						node.textContent = option["key"];
+						element.textContent = option["key"];
 					}
 
 					if (option["value"] !== undefined) {
-						node.value = option["value"];
+						element.value = option["value"];
 					} else {
-						node.value = option["key"];
+						element.value = option["key"];
 					}
 				}
 
 				if (option["disabled"] === true) {
-					node.setAttribute("disabled", true);
+					element.setAttribute("disabled", true);
 				}
 
 				if (option["required"] === true) {
-					node.setAttribute("required", true);
+					element.setAttribute("required", true);
 				}
 
 				if (option["selected"] === true) {
-					node.setAttribute("selected", true);
+					element.setAttribute("selected", true);
 				}
 
-				parent.appendChild(node);
+				parent.appendChild(element);
 			}
 		})(this.options, this.template);
 
-		for (const childNode of this.children) {
-			this.template.innerHTML += childNode;
+		for (const child of this.children) {
+			this.template.innerHTML += child;
 		}
 
 		return this.template.outerHTML;

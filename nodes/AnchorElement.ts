@@ -1,8 +1,8 @@
-import { Node } from "../abstract/Node";
+import { Element } from "../abstract/Element";
 import type { HTMLElementAttributesMap } from "../types/attributes";
 import type { TopLevelHTMLElementMap } from "../types/elements";
 
-export class AnchorNode<TagName extends keyof TopLevelHTMLElementMap> extends Node<TagName> {
+export class AnchorElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
 	public constructor(tagName: TagName, textContent: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
 		super(tagName);
 
@@ -20,8 +20,8 @@ export class AnchorNode<TagName extends keyof TopLevelHTMLElementMap> extends No
 			}
 		}
 
-		for (const childNode of this.children) {
-			this.template.innerHTML += childNode;
+		for (const child of this.children) {
+			this.template.innerHTML += child;
 		}
 
 		return this.template.outerHTML;

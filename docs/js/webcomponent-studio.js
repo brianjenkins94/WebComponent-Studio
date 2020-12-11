@@ -1,4 +1,4 @@
-class Node$1 {
+class Element {
     constructor(type) {
         this.attributes = {};
         this.children = [];
@@ -53,7 +53,7 @@ class Node$1 {
     }
 }
 
-class AnchorNode extends Node$1 {
+class AnchorElement extends Element {
     constructor(tagName, textContent, attributes) {
         super(tagName);
         this.children.push(...textContent);
@@ -66,20 +66,20 @@ class AnchorNode extends Node$1 {
                 this.template.setAttribute(key, value);
             }
         }
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
 }
 
 // <summary> should be part of a <details>
-class DetailsNode extends Node$1 {
+class DetailsElement extends Element {
     constructor(tagName, summary, children, attributes) {
         super(tagName);
-        const summaryNode = document.createElement("summary");
-        summaryNode.append(...summary);
-        this.children.push(summaryNode, ...children);
+        const summaryElement = document.createElement("summary");
+        summaryElement.append(...summary);
+        this.children.push(summaryElement, ...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -89,8 +89,8 @@ class DetailsNode extends Node$1 {
                 this.template.setAttribute(key, value);
             }
         }
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
@@ -98,7 +98,7 @@ class DetailsNode extends Node$1 {
 
 // <source> should be a part of a <picture>, <audio> or <video>
 // <track> should be a part of a <audio> or <video>
-class EmbeddedNode extends Node$1 {
+class EmbeddedElement extends Element {
     constructor(tagName, sources, attributes) {
         super(tagName);
         this.sources = sources;
@@ -114,29 +114,29 @@ class EmbeddedNode extends Node$1 {
         if (/^audio|picture|video$/i.test(this.type)) {
             // TODO: Handle type
             for (const source of this.sources) {
-                const sourceNode = document.createElement("source");
-                sourceNode.setAttribute("src", source);
-                this.template.appendChild(sourceNode);
+                const sourceElement = document.createElement("source");
+                sourceElement.setAttribute("src", source);
+                this.template.appendChild(sourceElement);
             }
         }
         else {
             // TODO: Handle multiple `src`s
             this.template.setAttribute("src", this.sources[0]);
         }
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
 }
 
 // <legend> should be part of a <fieldset>
-class FieldSetNode extends Node$1 {
+class FieldSetElement extends Element {
     constructor(tagName, legend, children, attributes) {
         super(tagName);
-        const legendNode = document.createElement("legend");
-        legendNode.append(legend);
-        this.children.push(legendNode, ...children);
+        const legendElement = document.createElement("legend");
+        legendElement.append(legend);
+        this.children.push(legendElement, ...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -146,20 +146,20 @@ class FieldSetNode extends Node$1 {
                 this.template.setAttribute(key, value);
             }
         }
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
 }
 
 // <figcaption> should be part of a <figure>
-class FigureNode extends Node$1 {
+class FigureElement extends Element {
     constructor(tagName, caption, children, attributes) {
         super(tagName);
-        const captionNode = document.createElement("caption");
-        captionNode.append(caption);
-        this.children.push(captionNode, ...children);
+        const captionElement = document.createElement("caption");
+        captionElement.append(caption);
+        this.children.push(captionElement, ...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -169,14 +169,14 @@ class FigureNode extends Node$1 {
                 this.template.setAttribute(key, value);
             }
         }
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
 }
 
-class GroupingNode extends Node$1 {
+class GroupingElement extends Element {
     constructor(tagName, children, attributes) {
         super(tagName);
         this.children.push(...children);
@@ -189,8 +189,8 @@ class GroupingNode extends Node$1 {
                 this.template.setAttribute(key, value);
             }
         }
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
@@ -198,7 +198,7 @@ class GroupingNode extends Node$1 {
 
 // <optgroup> should be part of a <select>
 // <option> should be part of a <select> or <optgroup>
-class SelectNode extends Node$1 {
+class SelectElement extends Element {
     constructor(tagName, options, attributes) {
         super(tagName);
         this.options = options;
@@ -213,38 +213,38 @@ class SelectNode extends Node$1 {
         }
         (function recurse(options, parent) {
             for (const option of options) {
-                let node;
+                let element;
                 if (Array.isArray(option["value"])) {
-                    node = document.createElement("optgroup");
-                    node.setAttribute("label", option["key"]);
-                    recurse(option["value"], node);
+                    element = document.createElement("optgroup");
+                    element.setAttribute("label", option["key"]);
+                    recurse(option["value"], element);
                 }
                 else {
-                    node = document.createElement("option");
+                    element = document.createElement("option");
                     if (option["key"] !== undefined) {
-                        node.textContent = option["key"];
+                        element.textContent = option["key"];
                     }
                     if (option["value"] !== undefined) {
-                        node.value = option["value"];
+                        element.value = option["value"];
                     }
                     else {
-                        node.value = option["key"];
+                        element.value = option["key"];
                     }
                 }
                 if (option["disabled"] === true) {
-                    node.setAttribute("disabled", true);
+                    element.setAttribute("disabled", true);
                 }
                 if (option["required"] === true) {
-                    node.setAttribute("required", true);
+                    element.setAttribute("required", true);
                 }
                 if (option["selected"] === true) {
-                    node.setAttribute("selected", true);
+                    element.setAttribute("selected", true);
                 }
-                parent.appendChild(node);
+                parent.appendChild(element);
             }
         })(this.options, this.template);
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
@@ -259,12 +259,12 @@ class SelectNode extends Node$1 {
 // <th> should be part of a <tr>
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
-class TableNode extends Node$1 {
+class TableElement extends Element {
     constructor(tagName, caption, tableHeader, attributes) {
         super(tagName);
-        const captionNode = document.createElement("caption");
-        captionNode.append(caption);
-        this.children.push(captionNode);
+        const captionElement = document.createElement("caption");
+        captionElement.append(caption);
+        this.children.push(captionElement);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -277,8 +277,8 @@ class TableNode extends Node$1 {
         this.template.appendChild(document.createElement("thead"));
         this.template.appendChild(document.createElement("tbody"));
         this.template.appendChild(document.createElement("tfoot"));
-        for (const childNode of this.children) {
-            this.template.innerHTML += childNode;
+        for (const child of this.children) {
+            this.template.innerHTML += child;
         }
         return this.template.outerHTML;
     }
@@ -292,97 +292,97 @@ function primeConstructor(Node, type) {
 }
 const NodeTagNameMap = {
     // Anchor
-    "a": primeConstructor(AnchorNode, "a"),
+    "a": primeConstructor(AnchorElement, "a"),
     // Details
-    "details": primeConstructor(DetailsNode, "details"),
+    "details": primeConstructor(DetailsElement, "details"),
     // Form-associated
-    "form": primeConstructor(GroupingNode, "form"),
-    "meter": primeConstructor(GroupingNode, "meter"),
-    "progress": primeConstructor(GroupingNode, "progress"),
-    "textarea": primeConstructor(GroupingNode, "textarea"),
+    "form": primeConstructor(GroupingElement, "form"),
+    "meter": primeConstructor(GroupingElement, "meter"),
+    "progress": primeConstructor(GroupingElement, "progress"),
+    "textarea": primeConstructor(GroupingElement, "textarea"),
     // Grouping
-    "article": primeConstructor(GroupingNode, "article"),
-    "aside": primeConstructor(GroupingNode, "aside"),
-    "br": primeConstructor(GroupingNode, "br"),
-    "canvas": primeConstructor(GroupingNode, "canvas"),
-    "div": primeConstructor(GroupingNode, "div"),
-    "footer": primeConstructor(GroupingNode, "footer"),
-    "header": primeConstructor(GroupingNode, "header"),
-    "hr": primeConstructor(GroupingNode, "hr"),
-    "main": primeConstructor(GroupingNode, "main"),
-    "nav": primeConstructor(GroupingNode, "nav"),
-    "ol": primeConstructor(GroupingNode, "ol"),
-    "section": primeConstructor(GroupingNode, "section"),
-    "ul": primeConstructor(GroupingNode, "ul"),
+    "article": primeConstructor(GroupingElement, "article"),
+    "aside": primeConstructor(GroupingElement, "aside"),
+    "br": primeConstructor(GroupingElement, "br"),
+    "canvas": primeConstructor(GroupingElement, "canvas"),
+    "div": primeConstructor(GroupingElement, "div"),
+    "footer": primeConstructor(GroupingElement, "footer"),
+    "header": primeConstructor(GroupingElement, "header"),
+    "hr": primeConstructor(GroupingElement, "hr"),
+    "main": primeConstructor(GroupingElement, "main"),
+    "nav": primeConstructor(GroupingElement, "nav"),
+    "ol": primeConstructor(GroupingElement, "ol"),
+    "section": primeConstructor(GroupingElement, "section"),
+    "ul": primeConstructor(GroupingElement, "ul"),
     // Text-Level
-    "b": primeConstructor(GroupingNode, "b"),
-    "blockquote": primeConstructor(GroupingNode, "blockquote"),
-    "button": primeConstructor(GroupingNode, "button"),
-    "reset": primeConstructor(GroupingNode, "button"),
-    "submit": primeConstructor(GroupingNode, "button"),
-    "code": primeConstructor(GroupingNode, "code"),
-    "del": primeConstructor(GroupingNode, "del"),
-    "em": primeConstructor(GroupingNode, "em"),
-    "h1": primeConstructor(GroupingNode, "h1"),
-    "h2": primeConstructor(GroupingNode, "h2"),
-    "h3": primeConstructor(GroupingNode, "h3"),
-    "h4": primeConstructor(GroupingNode, "h4"),
-    "h5": primeConstructor(GroupingNode, "h5"),
-    "h6": primeConstructor(GroupingNode, "h6"),
-    "i": primeConstructor(GroupingNode, "i"),
-    "ins": primeConstructor(GroupingNode, "ins"),
-    "kbd": primeConstructor(GroupingNode, "kbd"),
-    "label": primeConstructor(GroupingNode, "label"),
-    "li": primeConstructor(GroupingNode, "li"),
-    "mark": primeConstructor(GroupingNode, "mark"),
-    "p": primeConstructor(GroupingNode, "p"),
-    "pre": primeConstructor(GroupingNode, "pre"),
-    "q": primeConstructor(GroupingNode, "q"),
-    "s": primeConstructor(GroupingNode, "s"),
-    "small": primeConstructor(GroupingNode, "small"),
-    "span": primeConstructor(GroupingNode, "span"),
-    "strong": primeConstructor(GroupingNode, "strong"),
-    "sub": primeConstructor(GroupingNode, "sub"),
-    "sup": primeConstructor(GroupingNode, "sup"),
-    "u": primeConstructor(GroupingNode, "u"),
+    "b": primeConstructor(GroupingElement, "b"),
+    "blockquote": primeConstructor(GroupingElement, "blockquote"),
+    "button": primeConstructor(GroupingElement, "button"),
+    "reset": primeConstructor(GroupingElement, "button"),
+    "submit": primeConstructor(GroupingElement, "button"),
+    "code": primeConstructor(GroupingElement, "code"),
+    "del": primeConstructor(GroupingElement, "del"),
+    "em": primeConstructor(GroupingElement, "em"),
+    "h1": primeConstructor(GroupingElement, "h1"),
+    "h2": primeConstructor(GroupingElement, "h2"),
+    "h3": primeConstructor(GroupingElement, "h3"),
+    "h4": primeConstructor(GroupingElement, "h4"),
+    "h5": primeConstructor(GroupingElement, "h5"),
+    "h6": primeConstructor(GroupingElement, "h6"),
+    "i": primeConstructor(GroupingElement, "i"),
+    "ins": primeConstructor(GroupingElement, "ins"),
+    "kbd": primeConstructor(GroupingElement, "kbd"),
+    "label": primeConstructor(GroupingElement, "label"),
+    "li": primeConstructor(GroupingElement, "li"),
+    "mark": primeConstructor(GroupingElement, "mark"),
+    "p": primeConstructor(GroupingElement, "p"),
+    "pre": primeConstructor(GroupingElement, "pre"),
+    "q": primeConstructor(GroupingElement, "q"),
+    "s": primeConstructor(GroupingElement, "s"),
+    "small": primeConstructor(GroupingElement, "small"),
+    "span": primeConstructor(GroupingElement, "span"),
+    "strong": primeConstructor(GroupingElement, "strong"),
+    "sub": primeConstructor(GroupingElement, "sub"),
+    "sup": primeConstructor(GroupingElement, "sup"),
+    "u": primeConstructor(GroupingElement, "u"),
     // Embedded
-    "audio": primeConstructor(EmbeddedNode, "audio"),
-    "img": primeConstructor(EmbeddedNode, "img"),
-    "picture": primeConstructor(EmbeddedNode, "picture"),
-    "video": primeConstructor(EmbeddedNode, "video"),
+    "audio": primeConstructor(EmbeddedElement, "audio"),
+    "img": primeConstructor(EmbeddedElement, "img"),
+    "picture": primeConstructor(EmbeddedElement, "picture"),
+    "video": primeConstructor(EmbeddedElement, "video"),
     // Field Set
-    "fieldset": primeConstructor(FieldSetNode, "fieldset"),
+    "fieldset": primeConstructor(FieldSetElement, "fieldset"),
     // Figure
-    "figure": primeConstructor(FigureNode, "figure"),
+    "figure": primeConstructor(FigureElement, "figure"),
     // File
-    "file": primeConstructor(GroupingNode, "input"),
+    "file": primeConstructor(GroupingElement, "input"),
     // IFrame
-    "iframe": primeConstructor(GroupingNode, "iframe"),
+    "iframe": primeConstructor(GroupingElement, "iframe"),
     // Search
-    "search": primeConstructor(GroupingNode, "input"),
+    "search": primeConstructor(GroupingElement, "input"),
     // Select
-    "select": primeConstructor(SelectNode, "select"),
+    "select": primeConstructor(SelectElement, "select"),
     // Image Input
-    "image": primeConstructor(GroupingNode, "input"),
+    "image": primeConstructor(GroupingElement, "input"),
     // Input
-    "checkbox": primeConstructor(GroupingNode, "input"),
-    "color": primeConstructor(GroupingNode, "input"),
-    "date": primeConstructor(GroupingNode, "input"),
-    "datetime-local": primeConstructor(GroupingNode, "input"),
-    "email": primeConstructor(GroupingNode, "input"),
-    "hidden": primeConstructor(GroupingNode, "input"),
-    "month": primeConstructor(GroupingNode, "input"),
-    "number": primeConstructor(GroupingNode, "input"),
-    "password": primeConstructor(GroupingNode, "input"),
-    "radio": primeConstructor(GroupingNode, "input"),
-    "range": primeConstructor(GroupingNode, "input"),
-    "tel": primeConstructor(GroupingNode, "input"),
-    "text": primeConstructor(GroupingNode, "input"),
-    "time": primeConstructor(GroupingNode, "input"),
-    "url": primeConstructor(GroupingNode, "input"),
-    "week": primeConstructor(GroupingNode, "input"),
+    "checkbox": primeConstructor(GroupingElement, "input"),
+    "color": primeConstructor(GroupingElement, "input"),
+    "date": primeConstructor(GroupingElement, "input"),
+    "datetime-local": primeConstructor(GroupingElement, "input"),
+    "email": primeConstructor(GroupingElement, "input"),
+    "hidden": primeConstructor(GroupingElement, "input"),
+    "month": primeConstructor(GroupingElement, "input"),
+    "number": primeConstructor(GroupingElement, "input"),
+    "password": primeConstructor(GroupingElement, "input"),
+    "radio": primeConstructor(GroupingElement, "input"),
+    "range": primeConstructor(GroupingElement, "input"),
+    "tel": primeConstructor(GroupingElement, "input"),
+    "text": primeConstructor(GroupingElement, "input"),
+    "time": primeConstructor(GroupingElement, "input"),
+    "url": primeConstructor(GroupingElement, "input"),
+    "week": primeConstructor(GroupingElement, "input"),
     // Table
-    "table": primeConstructor(TableNode, "table")
+    "table": primeConstructor(TableElement, "table")
 };
 
 /* eslint-disable complexity */
@@ -446,6 +446,7 @@ function createPrimitive(tagName) {
                 }
                 else if (href !== undefined && typeof href === "object") {
                     attributes = Object.assign(Object.assign({}, href), attributes);
+                    href = [];
                 }
                 // attributes
                 return NodeTagNameMap[tagName](textContent, attributes);
@@ -479,8 +480,9 @@ function createPrimitive(tagName) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object") {
+                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
+                    children = [];
                 }
                 // attributes
                 return NodeTagNameMap[tagName](summary, children, attributes);
@@ -532,8 +534,9 @@ function createPrimitive(tagName) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object") {
+                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
+                    children = [];
                 }
                 // attributes
                 return NodeTagNameMap[tagName](children, attributes);
@@ -623,11 +626,13 @@ function createPrimitive(tagName) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object") {
+                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
+                    children = [];
                 }
                 // attributes
-                return NodeTagNameMap[tagName](children, attributes);
+                console.log(attributes);
+                return NodeTagNameMap[tagName](children || [], attributes);
             };
         /**
          * Embedded
@@ -660,6 +665,7 @@ function createPrimitive(tagName) {
                 if (sources !== undefined && Array.isArray(sources)) ;
                 else if (typeof sources === "object") {
                     attributes = Object.assign(Object.assign({}, sources), attributes);
+                    sources = [];
                 }
                 // attributes
                 return NodeTagNameMap[tagName](sources, attributes);
@@ -693,7 +699,7 @@ function createPrimitive(tagName) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object") {
+                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
                 }
                 // attributes
@@ -728,7 +734,7 @@ function createPrimitive(tagName) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object") {
+                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
                 }
                 // attributes
@@ -928,6 +934,7 @@ function createPrimitive(tagName) {
                 else if (textContent !== undefined && Array.isArray(textContent)) ;
                 else if (textContent !== undefined && typeof textContent === "object") {
                     attributes = Object.assign(Object.assign({}, textContent), attributes);
+                    textContent = [];
                 }
                 // attributes
                 return NodeTagNameMap[tagName](textContent, attributes);
