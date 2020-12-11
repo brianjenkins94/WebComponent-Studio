@@ -426,7 +426,7 @@ function createPrimitive(tagName) {
                     textContent = selector;
                 }
                 // textContent
-                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
                     textContent = [textContent];
                 }
                 else if (textContent !== undefined && Array.isArray(textContent)) ;
@@ -925,7 +925,7 @@ function createPrimitive(tagName) {
                     textContent = forValue;
                 }
                 // children
-                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
                     textContent = [textContent];
                 }
                 else if (textContent !== undefined && Array.isArray(textContent)) ;

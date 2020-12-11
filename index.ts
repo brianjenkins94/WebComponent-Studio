@@ -52,7 +52,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				// textContent
 
-				if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+				if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
 					textContent = [textContent];
 				} else if (textContent !== undefined && Array.isArray(textContent)) {
 					//textContent = textContent;
@@ -627,7 +627,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				// children
 
-				if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && isPrototypeOf(textContent, Node)))) {
+				if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
 					textContent = [textContent];
 				} else if (textContent !== undefined && Array.isArray(textContent)) {
 					//children = children;
