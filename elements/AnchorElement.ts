@@ -1,9 +1,9 @@
 import { Element } from "../abstract/Element";
-import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElementMap } from "../types/elements";
+import type { ElementAttributesMap } from "../types/attributes";
+import type { TopLevelElementMap } from "../types/elements";
 
-export class AnchorElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, textContent: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
+export class AnchorElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, textContent: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.children.push(...textContent);

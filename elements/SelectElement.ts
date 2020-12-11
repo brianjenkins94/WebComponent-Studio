@@ -1,14 +1,14 @@
 import { Element } from "../abstract/Element";
-import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElementMap } from "../types/elements";
+import type { ElementAttributesMap } from "../types/attributes";
+import type { TopLevelElementMap } from "../types/elements";
 
 // <optgroup> should be part of a <select>
 // <option> should be part of a <select> or <optgroup>
 
-export class SelectElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
+export class SelectElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
 	private readonly options: object[];
 
-	public constructor(tagName: TagName, options: object[], attributes: HTMLElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, options: object[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.options = options;

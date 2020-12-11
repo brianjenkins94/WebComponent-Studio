@@ -113,6 +113,6 @@ interface TextLevelSemantics {
 	"u": HTMLElement;
 }
 
-export interface TopLevelHTMLElementMap extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics { }
+export interface TopLevelElementMap extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics { }
 
-export interface AbstractTopLevelHTMLElementMap extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }
+export interface AbstractTopLevelElementMap extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }

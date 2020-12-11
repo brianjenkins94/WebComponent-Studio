@@ -1,6 +1,6 @@
 import { Element } from "../abstract/Element";
-import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElementMap } from "../types/elements";
+import type { ElementAttributesMap } from "../types/attributes";
+import type { TopLevelElementMap } from "../types/elements";
 
 // <caption> should be part of a <table>
 // <col> should be part of a <colgroup>
@@ -12,8 +12,8 @@ import type { TopLevelHTMLElementMap } from "../types/elements";
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
-export class TableElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, caption: string, tableHeader: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
+export class TableElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, caption: string, tableHeader: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		const captionElement = document.createElement("caption");

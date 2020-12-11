@@ -1,11 +1,11 @@
 import { Element } from "../abstract/Element";
-import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElementMap } from "../types/elements";
+import type { ElementAttributesMap } from "../types/attributes";
+import type { TopLevelElementMap } from "../types/elements";
 
 // <legend> should be part of a <fieldset>
 
-export class FieldSetElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, legend: string, children: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
+export class FieldSetElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, legend: string, children: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		const legendElement = document.createElement("legend");

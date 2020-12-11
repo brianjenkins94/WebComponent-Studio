@@ -9,15 +9,15 @@ import { GroupingElement } from "./GroupingElement";
 import { SelectElement } from "./SelectElement";
 import { TableElement } from "./TableElement";
 import type { Element } from "../abstract/Element";
-import type { TopLevelHTMLElementMap } from "../types/elements";
+import type { TopLevelElementMap } from "../types/elements";
 
-function primeConstructor<TagName extends keyof TopLevelHTMLElementMap, ArgsType extends unknown[]>(Node: new (type: TagName, ...args: ArgsType) => Element<TagName>, type: TagName) {
+function primeConstructor<TagName extends keyof TopLevelElementMap, ArgsType extends unknown[]>(Node: new (type: TagName, ...args: ArgsType) => Element<TagName>, type: TagName) {
 	return function(...args: ArgsType): Element<TagName> {
 		return new Node(type, ...args);
 	};
 }
 
-export const NodeTagNameMap = {
+export const ElementTagNameMap = {
 	// Anchor
 	"a": primeConstructor(AnchorElement, "a"),
 

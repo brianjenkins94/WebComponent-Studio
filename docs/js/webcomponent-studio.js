@@ -290,7 +290,7 @@ function primeConstructor(Node, type) {
         return new Node(type, ...args);
     };
 }
-const NodeTagNameMap = {
+const ElementTagNameMap = {
     // Anchor
     "a": primeConstructor(AnchorElement, "a"),
     // Details
@@ -404,9 +404,6 @@ function parseSelector(selector) {
         "classes": classes
     };
 }
-function isPrototypeOf(a, b) {
-    return Object.prototype.isPrototypeOf.call(a, b);
-}
 function createPrimitive(tagName) {
     switch (tagName) {
         /**
@@ -449,7 +446,7 @@ function createPrimitive(tagName) {
                     href = [];
                 }
                 // attributes
-                return NodeTagNameMap[tagName](textContent, attributes);
+                return ElementTagNameMap[tagName](textContent, attributes);
             };
         /**
          * Details
@@ -476,16 +473,16 @@ function createPrimitive(tagName) {
                     children = summary;
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
+                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
                     children = [];
                 }
                 // attributes
-                return NodeTagNameMap[tagName](summary, children, attributes);
+                return ElementTagNameMap[tagName](summary, children, attributes);
             };
         /**
          * Form
@@ -530,16 +527,16 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, encoding), attributes);
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
+                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
                     children = [];
                 }
                 // attributes
-                return NodeTagNameMap[tagName](children, attributes);
+                return ElementTagNameMap[tagName](children, attributes);
             };
         /**
          * Form-associated/Grouping/Text-level
@@ -622,17 +619,17 @@ function createPrimitive(tagName) {
                     }
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
+                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
                     children = [];
                 }
                 // attributes
                 console.log(attributes);
-                return NodeTagNameMap[tagName](children || [], attributes);
+                return ElementTagNameMap[tagName](children || [], attributes);
             };
         /**
          * Embedded
@@ -668,7 +665,7 @@ function createPrimitive(tagName) {
                     sources = [];
                 }
                 // attributes
-                return NodeTagNameMap[tagName](sources, attributes);
+                return ElementTagNameMap[tagName](sources, attributes);
             };
         /**
          * Field Set
@@ -695,15 +692,15 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, legend), attributes);
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
+                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](legend, children, attributes);
+                return ElementTagNameMap[tagName](legend, children, attributes);
             };
         /**
          * Figure
@@ -730,15 +727,15 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, figcaption), attributes);
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && isPrototypeOf(children, Node)))) {
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && isPrototypeOf(children, Node)) {
+                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, children), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](figcaption, children, attributes);
+                return ElementTagNameMap[tagName](figcaption, children, attributes);
             };
         /**
          * File
@@ -787,7 +784,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * IFrame
@@ -815,7 +812,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, source), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName]([], attributes);
+                return ElementTagNameMap[tagName]([], attributes);
             };
         /**
          * Image Input
@@ -843,7 +840,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, source), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Input
@@ -906,7 +903,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Label
@@ -937,7 +934,7 @@ function createPrimitive(tagName) {
                     textContent = [];
                 }
                 // attributes
-                return NodeTagNameMap[tagName](textContent, attributes);
+                return ElementTagNameMap[tagName](textContent, attributes);
             };
         /**
          * Search
@@ -965,7 +962,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, value), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Select
@@ -1004,7 +1001,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
-                return NodeTagNameMap[tagName](options, Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName](options, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Table
@@ -1036,7 +1033,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, tableHeader), attributes);
                 }
                 // attributes
-                return NodeTagNameMap[tagName](caption, tableHeader, attributes);
+                return ElementTagNameMap[tagName](caption, tableHeader, attributes);
             };
         default:
             throw new Error("Unrecognized element `" + tagName + "`.");

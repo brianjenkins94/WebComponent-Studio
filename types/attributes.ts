@@ -1,76 +1,76 @@
-export interface HTMLElementAttributesMap {
+export interface ElementAttributesMap {
 	"a": HTMLAnchorElementAttributes;
-	"article": HTMLElementAttributes;
-	"aside": HTMLElementAttributes;
+	"article": ElementAttributes;
+	"aside": ElementAttributes;
 	"audio": HTMLAudioElementAttributes;
-	"b": HTMLElementAttributes;
+	"b": ElementAttributes;
 	"blockquote": HTMLBlockQuoteElementAttributes;
-	"br": HTMLElementAttributes;
+	"br": ElementAttributes;
 	"button": HTMLButtonElementAttributes;
 	"canvas": HTMLCanvasElementAttributes;
 	"checkbox": HTMLCheckboxInputElementAttributes;
-	"code": HTMLElementAttributes;
+	"code": ElementAttributes;
 	"col": HTMLTableColElementAttributes;
 	"color": HTMLColorInputElementAttributes;
 	"date": HTMLDateInputElementAttributes;
 	"datetime-local": HTMLDatetimeLocalInputElementAttributes;
 	"del": HTMLModElementAttributes;
 	"details": HTMLDetailsElementAttributes;
-	"div": HTMLElementAttributes;
-	"em": HTMLElementAttributes;
+	"div": ElementAttributes;
+	"em": ElementAttributes;
 	"email": HTMLEmailInputElementAttributes;
 	"fieldset": HTMLFieldSetElementAttributes;
-	"figure": HTMLElementAttributes;
+	"figure": ElementAttributes;
 	"file": HTMLFileInputElementAttributes;
-	"footer": HTMLElementAttributes;
+	"footer": ElementAttributes;
 	"form": HTMLFormElementAttributes;
-	"h1": HTMLElementAttributes;
-	"h2": HTMLElementAttributes;
-	"h3": HTMLElementAttributes;
-	"h4": HTMLElementAttributes;
-	"h5": HTMLElementAttributes;
-	"h6": HTMLElementAttributes;
-	"header": HTMLElementAttributes;
+	"h1": ElementAttributes;
+	"h2": ElementAttributes;
+	"h3": ElementAttributes;
+	"h4": ElementAttributes;
+	"h5": ElementAttributes;
+	"h6": ElementAttributes;
+	"header": ElementAttributes;
 	"hidden": HTMLHiddenInputElementAttributes;
-	"hr": HTMLElementAttributes;
-	"i": HTMLElementAttributes;
+	"hr": ElementAttributes;
+	"i": ElementAttributes;
 	"iframe": HTMLIFrameElementAttributes;
 	"image": HTMLImageInputElementAttributes;
 	"img": HTMLImageElementAttributes;
 	"ins": HTMLModElementAttributes;
-	"kbd": HTMLElementAttributes;
+	"kbd": ElementAttributes;
 	"label": HTMLLabelElementAttributes;
 	"li": HTMLLIElementAttributes;
-	"main": HTMLElementAttributes;
-	"mark": HTMLElementAttributes;
+	"main": ElementAttributes;
+	"mark": ElementAttributes;
 	"meter": HTMLMeterElementAttributes;
 	"month": HTMLMonthInputElementAttributes;
-	"nav": HTMLElementAttributes;
+	"nav": ElementAttributes;
 	"number": HTMLNumberInputElementAttributes;
 	"ol": HTMLOListElementAttributes;
 	"optgroup": HTMLOptGroupElementAttributes;
 	"option": HTMLOptionElementAttributes;
-	"p": HTMLElementAttributes;
+	"p": ElementAttributes;
 	"password": HTMLPasswordInputElementAttributes;
-	"picture": HTMLElementAttributes;
-	"pre": HTMLElementAttributes;
+	"picture": ElementAttributes;
+	"pre": ElementAttributes;
 	"progress": HTMLProgressElementAttributes;
 	"q": HTMLQuoteElementAttributes;
 	"radio": HTMLRadioInputElementAttributes;
 	"range": HTMLRangeInputElementAttributes;
 	"reset": HTMLButtonElementAttributes;
-	"s": HTMLElementAttributes;
+	"s": ElementAttributes;
 	"search": HTMLSearchInputElementAttributes;
-	"section": HTMLElementAttributes;
+	"section": ElementAttributes;
 	"select": HTMLSelectElementAttributes;
-	"small": HTMLElementAttributes;
+	"small": ElementAttributes;
 	"source": HTMLSourceElementAttributes;
-	"span": HTMLElementAttributes;
-	"strong": HTMLElementAttributes;
-	"sub": HTMLElementAttributes;
+	"span": ElementAttributes;
+	"strong": ElementAttributes;
+	"sub": ElementAttributes;
 	"submit": HTMLButtonElementAttributes;
-	"sup": HTMLElementAttributes;
-	"table": HTMLElementAttributes;
+	"sup": ElementAttributes;
+	"table": ElementAttributes;
 	"td": HTMLTableDataCellElementAttributes;
 	"tel": HTMLTelInputElementAttributes;
 	"text": HTMLTextInputElementAttributes;
@@ -78,14 +78,14 @@ export interface HTMLElementAttributesMap {
 	"th": HTMLTableHeaderCellElementAttributes;
 	"time": HTMLTimeInputElementAttributes;
 	"track": HTMLTrackElementAttributes;
-	"u": HTMLElementAttributes;
-	"ul": HTMLElementAttributes;
+	"u": ElementAttributes;
+	"ul": ElementAttributes;
 	"url": HTMLUrlInputElementAttributes;
 	"video": HTMLVideoElementAttributes;
 	"week": HTMLWeekInputElementAttributes;
 }
 
-interface HTMLElementAttributes {
+interface ElementAttributes {
 
 	/**
 	 * Provides a hint for generating a keyboard shortcut for the current element. This attribute
@@ -255,7 +255,7 @@ interface HTMLElementAttributes {
 	translate?: boolean;
 }
 
-export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
+export interface HTMLAnchorElementAttributes extends ElementAttributes {
 
 	/**
 	 * Prompts the user to save the linked URL instead of navigating to it. Can be used with or
@@ -329,7 +329,7 @@ export interface HTMLAnchorElementAttributes extends HTMLElementAttributes {
 	type?: string;
 }
 
-export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
+export interface HTMLAudioElementAttributes extends ElementAttributes {
 
 	/**
 	 * A Boolean attribute: if specified, the audio will automatically begin playback as soon as it
@@ -435,7 +435,7 @@ export interface HTMLAudioElementAttributes extends HTMLElementAttributes {
 	src?: string;
 }
 
-export interface HTMLBlockQuoteElementAttributes extends HTMLElementAttributes {
+export interface HTMLBlockQuoteElementAttributes extends ElementAttributes {
 
 	/**
 	 * A URL that designates a source document or message for the information quoted. This attribute
@@ -444,7 +444,7 @@ export interface HTMLBlockQuoteElementAttributes extends HTMLElementAttributes {
 	cite?: string;
 }
 
-export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
+export interface HTMLButtonElementAttributes extends ElementAttributes {
 
 	/**
 	 * This attribute on a `<button>` is nonstandard and Firefox-specific. Unlike other browsers,
@@ -570,7 +570,7 @@ export interface HTMLButtonElementAttributes extends HTMLElementAttributes {
 	value?: string;
 }
 
-export interface HTMLCanvasElementAttributes extends HTMLElementAttributes {
+export interface HTMLCanvasElementAttributes extends ElementAttributes {
 
 	/**
 	 * The height of the coordinate space in CSS pixels. Defaults to 150.
@@ -583,7 +583,7 @@ export interface HTMLCanvasElementAttributes extends HTMLElementAttributes {
 	width?: number;
 }
 
-export interface HTMLTableColElementAttributes extends HTMLElementAttributes {
+export interface HTMLTableColElementAttributes extends ElementAttributes {
 
 	/**
 	 * This attribute contains a positive integer indicating the number of consecutive columns the
@@ -592,7 +592,7 @@ export interface HTMLTableColElementAttributes extends HTMLElementAttributes {
 	span?: number;
 }
 
-export interface HTMLModElementAttributes extends HTMLElementAttributes {
+export interface HTMLModElementAttributes extends ElementAttributes {
 
 	/**
 	 * A URI for a resource that explains the change (for example, meeting minutes).
@@ -609,7 +609,7 @@ export interface HTMLModElementAttributes extends HTMLElementAttributes {
 	datetime?: Date | string;
 }
 
-export interface HTMLDetailsElementAttributes extends HTMLElementAttributes {
+export interface HTMLDetailsElementAttributes extends ElementAttributes {
 
 	/**
 	 * This Boolean attribute indicates whether or not the details -- that is, the contents of the
@@ -619,7 +619,7 @@ export interface HTMLDetailsElementAttributes extends HTMLElementAttributes {
 	open?: boolean;
 }
 
-export interface HTMLFieldSetElementAttributes extends HTMLElementAttributes {
+export interface HTMLFieldSetElementAttributes extends ElementAttributes {
 
 	/**
 	 * If this Boolean attribute is set, all form controls that are descendants of the `<fieldset>`,
@@ -646,7 +646,7 @@ export interface HTMLFieldSetElementAttributes extends HTMLElementAttributes {
 	name?: string;
 }
 
-export interface HTMLFormElementAttributes extends HTMLElementAttributes {
+export interface HTMLFormElementAttributes extends ElementAttributes {
 
 	/**
 	 * Space-separated character encodings the server accepts. The browser uses them in the order in
@@ -743,7 +743,7 @@ export interface HTMLFormElementAttributes extends HTMLElementAttributes {
 	target?: "_self" | "_blank" | "_parent" | "_top";
 }
 
-export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
+export interface HTMLIFrameElementAttributes extends ElementAttributes {
 
 	/**
 	 * Specifies a feature policy for the `<iframe>`. The policy defines what features are available
@@ -859,7 +859,7 @@ export interface HTMLIFrameElementAttributes extends HTMLElementAttributes {
 	width?: number;
 }
 
-export interface HTMLImageElementAttributes extends HTMLElementAttributes {
+export interface HTMLImageElementAttributes extends ElementAttributes {
 
 	/**
 	 * Defines an alternative text description of the image.
@@ -1024,7 +1024,7 @@ export interface HTMLImageElementAttributes extends HTMLElementAttributes {
 	width?: number;
 }
 
-interface HTMLInputElementAttributes extends HTMLElementAttributes {
+interface HTMLInputElementAttributes extends ElementAttributes {
 
 	/**
 	 * (**Not** a Boolean attribute!) The `autocomplete` attribute takes as its value a space-
@@ -1089,9 +1089,9 @@ interface HTMLInputElementAttributes extends HTMLElementAttributes {
 	value?: string;
 }
 
-export interface HTMLButtonInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes { }
+export interface HTMLButtonInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes { }
 
-export interface HTMLCheckboxInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLCheckboxInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * A Boolean attribute indicating whether or not this checkbox is checked by default (when the
@@ -1125,7 +1125,7 @@ export interface HTMLCheckboxInputElementAttributes extends HTMLElementAttribute
 	required?: boolean;
 }
 
-export interface HTMLColorInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLColorInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1137,7 +1137,7 @@ export interface HTMLColorInputElementAttributes extends HTMLElementAttributes, 
 	list?: string;
 }
 
-export interface HTMLDateInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLDateInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1197,7 +1197,7 @@ export interface HTMLDateInputElementAttributes extends HTMLElementAttributes, H
 	step?: number;
 }
 
-export interface HTMLDatetimeLocalInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLDatetimeLocalInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1258,7 +1258,7 @@ export interface HTMLDatetimeLocalInputElementAttributes extends HTMLElementAttr
 	step?: number;
 }
 
-export interface HTMLEmailInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLEmailInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1354,7 +1354,7 @@ export interface HTMLEmailInputElementAttributes extends HTMLElementAttributes, 
 	size?: number;
 }
 
-export interface HTMLFileInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLFileInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The `accept` attribute value is a string that defines the file types the file input should
@@ -1399,9 +1399,9 @@ export interface HTMLFileInputElementAttributes extends HTMLElementAttributes, H
 	required?: boolean;
 }
 
-export interface HTMLHiddenInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes { }
+export interface HTMLHiddenInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes { }
 
-export interface HTMLImageInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLImageInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The `alt` attribute provides an alternate string to use as the button's label if the image
@@ -1527,7 +1527,7 @@ export interface HTMLImageInputElementAttributes extends HTMLElementAttributes, 
 	width?: number;
 }
 
-export interface HTMLMonthInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLMonthInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1588,7 +1588,7 @@ export interface HTMLMonthInputElementAttributes extends HTMLElementAttributes, 
 	step?: number;
 }
 
-export interface HTMLNumberInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLNumberInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1656,7 +1656,7 @@ export interface HTMLNumberInputElementAttributes extends HTMLElementAttributes,
 	step?: number;
 }
 
-export interface HTMLPasswordInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLPasswordInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The maximum number of characters (as UTF-16 code units) the user can enter into the password
@@ -1740,7 +1740,7 @@ export interface HTMLPasswordInputElementAttributes extends HTMLElementAttribute
 	size?: number;
 }
 
-export interface HTMLRadioInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLRadioInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * A Boolean attribute which, if present, indicates that this radio button is the default
@@ -1758,7 +1758,7 @@ export interface HTMLRadioInputElementAttributes extends HTMLElementAttributes, 
 	required?: boolean;
 }
 
-export interface HTMLRangeInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLRangeInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -1807,9 +1807,9 @@ export interface HTMLRangeInputElementAttributes extends HTMLElementAttributes, 
 	step?: number;
 }
 
-export interface HTMLResetInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes { }
+export interface HTMLResetInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes { }
 
-export interface HTMLSearchInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLSearchInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The dirname attribute enables the submission of the directionality of the element. When
@@ -1923,7 +1923,7 @@ export interface HTMLSearchInputElementAttributes extends HTMLElementAttributes,
 	spellcheck?: boolean;
 }
 
-export interface HTMLSubmitInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLSubmitInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * A string indicating the URL to which to submit the data. This takes precedence over the
@@ -2017,7 +2017,7 @@ export interface HTMLSubmitInputElementAttributes extends HTMLElementAttributes,
 	formtarget?: "_self" | "_blank" | "parent" | "_top";
 }
 
-export interface HTMLTelInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLTelInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -2104,7 +2104,7 @@ export interface HTMLTelInputElementAttributes extends HTMLElementAttributes, HT
 	size?: number;
 }
 
-export interface HTMLTextInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLTextInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The dirname attribute enables the submission of the directionality of the element. When
@@ -2220,7 +2220,7 @@ export interface HTMLTextInputElementAttributes extends HTMLElementAttributes, H
 	spellcheck?: boolean;
 }
 
-export interface HTMLTimeInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLTimeInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -2268,7 +2268,7 @@ export interface HTMLTimeInputElementAttributes extends HTMLElementAttributes, H
 	step?: number;
 }
 
-export interface HTMLUrlInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLUrlInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -2376,7 +2376,7 @@ export interface HTMLUrlInputElementAttributes extends HTMLElementAttributes, HT
 	spellcheck?: boolean;
 }
 
-export interface HTMLWeekInputElementAttributes extends HTMLElementAttributes, HTMLInputElementAttributes {
+export interface HTMLWeekInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
 	 * The value given to the `list` attribute should be the `id` of a `<datalist>` element located
@@ -2437,7 +2437,7 @@ export interface HTMLWeekInputElementAttributes extends HTMLElementAttributes, H
 	step?: number;
 }
 
-export interface HTMLLabelElementAttributes extends HTMLElementAttributes {
+export interface HTMLLabelElementAttributes extends ElementAttributes {
 
 	/**
 	 * The `id` of a labelable form-related element in the same document as the `<label>` element.
@@ -2449,7 +2449,7 @@ export interface HTMLLabelElementAttributes extends HTMLElementAttributes {
 	for?: string;
 }
 
-export interface HTMLLIElementAttributes extends HTMLElementAttributes {
+export interface HTMLLIElementAttributes extends ElementAttributes {
 
 	/**
 	 * This integer attribute indicates the current ordinal value of the list item as defined by the
@@ -2461,7 +2461,7 @@ export interface HTMLLIElementAttributes extends HTMLElementAttributes {
 	value?: number;
 }
 
-export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
+export interface HTMLMeterElementAttributes extends ElementAttributes {
 
 	/**
 	 * The `<form>` element to associate the `<meter>` element with (its *form owner*). The value of
@@ -2521,7 +2521,7 @@ export interface HTMLMeterElementAttributes extends HTMLElementAttributes {
 	value?: number;
 }
 
-export interface HTMLOListElementAttributes extends HTMLElementAttributes {
+export interface HTMLOListElementAttributes extends ElementAttributes {
 
 	/**
 	 * This Boolean attribute specifies that the list's items are in reverse order. Items will be
@@ -2537,7 +2537,7 @@ export interface HTMLOListElementAttributes extends HTMLElementAttributes {
 	start?: number;
 }
 
-export interface HTMLOptGroupElementAttributes extends HTMLElementAttributes {
+export interface HTMLOptGroupElementAttributes extends ElementAttributes {
 
 	/**
 	 * If this Boolean attribute is set, none of the items in this option group is selectable. Often
@@ -2553,7 +2553,7 @@ export interface HTMLOptGroupElementAttributes extends HTMLElementAttributes {
 	label?: string;
 }
 
-export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
+export interface HTMLOptionElementAttributes extends ElementAttributes {
 
 	/**
 	 * If this Boolean attribute is set, this option is not checkable. Often browsers grey out such
@@ -2585,7 +2585,7 @@ export interface HTMLOptionElementAttributes extends HTMLElementAttributes {
 	value?: string;
 }
 
-export interface HTMLProgressElementAttributes extends HTMLElementAttributes {
+export interface HTMLProgressElementAttributes extends ElementAttributes {
 
 	/**
 	 * This attribute describes how much work the task indicated by the `progress` element requires.
@@ -2603,7 +2603,7 @@ export interface HTMLProgressElementAttributes extends HTMLElementAttributes {
 	value?: number;
 }
 
-export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
+export interface HTMLQuoteElementAttributes extends ElementAttributes {
 
 	/**
 	 * The value of this attribute is a URL that designates a source document or message for the
@@ -2613,7 +2613,7 @@ export interface HTMLQuoteElementAttributes extends HTMLElementAttributes {
 	cite?: string;
 }
 
-export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
+export interface HTMLSelectElementAttributes extends ElementAttributes {
 
 	/**
 	 * A `DOMString` providing a hint for a user agent's autocomplete feature. See The HTML
@@ -2671,7 +2671,7 @@ export interface HTMLSelectElementAttributes extends HTMLElementAttributes {
 	size?: number;
 }
 
-export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
+export interface HTMLSourceElementAttributes extends ElementAttributes {
 
 	/**
 	 * Media query of the resource's intended media; this should be used only in a `<picture>`
@@ -2734,7 +2734,7 @@ export interface HTMLSourceElementAttributes extends HTMLElementAttributes {
 	type?: string;
 }
 
-export interface HTMLTableDataCellElementAttributes extends HTMLElementAttributes {
+export interface HTMLTableDataCellElementAttributes extends ElementAttributes {
 
 	/**
 	 * This attribute contains a non-negative integer value that indicates for how many columns the
@@ -2758,7 +2758,7 @@ export interface HTMLTableDataCellElementAttributes extends HTMLElementAttribute
 	rowspan?: number;
 }
 
-export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
+export interface HTMLTextAreaElementAttributes extends ElementAttributes {
 
 	/**
 	 * This is a non-standard attribute supported by WebKit on iOS (therefore nearly all browsers
@@ -2883,7 +2883,7 @@ export interface HTMLTextAreaElementAttributes extends HTMLElementAttributes {
 	wrap?: "hard" | "soft" | "off";
 }
 
-export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttributes {
+export interface HTMLTableHeaderCellElementAttributes extends ElementAttributes {
 
 	/**
 	 * This attribute contains a short abbreviated description of the cell's content. Some
@@ -2929,7 +2929,7 @@ export interface HTMLTableHeaderCellElementAttributes extends HTMLElementAttribu
 	scope?: "row" | "col" | "rowgroup" | "colgroup" | "auto";
 }
 
-export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
+export interface HTMLTrackElementAttributes extends ElementAttributes {
 
 	/**
 	 * This attribute indicates that the track should be enabled unless the user's preferences
@@ -2984,7 +2984,7 @@ export interface HTMLTrackElementAttributes extends HTMLElementAttributes {
 	srclang?: string;
 }
 
-export interface HTMLVideoElementAttributes extends HTMLElementAttributes {
+export interface HTMLVideoElementAttributes extends ElementAttributes {
 
 	/**
 	 * A Boolean attribute which if `true` indicates that the element should automatically toggle

@@ -1,11 +1,11 @@
 import { Element } from "../abstract/Element";
-import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElementMap } from "../types/elements";
+import type { ElementAttributesMap } from "../types/attributes";
+import type { TopLevelElementMap } from "../types/elements";
 
 // <summary> should be part of a <details>
 
-export class DetailsElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, summary: (string | Node)[], children: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
+export class DetailsElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, summary: (string | Node)[], children: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		const summaryElement = document.createElement("summary");

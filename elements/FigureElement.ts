@@ -1,11 +1,11 @@
 import { Element } from "../abstract/Element";
-import type { HTMLElementAttributesMap } from "../types/attributes";
-import type { TopLevelHTMLElementMap } from "../types/elements";
+import type { ElementAttributesMap } from "../types/attributes";
+import type { TopLevelElementMap } from "../types/elements";
 
 // <figcaption> should be part of a <figure>
 
-export class FigureElement<TagName extends keyof TopLevelHTMLElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, caption: string, children: (string | Node)[], attributes: HTMLElementAttributesMap[TagName]) {
+export class FigureElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, caption: string, children: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		const captionElement = document.createElement("caption");
