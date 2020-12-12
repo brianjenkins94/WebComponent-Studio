@@ -101,9 +101,6 @@ export const ElementTagNameMap = {
 	// Select
 	"select": primeConstructor(SelectElement, "select"),
 
-	// Image Input
-	"image": primeConstructor(GroupingElement, "input"), // Childless
-
 	// Input
 	"checkbox": primeConstructor(GroupingElement, "input"), // Childless
 	"color": primeConstructor(GroupingElement, "input"), // Childless

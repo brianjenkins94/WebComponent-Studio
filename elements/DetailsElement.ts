@@ -20,13 +20,15 @@ export class DetailsElement<TagName extends keyof TopLevelElementMap> extends El
 		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined && value !== "") {
-				this.template.setAttribute(key, value);
-			}
+			this.template.setAttribute(key, value);
 		}
 
 		for (const child of this.children) {
-			this.template.innerHTML += child;
+			if (child instanceof HTMLElement) {
+				this.template.append(child);
+			} else {
+				this.template.innerHTML += child;
+			}
 		}
 
 		return this.template.outerHTML;

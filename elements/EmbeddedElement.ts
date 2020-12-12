@@ -20,9 +20,7 @@ export class EmbeddedElement<TagName extends keyof TopLevelElementMap> extends E
 		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined && value !== "") {
-				this.template.setAttribute(key, value);
-			}
+			this.template.setAttribute(key, value);
 		}
 
 		if (/^audio|picture|video$/i.test(this.type)) {

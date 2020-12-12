@@ -35,7 +35,6 @@ export interface ElementAttributesMap {
 	"hr": ElementAttributes;
 	"i": ElementAttributes;
 	"iframe": HTMLIFrameElementAttributes;
-	"image": HTMLImageInputElementAttributes;
 	"img": HTMLImageElementAttributes;
 	"ins": HTMLModElementAttributes;
 	"kbd": ElementAttributes;
@@ -1089,8 +1088,6 @@ interface HTMLInputElementAttributes extends ElementAttributes {
 	value?: string;
 }
 
-export interface HTMLButtonInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes { }
-
 export interface HTMLCheckboxInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
@@ -1401,132 +1398,6 @@ export interface HTMLFileInputElementAttributes extends ElementAttributes, HTMLI
 
 export interface HTMLHiddenInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes { }
 
-export interface HTMLImageInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
-
-	/**
-	 * The `alt` attribute provides an alternate string to use as the button's label if the image
-	 * cannot be shown (due to error, a user agent that cannot or is configured not to show images,
-	 * or if the user is using a screen reading device). If provided, it must be a non-empty string
-	 * appropriate as a label for the button.
-	 *
-	 * For example, if you have a graphical button that shows an image with an icon and/or image
-	 * text "Login Now", you should also set the `alt` attribute to something like `Login Now`.
-	 *
-	 * Functionally, the `<input type="image">` `alt` attribute works just like the `alt` attribute
-	 * on `<img>` elements.
-	 */
-	alt?: string;
-
-	/**
-	 * A string indicating the URL to which to submit the data. This takes precedence over the
-	 * `action` attribute on the `<form>` element that owns the `<input>`.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formaction?: string;
-
-	/**
-	 * A string that identifies the encoding method to use when submitting the form data to the
-	 * server. There are three permitted values:
-	 *
-	 *  -   `application/x-www-form-urlencoded`
-	 *      -   This, the default value, sends the form data as a string after URL encoding the text
-	 *          using an algorithm such as `encodeURI()`.
-	 *  -   `multipart/form-data`
-	 *      -   Uses the `FormData` API to manage the data, allowing for files to be submitted
-	 *          to the server. You *must* use this encoding type if your form includes any `<input>`
-	 *          elements of `type` `file` (`<input type="file">`).
-	 *  -   `text/plain`
-	 *      -   Plain text; mostly useful only for debugging, so you can easily see the data that's
-	 *          to be submitted.
-	 *
-	 * If specified, the value of the `formenctype` attribute overrides the owning form's `action`
-	 * attribute.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formenctype?: "application/x-www-form-urlencoded" | "multipart/form-data" | "text/plain";
-
-	/**
-	 * A string indicating the HTTP method to use when submitting the form's data; this value
-	 * overrides any `method` attribute given on the owning form. Permitted values are:
-	 *
-	 *  -   `get`
-	 *      -   A URL is constructed by starting with the URL given by the `formaction` or `action`
-	 *          attribute, appending a question mark ("?") character, then appending the form's
-	 *          data, encoded as described by `formenctype` or the form's enctype attribute. This
-	 *          URL is then sent to the server using an HTTP `get` request. This method works well
-	 *          for simple forms that contain only ASCII characters and have no side effects. This
-	 *          is the default value.
-	 *  -   `post`
-	 *      -   The form's data is included in the body of the request that is sent to the URL given
-	 *          by the `formaction` or `action` attribute using an HTTP `post` request. This method
-	 *          supports complex data and file attachments.
-	 *  -   `dialog`
-	 *      -   This method is used to indicate that the button simply closes the dialog with which
-	 *          the input is associated, and does not transmit the form data at all.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formmethod?: "get" | "post" | "dialog";
-
-	/**
-	 * A Boolean attribute which, if present, specifies that the form should not be validated before
-	 * submission to the server. This overrides the value of the `novalidate` attribute on the
-	 * element's owning form.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formnovalidate?: boolean;
-
-	/**
-	 * A string which specifies a name or keyword that indicates where to display the response
-	 * received after submitting the form. The string must be the name of a **browsing context**
-	 * (that is, a tab, window, or `<iframe>`. A value specified here overrides any target given by
-	 * the `target` attribute on the `<form>` that owns this input.
-	 *
-	 * In addition to the actual names of tabs, windows, or inline frames, there are a few special
-	 * keywords that can be used:
-	 *
-	 *  -   `_self`
-	 *      -   Loads the response into the same browsing context as the one that contains the form.
-	 *          This will replace the current document with the received data. This is the default
-	 *          value used if none is specified.
-	 *  -   `_blank`
-	 *      -   Loads the response into a new, unnamed, browsing context. This is typically a new
-	 *          tab in the same window as the current document, but may differ depending on the
-	 *          configuration of the user agent.
-	 *  -   `_parent`
-	 *      -   Loads the response into the parent browsing context of the current one. If there is
-	 *          no parent context, this behaves the same as `_self`.
-	 *  -   `_top`
-	 *      -   Loads the response into the top-level browsing context; this is the browsing context
-	 *          that is the topmost ancestor of the current context. If the current context is the
-	 *          topmost context, this behaves the same as `_self`.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formtarget?: "_self" | "_blank" | "parent" | "_top";
-
-	/**
-	 * A number specifying the height, in CSS pixels, at which to draw the image specified by the
-	 * `src` attribute.
-	 */
-	height?: number;
-
-	/**
-	 * A string specifying the URL of the image file to display to represent the graphical submit
-	 * button. When the user interacts with the image, the input is handled like any other button
-	 * input.
-	 */
-	src?: string;
-
-	/**
-	 * A number indicating the width at which to draw the image, in CSS pixels.
-	 */
-	width?: number;
-}
-
 export interface HTMLMonthInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
@@ -1807,8 +1678,6 @@ export interface HTMLRangeInputElementAttributes extends ElementAttributes, HTML
 	step?: number;
 }
 
-export interface HTMLResetInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes { }
-
 export interface HTMLSearchInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
 
 	/**
@@ -1921,100 +1790,6 @@ export interface HTMLSearchInputElementAttributes extends ElementAttributes, HTM
 	 * within a control, if the user agent's preferences override the setting.
 	 */
 	spellcheck?: boolean;
-}
-
-export interface HTMLSubmitInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {
-
-	/**
-	 * A string indicating the URL to which to submit the data. This takes precedence over the
-	 * `action` attribute on the `<form>` element that owns the `<input>`.
-	 *
-	 * This attribute is also available on `<input type="image">` and `<button>` elements.
-	 */
-	formaction?: string;
-
-	/**
-	 * A string that identifies the encoding method to use when submitting the form data to the
-	 * server. There are three permitted values:
-	 *
-	 *  -   `application/x-www-form-urlencoded`
-	 *      -   This, the default value, sends the form data as a string after URL encoding the text
-	 *          using an algorithm such as `encodeURI()`.
-	 *  -   `multipart/form-data`
-	 *      -   Uses the `FormData` API to manage the data, allowing for files to be submitted to
-	 *          the server. You *must* use this encoding type if your form includes any `<input>`
-	 *          elements of `type` `file` (`<input type="file">`).
-	 *  -   `text/plain`
-	 *      -   Plain text; mostly useful only for debugging, so you can easily see the data that's
-	 *          to be submitted.
-	 *
-	 * If specified, the value of the `formenctype` attribute overrides the owning form's `action`
-	 * attribute.
-	 *
-	 * This attribute is also available on `<input type="image">` and `<button>` elements.
-	 */
-	formenctype?: "application/x-www-form-urlencoded" | "multipart/form-data" | "text/plain";
-
-	/**
-	 * A string indicating the HTTP method to use when submitting the form's data; this value
-	 * overrides any `method` attribute given on the owning form. Permitted values are:
-	 *
-	 *  -   `get`
-	 *      -   A URL is constructed by starting with the URL given by the `formaction` or `action`
-	 *          attribute, appending a question mark ("?") character, then appending the form's
-	 *          data, encoded as described by `formenctype` or the form's enctype attribute. This
-	 *          URL is then sent to the server using an HTTP `get` request. This method works well
-	 *          for simple forms that contain only ASCII characters and have no side effects. This
-	 *          is the default value.
-	 *  -   `post`
-	 *      -   The form's data is included in the body of the request that is sent to the URL given
-	 *          by the `formaction` or `action` attribute using an HTTP `post` request. This method
-	 *          supports complex data and file attachments.
-	 *  -   `dialog`
-	 *      -   This method is used to indicate that the button simply closes the dialog with which
-	 *          the input is associated, and does not transmit the form data at all.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formmethod?: "get" | "post" | "dialog";
-
-	/**
-	 * A Boolean attribute which, if present, specifies that the form should not be validated before
-	 * submission to the server. This overrides the value of the `novalidate` attribute on the
-	 * element's owning form.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formnovalidate?: boolean;
-
-	/**
-	 * A string which specifies a name or keyword that indicates where to display the response
-	 * received after submitting the form. The string must be the name of a **browsing context**
-	 * (that is, a tab, window, or `<iframe>`. A value specified here overrides any target given by
-	 * the `target` attribute on the `<form>` that owns this input.
-	 *
-	 * In addition to the actual names of tabs, windows, or inline frames, there are a few special
-	 * keywords that can be used:
-	 *
-	 *  -   `_self`
-	 *      -   Loads the response into the same browsing context as the one that contains the form.
-	 *          This will replace the current document with the received data. This is the default
-	 *          value used if none is specified.
-	 *  -   `_blank`
-	 *      -   Loads the response into a new, unnamed, browsing context. This is typically a new
-	 *          tab in the same window as the current document, but may differ depending on the
-	 *          configuration of the user agent.
-	 *  -   `_parent`
-	 *      -   Loads the response into the parent browsing context of the current one. If there is
-	 *          no parent context, this behaves the same as `_self`.
-	 *  -   `_top`
-	 *      -   Loads the response into the top-level browsing context; this is the browsing context
-	 *          that is the topmost ancestor of the current context. If the current context is the
-	 *          topmost context, this behaves the same as `_self`.
-	 *
-	 * This attribute is also available on `<input type="submit">` and `<button>` elements.
-	 */
-	formtarget?: "_self" | "_blank" | "parent" | "_top";
 }
 
 export interface HTMLTelInputElementAttributes extends ElementAttributes, HTMLInputElementAttributes {

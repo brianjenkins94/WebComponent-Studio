@@ -28,9 +28,7 @@ export class TableElement<TagName extends keyof TopLevelElementMap> extends Elem
 		this.template = document.createElement(this.type);
 
 		for (const [key, value] of Object.entries(this.attributes)) {
-			if (value !== undefined && value !== "") {
-				this.template.setAttribute(key, value);
-			}
+			this.template.setAttribute(key, value);
 		}
 
 		this.template.appendChild(document.createElement("thead"));

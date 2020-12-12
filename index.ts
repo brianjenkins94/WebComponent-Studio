@@ -10,21 +10,21 @@ const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
 function parseSelector(selector) {
-	let id;
-	const classes = [];
+	const selectors = {};
 
 	for (const match of selector.split(/(?=#|\.)/)) {
 		if (match.startsWith("#")) {
-			id = match.substring(1);
+			selectors["id"] = match.substring(1);
 		} else if (match.startsWith(".")) {
-			classes.push(match.substring(1));
+			if (selectors["class"] === undefined) {
+				selectors["class"] = match.substring(1);
+			} else {
+				selectors["class"] += " " + match.substring(1);
+			}
 		}
 	}
 
-	return {
-		"id": id,
-		"classes": classes
-	};
+	return selectors;
 }
 
 function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(tagName: ElementTagName) /* : typeof NodeTagNameMap[NodeTagName] */ {
@@ -42,10 +42,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "a":
 			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], textContent?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], href?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					textContent = selector;
 				}
@@ -65,13 +62,13 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				// href
 
 				if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-					//href = href;
+					attributes.href = href;
 
 					if (textContent === undefined) {
 						textContent = [href];
 					}
 				} else if (href !== undefined && typeof href === "object") {
-					attributes = { ...href, ...attributes };
+					attributes = { ...attributes, ...href };
 
 					href = [];
 				}
@@ -91,12 +88,9 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 * (selector?: string, summary?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "details":
-			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], summary?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children?: Node | (string | Node)[] | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], summary?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children: Node | (string | Node)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					summary = selector;
 				}
@@ -116,7 +110,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
 				} else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-					attributes = { ...children, ...attributes };
+					attributes = { ...attributes, ...children };
 
 					children = [];
 				}
@@ -138,12 +132,9 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "form":
-			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], method?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], action?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], encoding?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children?: Node | (string | Node)[], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], method?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], action?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], encoding?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children: Node | (string | Node)[] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					method = selector;
 				}
@@ -168,8 +159,8 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
 					attributes.enctype = action;
-				} else if (typeof encoding === "object") {
-					attributes = { ...encoding, ...attributes };
+				} else if (encoding !== undefined && typeof encoding === "object") {
+					attributes = { ...attributes, ...encoding };
 				}
 
 				// children
@@ -179,7 +170,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
 				} else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-					attributes = { ...children, ...attributes };
+					attributes = { ...attributes, ...children };
 
 					children = [];
 				}
@@ -254,17 +245,14 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "textarea":
 		case "u":
 		case "ul":
-			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children?: Node | (string | Node)[] | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children: Node | (string | Node)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					// eslint-disable-next-line no-lonely-if
-					if (Array.isArray(selector)) {
+					if (selector !== undefined && Array.isArray(selector)) {
 						children = selector;
-					} else if (typeof selector === "string") {
+					} else if (selector !== undefined && typeof selector === "string") {
 						children = [selector];
 					}
 				}
@@ -276,14 +264,14 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
 				} else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-					attributes = { ...children, ...attributes };
+					attributes = { ...attributes, ...children };
 
 					children = [];
 				}
 
 				// attributes
-				console.log(attributes);
-				return ElementTagNameMap[tagName](children || [], attributes);
+
+				return ElementTagNameMap[tagName](children, attributes);
 			};
 
 		/**
@@ -298,17 +286,14 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "img":
 		case "picture":
 		case "video":
-			return function(selector?: string | string[] | ElementAttributesMap[ElementTagName], sources?: string | string[] | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | string[] | ElementAttributesMap[ElementTagName], sources: string | string[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					// eslint-disable-next-line no-lonely-if
-					if (Array.isArray(sources)) {
+					if (selector !== undefined && Array.isArray(selector)) {
 						sources = selector;
-					} else if (typeof selector === "string") {
+					} else if (selector !== undefined && typeof selector === "string") {
 						sources = [selector];
 					}
 				}
@@ -317,8 +302,8 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				if (sources !== undefined && Array.isArray(sources)) {
 					//sources = sources;
-				} else if (typeof sources === "object") {
-					attributes = { ...sources, ...attributes };
+				} else if (sources !== undefined && typeof sources === "object") {
+					attributes = { ...attributes, ...sources };
 
 					sources = [];
 				}
@@ -338,22 +323,19 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 * (selector?: string, legend?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "fieldset":
-			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], legend?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children?: Node | (string | Node)[] | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], legend?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children: Node | (string | Node)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					legend = selector;
 				}
 
 				// legend
 
-				if (typeof legend === "string") {
+				if (legend !== undefined && typeof legend === "string") {
 					//legend = legend;
 				} else {
-					attributes = { ...legend, ...attributes };
+					children = legend;
 				}
 
 				// children
@@ -363,7 +345,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
 				} else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-					attributes = { ...children, ...attributes };
+					attributes = { ...attributes, ...children };
 				}
 				// attributes
 
@@ -380,12 +362,9 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 * (selector?: string, figcaption?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "figure":
-			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], figcaption?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children?: Node | (string | Node)[] | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], figcaption?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children: Node | (string | Node)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					figcaption = selector;
 				}
@@ -395,7 +374,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				if (figcaption !== undefined && typeof figcaption === "string") {
 					//figcaption = figcaption;
 				} else if (typeof figcaption === "object") {
-					attributes = { ...figcaption, ...attributes };
+					attributes = { ...attributes, ...figcaption };
 				}
 
 				// children
@@ -405,7 +384,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				} else if (children !== undefined && Array.isArray(children)) {
 					//children = children;
 				} else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-					attributes = { ...children, ...attributes };
+					attributes = { ...attributes, ...children };
 				}
 
 				// attributes
@@ -426,10 +405,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "file":
 			return function(selector?: string | boolean | ElementAttributesMap[ElementTagName], name?: string | boolean | ElementAttributesMap[ElementTagName], accept?: string | boolean | ElementAttributesMap[ElementTagName], required?: string | boolean | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 
 					if (attributes.id !== undefined) {
 						attributes.name = attributes.id;
@@ -480,58 +456,22 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "iframe":
 			return function(selector?: string | ElementAttributesMap[ElementTagName], source?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					source = selector;
 				}
 
 				// source
 
-				if (typeof source === "string" && URL_PATHNAME.test(source)) {
+				if (source !== undefined && typeof source === "string" && URL_PATHNAME.test(source)) {
 					attributes.src = source;
-				} else if (typeof source === "object") {
-					attributes = { ...source, ...attributes };
+				} else if (source !== undefined && typeof source === "object") {
+					attributes = { ...attributes, ...source };
 				}
 
 				// attributes
 
 				return ElementTagNameMap[tagName]([], attributes);
-			};
-
-
-		/**
-		 * Image Input
-		 *
-		 * (): NodeTagNameMap[NodeTagName]
-		 * (selector: string): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
-		 */
-		case "image":
-			return function(selector?: string | ElementAttributesMap[ElementTagName], source?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
-				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
-				} else {
-					source = selector;
-				}
-
-				// source
-
-				if (typeof source === "string" && URL_PATHNAME.test(source)) {
-					attributes.src = source;
-				} else if (typeof source === "object") {
-					attributes = { ...source, ...attributes };
-				}
-
-				// attributes
-
-				return ElementTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
 		/**
@@ -566,10 +506,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "week":
 			return function(selector?: string | ElementAttributesMap[ElementTagName], name?: string | ElementAttributesMap[ElementTagName], value?: string | ElementAttributesMap[ElementTagName], required?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 
 					if (attributes.id !== undefined) {
 						attributes.name = attributes.id;
@@ -614,12 +551,9 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 * (selector?, forValue?: string, textContent?: string | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "label":
-			return function(selector?: string | (string | Node)[] | ElementAttributesMap[ElementTagName], forValue?: string | (string | Node)[] | ElementAttributesMap[ElementTagName], textContent?: string | (string | Node)[] | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | (string | Node)[] | ElementAttributesMap[ElementTagName], forValue?: string | (string | Node)[] | ElementAttributesMap[ElementTagName], textContent: string | (string | Node)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					forValue = selector;
 					textContent = forValue;
@@ -632,7 +566,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				} else if (textContent !== undefined && Array.isArray(textContent)) {
 					//children = children;
 				} else if (textContent !== undefined && typeof textContent === "object") {
-					attributes = { ...textContent, ...attributes };
+					attributes = { ...attributes, ...textContent };
 
 					textContent = [];
 				}
@@ -653,10 +587,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "search":
 			return function(selector?: string | ElementAttributesMap[ElementTagName], value?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					value = selector;
 				}
@@ -665,8 +596,8 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				if (value !== undefined && typeof value === "string") {
 					attributes.value = value;
-				} else if (typeof value === "object") {
-					attributes = { ...value, ...attributes };
+				} else if (value !== undefined && typeof value === "object") {
+					attributes = { ...attributes, ...value };
 				}
 
 				// attributes
@@ -687,10 +618,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "select":
 			return function(selector?: string | string[] | boolean | ElementAttributesMap[ElementTagName], name?: string | string[] | boolean | ElementAttributesMap[ElementTagName], options?: string[] | boolean | ElementAttributesMap[ElementTagName], required?: boolean | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					options = selector;
 				}
@@ -732,12 +660,9 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 * (selector?: string, caption?: string, tableHeader: string[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "table":
-			return function(selector?: string | string[] | ElementAttributesMap[ElementTagName], caption?: string | string[] | ElementAttributesMap[ElementTagName], tableHeader?: string[] | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}) {
+			return function(selector?: string | string[] | ElementAttributesMap[ElementTagName], caption?: string | string[] | ElementAttributesMap[ElementTagName], tableHeader: string[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}) {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-					const { id, classes } = parseSelector(selector);
-
-					attributes.id = id;
-					attributes.class = classes && classes.join(" ");
+					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
 					caption = selector;
 				}
@@ -746,16 +671,16 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				if (caption !== undefined && typeof caption === "string") {
 					//caption = caption;
-				} else if (Array.isArray(caption)) {
+				} else if (caption !== undefined && Array.isArray(caption)) {
 					tableHeader = caption;
 				}
 
 				// tableHeader
 
-				if (Array.isArray(tableHeader)) {
+				if (tableHeader !== undefined && Array.isArray(tableHeader)) {
 					//tableHeader = tableHeader;
-				} else if (typeof tableHeader === "object") {
-					attributes = { ...tableHeader, ...attributes };
+				} else if (tableHeader !== undefined && typeof tableHeader === "object") {
+					attributes = { ...attributes, ...tableHeader };
 				}
 
 				// attributes
@@ -802,7 +727,6 @@ export const hidden = createPrimitive("hidden");
 export const hr = createPrimitive("hr");
 export const i = createPrimitive("i");
 export const iframe = createPrimitive("iframe");
-export const image = createPrimitive("image");
 export const img = createPrimitive("img");
 export const ins = createPrimitive("ins");
 export const kbd = createPrimitive("kbd");
@@ -880,7 +804,6 @@ globalThis.hidden = hidden;
 globalThis.hr = hr;
 globalThis.i = i;
 globalThis.iframe = iframe;
-globalThis.image = image;
 globalThis.img = img;
 globalThis.ins = ins;
 globalThis.kbd = kbd;

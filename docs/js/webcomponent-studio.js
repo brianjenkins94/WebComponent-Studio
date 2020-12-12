@@ -62,9 +62,7 @@ class AnchorElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
             this.template.innerHTML += child;
@@ -85,12 +83,15 @@ class DetailsElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -107,9 +108,7 @@ class EmbeddedElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         if (/^audio|picture|video$/i.test(this.type)) {
             // TODO: Handle type
@@ -142,9 +141,7 @@ class FieldSetElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
             this.template.innerHTML += child;
@@ -165,9 +162,7 @@ class FigureElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
             this.template.innerHTML += child;
@@ -185,9 +180,7 @@ class GroupingElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
             this.template.innerHTML += child;
@@ -207,9 +200,7 @@ class SelectElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         (function recurse(options, parent) {
             for (const option of options) {
@@ -270,9 +261,7 @@ class TableElement extends Element {
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined && value !== "") {
-                this.template.setAttribute(key, value);
-            }
+            this.template.setAttribute(key, value);
         }
         this.template.appendChild(document.createElement("thead"));
         this.template.appendChild(document.createElement("tbody"));
@@ -362,8 +351,6 @@ const ElementTagNameMap = {
     "search": primeConstructor(GroupingElement, "input"),
     // Select
     "select": primeConstructor(SelectElement, "select"),
-    // Image Input
-    "image": primeConstructor(GroupingElement, "input"),
     // Input
     "checkbox": primeConstructor(GroupingElement, "input"),
     "color": primeConstructor(GroupingElement, "input"),
@@ -389,20 +376,21 @@ const ElementTagNameMap = {
 const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*)+$/i;
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 function parseSelector(selector) {
-    let id;
-    const classes = [];
+    const selectors = {};
     for (const match of selector.split(/(?=#|\.)/)) {
         if (match.startsWith("#")) {
-            id = match.substring(1);
+            selectors["id"] = match.substring(1);
         }
         else if (match.startsWith(".")) {
-            classes.push(match.substring(1));
+            if (selectors["class"] === undefined) {
+                selectors["class"] = match.substring(1);
+            }
+            else {
+                selectors["class"] += " " + match.substring(1);
+            }
         }
     }
-    return {
-        "id": id,
-        "classes": classes
-    };
+    return selectors;
 }
 function createPrimitive(tagName) {
     switch (tagName) {
@@ -418,9 +406,7 @@ function createPrimitive(tagName) {
         case "a":
             return function (selector, textContent, href, attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     textContent = selector;
@@ -436,13 +422,13 @@ function createPrimitive(tagName) {
                 }
                 // href
                 if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
-                    //href = href;
+                    attributes.href = href;
                     if (textContent === undefined) {
                         textContent = [href];
                     }
                 }
                 else if (href !== undefined && typeof href === "object") {
-                    attributes = Object.assign(Object.assign({}, href), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), href);
                     href = [];
                 }
                 // attributes
@@ -458,11 +444,9 @@ function createPrimitive(tagName) {
          * (selector?: string, summary?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "details":
-            return function (selector, summary, children, attributes = {}) {
+            return function (selector, summary, children = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     summary = selector;
@@ -478,7 +462,7 @@ function createPrimitive(tagName) {
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-                    attributes = Object.assign(Object.assign({}, children), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
                 // attributes
@@ -496,11 +480,9 @@ function createPrimitive(tagName) {
          * (selector?: string, method?: string, action?: string, encoding?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "form":
-            return function (selector, method, action, encoding, children, attributes = {}) {
+            return function (selector, method, action, encoding, children = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     method = selector;
@@ -523,8 +505,8 @@ function createPrimitive(tagName) {
                 if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
                     attributes.enctype = action;
                 }
-                else if (typeof encoding === "object") {
-                    attributes = Object.assign(Object.assign({}, encoding), attributes);
+                else if (encoding !== undefined && typeof encoding === "object") {
+                    attributes = Object.assign(Object.assign({}, attributes), encoding);
                 }
                 // children
                 if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
@@ -532,7 +514,7 @@ function createPrimitive(tagName) {
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-                    attributes = Object.assign(Object.assign({}, children), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
                 // attributes
@@ -603,18 +585,16 @@ function createPrimitive(tagName) {
         case "textarea":
         case "u":
         case "ul":
-            return function (selector, children, attributes = {}) {
+            return function (selector, children = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     // eslint-disable-next-line no-lonely-if
-                    if (Array.isArray(selector)) {
+                    if (selector !== undefined && Array.isArray(selector)) {
                         children = selector;
                     }
-                    else if (typeof selector === "string") {
+                    else if (selector !== undefined && typeof selector === "string") {
                         children = [selector];
                     }
                 }
@@ -624,12 +604,11 @@ function createPrimitive(tagName) {
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-                    attributes = Object.assign(Object.assign({}, children), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
                 // attributes
-                console.log(attributes);
-                return ElementTagNameMap[tagName](children || [], attributes);
+                return ElementTagNameMap[tagName](children, attributes);
             };
         /**
          * Embedded
@@ -643,25 +622,23 @@ function createPrimitive(tagName) {
         case "img":
         case "picture":
         case "video":
-            return function (selector, sources, attributes = {}) {
+            return function (selector, sources = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     // eslint-disable-next-line no-lonely-if
-                    if (Array.isArray(sources)) {
+                    if (selector !== undefined && Array.isArray(selector)) {
                         sources = selector;
                     }
-                    else if (typeof selector === "string") {
+                    else if (selector !== undefined && typeof selector === "string") {
                         sources = [selector];
                     }
                 }
                 // sources
                 if (sources !== undefined && Array.isArray(sources)) ;
-                else if (typeof sources === "object") {
-                    attributes = Object.assign(Object.assign({}, sources), attributes);
+                else if (sources !== undefined && typeof sources === "object") {
+                    attributes = Object.assign(Object.assign({}, attributes), sources);
                     sources = [];
                 }
                 // attributes
@@ -677,19 +654,17 @@ function createPrimitive(tagName) {
          * (selector?: string, legend?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "fieldset":
-            return function (selector, legend, children, attributes = {}) {
+            return function (selector, legend, children = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     legend = selector;
                 }
                 // legend
-                if (typeof legend === "string") ;
+                if (legend !== undefined && typeof legend === "string") ;
                 else {
-                    attributes = Object.assign(Object.assign({}, legend), attributes);
+                    children = legend;
                 }
                 // children
                 if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
@@ -697,7 +672,7 @@ function createPrimitive(tagName) {
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-                    attributes = Object.assign(Object.assign({}, children), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), children);
                 }
                 // attributes
                 return ElementTagNameMap[tagName](legend, children, attributes);
@@ -712,11 +687,9 @@ function createPrimitive(tagName) {
          * (selector?: string, figcaption?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "figure":
-            return function (selector, figcaption, children, attributes = {}) {
+            return function (selector, figcaption, children = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     figcaption = selector;
@@ -724,7 +697,7 @@ function createPrimitive(tagName) {
                 // figcaption
                 if (figcaption !== undefined && typeof figcaption === "string") ;
                 else if (typeof figcaption === "object") {
-                    attributes = Object.assign(Object.assign({}, figcaption), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), figcaption);
                 }
                 // children
                 if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
@@ -732,7 +705,7 @@ function createPrimitive(tagName) {
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-                    attributes = Object.assign(Object.assign({}, children), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), children);
                 }
                 // attributes
                 return ElementTagNameMap[tagName](figcaption, children, attributes);
@@ -750,9 +723,7 @@ function createPrimitive(tagName) {
         case "file":
             return function (selector, name, accept, required, attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                     if (attributes.id !== undefined) {
                         attributes.name = attributes.id;
                     }
@@ -797,50 +768,20 @@ function createPrimitive(tagName) {
         case "iframe":
             return function (selector, source, attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     source = selector;
                 }
                 // source
-                if (typeof source === "string" && URL_PATHNAME.test(source)) {
+                if (source !== undefined && typeof source === "string" && URL_PATHNAME.test(source)) {
                     attributes.src = source;
                 }
-                else if (typeof source === "object") {
-                    attributes = Object.assign(Object.assign({}, source), attributes);
+                else if (source !== undefined && typeof source === "object") {
+                    attributes = Object.assign(Object.assign({}, attributes), source);
                 }
                 // attributes
                 return ElementTagNameMap[tagName]([], attributes);
-            };
-        /**
-         * Image Input
-         *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
-         */
-        case "image":
-            return function (selector, source, attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
-                }
-                else {
-                    source = selector;
-                }
-                // source
-                if (typeof source === "string" && URL_PATHNAME.test(source)) {
-                    attributes.src = source;
-                }
-                else if (typeof source === "object") {
-                    attributes = Object.assign(Object.assign({}, source), attributes);
-                }
-                // attributes
-                return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Input
@@ -874,9 +815,7 @@ function createPrimitive(tagName) {
         case "week":
             return function (selector, name, value, required, attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                     if (attributes.id !== undefined) {
                         attributes.name = attributes.id;
                     }
@@ -914,11 +853,9 @@ function createPrimitive(tagName) {
          * (selector?, forValue?: string, textContent?: string | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "label":
-            return function (selector, forValue, textContent, attributes = {}) {
+            return function (selector, forValue, textContent = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     forValue = selector;
@@ -930,7 +867,7 @@ function createPrimitive(tagName) {
                 }
                 else if (textContent !== undefined && Array.isArray(textContent)) ;
                 else if (textContent !== undefined && typeof textContent === "object") {
-                    attributes = Object.assign(Object.assign({}, textContent), attributes);
+                    attributes = Object.assign(Object.assign({}, attributes), textContent);
                     textContent = [];
                 }
                 // attributes
@@ -947,9 +884,7 @@ function createPrimitive(tagName) {
         case "search":
             return function (selector, value, attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     value = selector;
@@ -958,8 +893,8 @@ function createPrimitive(tagName) {
                 if (value !== undefined && typeof value === "string") {
                     attributes.value = value;
                 }
-                else if (typeof value === "object") {
-                    attributes = Object.assign(Object.assign({}, value), attributes);
+                else if (value !== undefined && typeof value === "object") {
+                    attributes = Object.assign(Object.assign({}, attributes), value);
                 }
                 // attributes
                 return ElementTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
@@ -977,9 +912,7 @@ function createPrimitive(tagName) {
         case "select":
             return function (selector, name, options, required, attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     options = selector;
@@ -1013,24 +946,22 @@ function createPrimitive(tagName) {
          * (selector?: string, caption?: string, tableHeader: string[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "table":
-            return function (selector, caption, tableHeader, attributes = {}) {
+            return function (selector, caption, tableHeader = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    const { id, classes } = parseSelector(selector);
-                    attributes.id = id;
-                    attributes.class = classes && classes.join(" ");
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     caption = selector;
                 }
                 // caption
                 if (caption !== undefined && typeof caption === "string") ;
-                else if (Array.isArray(caption)) {
+                else if (caption !== undefined && Array.isArray(caption)) {
                     tableHeader = caption;
                 }
                 // tableHeader
-                if (Array.isArray(tableHeader)) ;
-                else if (typeof tableHeader === "object") {
-                    attributes = Object.assign(Object.assign({}, tableHeader), attributes);
+                if (tableHeader !== undefined && Array.isArray(tableHeader)) ;
+                else if (tableHeader !== undefined && typeof tableHeader === "object") {
+                    attributes = Object.assign(Object.assign({}, attributes), tableHeader);
                 }
                 // attributes
                 return ElementTagNameMap[tagName](caption, tableHeader, attributes);
@@ -1074,7 +1005,6 @@ const hidden = createPrimitive("hidden");
 const hr = createPrimitive("hr");
 const i = createPrimitive("i");
 const iframe = createPrimitive("iframe");
-const image = createPrimitive("image");
 const img = createPrimitive("img");
 const ins = createPrimitive("ins");
 const kbd = createPrimitive("kbd");
@@ -1151,7 +1081,6 @@ globalThis.hidden = hidden;
 globalThis.hr = hr;
 globalThis.i = i;
 globalThis.iframe = iframe;
-globalThis.image = image;
 globalThis.img = img;
 globalThis.ins = ins;
 globalThis.kbd = kbd;
@@ -1267,4 +1196,4 @@ function createTemplate(tagName, options) {
 }
 globalThis.createTemplate = createTemplate;
 
-//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, createTemplate, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, image, img, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };
+//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, createTemplate, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, img, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };
