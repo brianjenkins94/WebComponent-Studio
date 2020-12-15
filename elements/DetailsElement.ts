@@ -9,7 +9,7 @@ export class DetailsElement<TagName extends keyof TopLevelElementMap> extends El
 		super(tagName);
 
 		const summaryElement = document.createElement("summary");
-		summaryElement.append(...summary);
+		summaryElement.append(summary);
 
 		this.children.push(summaryElement, ...children);
 

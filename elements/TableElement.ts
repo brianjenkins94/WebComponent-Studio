@@ -36,7 +36,11 @@ export class TableElement<TagName extends keyof TopLevelElementMap> extends Elem
 		this.template.appendChild(document.createElement("tfoot"));
 
 		for (const child of this.children) {
-			this.template.innerHTML += child;
+			if (child instanceof HTMLElement) {
+				this.template.append(child);
+			} else {
+				this.template.innerHTML += child;
+			}
 		}
 
 		return this.template.outerHTML;

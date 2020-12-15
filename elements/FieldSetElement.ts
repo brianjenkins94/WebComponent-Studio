@@ -24,7 +24,11 @@ export class FieldSetElement<TagName extends keyof TopLevelElementMap> extends E
 		}
 
 		for (const child of this.children) {
-			this.template.innerHTML += child;
+			if (child instanceof HTMLElement) {
+				this.template.append(child);
+			} else {
+				this.template.innerHTML += child;
+			}
 		}
 
 		return this.template.outerHTML;

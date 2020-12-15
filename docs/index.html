@@ -19,6 +19,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/grid.css" />
 	<link rel="stylesheet" href="css/style.css" />
 
 	<!-- Inline Stylesheet -->
@@ -84,123 +85,39 @@
 			font-style: italic
 		}
 
-		/* Body*/
+		/* Body */
 
 		body {
+			margin-left: 2rem;
 			padding: 2rem;
 		}
 
-		/* Row */
+		/* */
 
-		.row {
-			align-items: stretch;
-			display: flex;
-			flex-wrap: wrap;
-			margin: 0 0 0 -2rem;
+		.fieldset {
+			border: 1px solid #eaecef;
+			padding: 1rem;
+			position: relative;
 		}
 
-			.row > * {
-				padding: 0 0 0 2rem;
-			}
+		.fieldset h1 {
+			background-color: #ffffff;
+			border: none;
+			font-size: 1rem;
+			line-height: 1;
+			margin: -0.5rem 0 0; /* half of font-size */
+			padding: 0 0.25rem;
+			position: absolute;
+			top: 0;
+		}
 
-			.row > .\31 u {
-				width: 8.33333%;
-			}
-
-			.row > .\-1u {
-				margin-left: 8.33333%;
-			}
-
-			.row > .\32 u {
-				width: 16.66667%;
-			}
-
-			.row > .\-2u {
-				margin-left: 16.66667%;
-			}
-
-			.row > .\33 u {
-				width: 25%;
-			}
-
-			.row > .\-3u {
-				margin-left: 25%;
-			}
-
-			.row > .\34 u {
-				width: 33.33333%;
-			}
-
-			.row > .\-4u {
-				margin-left: 33.33333%;
-			}
-
-			.row > .\35 u {
-				width: 41.66667%;
-			}
-
-			.row > .\-5u {
-				margin-left: 41.66667%;
-			}
-
-			.row > .\36 u {
-				width: 50%;
-			}
-
-			.row > .\-6u {
-				margin-left: 50%;
-			}
-
-			.row > .\37 u {
-				width: 58.33333%;
-			}
-
-			.row > .\-7u {
-				margin-left: 58.33333%;
-			}
-
-			.row > .\38 u {
-				width: 66.66667%;
-			}
-
-			.row > .\-8u {
-				margin-left: 66.66667%;
-			}
-
-			.row > .\39 u {
-				width: 75%;
-			}
-
-			.row > .\-9u {
-				margin-left: 75%;
-			}
-
-			.row > .\31 0u {
-				width: 83.33333%;
-			}
-
-			.row > .\-10u {
-				margin-left: 83.33333%;
-			}
-
-			.row > .\31 1u {
-				width: 91.66667%;
-			}
-
-			.row > .\-11u {
-				margin-left: 91.66667%;
-			}
-
-			.row > .\31 2u {
-				width: 100%;
-			}
 	</style>
 
 </head>
 <body class="markdown-body">
 
 	<div class="row">
-		<div id="toc" class="2u" style="position: sticky; height: 100%; top: 2rem;"></div>
+		<nav id="nav" class="2u fieldset" style="height: 100%; position: sticky; top: 2rem;"></nav>
 		<div class="10u">
 			<div id="elements" class="row"></div>
 		</div>
@@ -216,192 +133,133 @@
 	<!-- Inline Script -->
 	<script type="module">
 
+		function getTerminalNodes(element) {
+			const terminalNodes = [];
+
+			(function recurse(element) {
+				if (element.children.length !== 0) {
+					for (const child of element.children) {
+						recurse(child);
+					}
+				} else {
+					if (element.type !== undefined && element.type !== "") {
+						terminalNodes.push(element.tagName.toLowerCase() + "[type=" + element.type.toLowerCase() + "]");
+					} else {
+						terminalNodes.push(element.tagName.toLowerCase());
+					}
+				}
+			})(element);
+
+			return terminalNodes;
+		}
+
 		// Typography
 
-		for (const [element, line] of [
-			[h1("#typography", "Typography"), "h1(\"#typography\", \"Typography\")"],
-			[h2(".h2", "This is a second-level header."), "h2(\".h2\", \"This is a second-level header.\")"],
-			[h3(".h3", "This is a third-level header."), "h3(\".h3\", \"This is a third-level header.\")"],
-			[h4(".h4", "This is a fourth-level header."), "h4(\".h4\", \"This is a fourth-level header.\")"],
-			[h5(".h5", "This is a fifth-level header."), "h5(\".h5\", \"This is a fifth-level header.\")"],
-			[h6(".h6", "This is a sixth-level header."), "h6(\".h6\", \"This is a sixth-level header.\")"]
+		const typography = section(".section.fieldset")
+
+		for (const element of [
+			h1("#typography.h1", "Typography"),
+			h2(".h2", "This is a second-level header."),
+			h3(".h3", "This is a third-level header."),
+			h4(".h4", "This is a fourth-level header."),
+			h5(".h5", "This is a fifth-level header."),
+			h6(".h6", "This is a sixth-level header."),
+			hr(".hr"),
+			p(".p", a(".a", "This is a link.", "#")),
+			p(".p", b(".b", "This is some bold text.")),
+			blockquote(".blockquote", "This is a blockquote."),
+			p(".p", code(".code", "This is some inline code.")),
+			p(".p", del(".del", "This is some deleted text.")),
+			p(".p", em(".em", "This is some emphasized text.")),
+			p(".p", i(".i", "This is some italicized text.")),
+			p(".p", ins(".ins", "This is some inserted text.")),
+			p(".p", mark(".mark", "This is some marked text.")),
+			p(".p", "This is a paragraph."),
+			p(".p", pre(".pre", "This is some preformatted text.")),
+			p(".p", q(".q", "This is a quote.")),
+			p(".p", s(".s", "This is some struckthrough text.")),
+			p(".p", small(".small", "This is some small text.")),
+			p(".p", span(".span", [kbd(".kbd", "Ctrl"), kbd(".kbd", "Alt"), kbd(".kbd", "Delete")].join(" + "))),
+			p(".p", strong(".strong", "This is some strong text.")),
+			p(".p", sub(".sub", "This is some subscripted text.")),
+			p(".p", sup(".sup", "This is some superscripted text.")),
+			p(".p", u(".u", "This is some underlined text."))
 		]) {
-			document.getElementById("elements").innerHTML += div(".6u")
-				.push(element);
-			document.getElementById("elements").innerHTML += div(".6u")
-				.push(pre(".pre", code(".code.language-javascript", line)));
+			typography.push(element);
 		}
 
-		for (const [element, line] of [
-			[b(".b", "This is some bold text."), "b(\".b\", \"This is some bold text.\")"],
-			[blockquote(".blockquote", "This is a blockquote."), "blockquote(\".blockquote\", \"This is a blockquote.\")"],
-			[code(".code", "This is some inline code."), "code(\".code\", \"This is some inline code.\")"],
-			[del(".del", "This is some deleted text."), "del(\".del\", \"This is some deleted text.\")"],
-			[em(".em", "This is some emphasized text."), "em(\".em\", \"This is some emphasized text.\")"],
-			[i(".i", "This is some italicized text."), "i(\".i\", \"This is some italicized text.\")"],
-			[ins(".ins", "This is some inserted text."), "ins(\".ins\", \"This is some inserted text.\")"],
-			[mark(".mark", "This is some marked text."), "mark(\".mark\", \"This is some marked text.\")"],
-			[p(".p", "This is a paragraph."), "p(\".p\", \"This is a paragraph.\")"],
-			[pre(".pre", "This is some preformatted text."), "pre(\".pre\", \"This is some preformatted text.\")"],
-			[q(".q", "This is a quote."), "q(\".q\", \"This is a quote.\")"],
-			[s(".s", "This is some struckthrough text."), "s(\".s\", \"This is some struckthrough text.\")"],
-			[small(".small", "This is some small text."), "small(\".small\", \"This is some small text.\")"],
-			[span(".span", [kbd(".kbd", "Ctrl"), kbd(".kbd", "Alt"), kbd(".kbd", "Delete")].join(" + ")), "span(\".span\", [kbd(\".kbd\", \"Ctrl\"), kbd(\".kbd\", \"Alt\"), kbd(\".kbd\", \"Delete\")].join(\" + \"))"],
-			[strong(".strong", "This is some strong text."), "strong(\".strong\", \"This is some strong text.\")"],
-			[sub(".sub", "This is some subscripted text."), "sub(\".sub\", \"This is some subscripted text.\")"],
-			[sup(".sup", "This is some superscripted text."), "sup(\".sup\", \"This is some superscripted text.\")"],
-			[u(".u", "This is some underlined text."), "u(\".u\", \"This is some underlined text.\")"]
-		]) {
-			document.getElementById("elements").innerHTML += div(".6u")
-				.push(element);
-			document.getElementById("elements").innerHTML += div(".6u")
-				.push(pre(".pre", code(".code.language-javascript", line)));
-		}
-
-		// Embedded
-
-		document.getElementById("elements").innerHTML += div(".6u")
-			.push(h1("#embedded", "Embedded"));
-		document.getElementById("elements").innerHTML += div(".6u")
-			.push(pre(".pre", code(".code.language-javascript", "h1(\"#embedded\", \"Embedded\")")));
-
-		for (const [element, line] of [
-			[audio(), ],
-			[iframe(), ],
-			[img(), ],
-			[picture(), ],
-			[video(), ]
-		]) {
-			document.getElementById("elements").innerHTML += div(".6u")
-				.push(element);
-			document.getElementById("elements").innerHTML += div(".6u")
-				.push(pre(".pre", code(".code.language-javascript", line)));
-		}
-
-		// ???
-
-		// Figure
-		document.getElementById("figure").after(figure(".figure", "figure").fragment);
-
-		// Table
-		document.getElementById("table").after(table(".table", "This is a table.").fragment);
-
-		// Anchor
-		document.getElementById("a").after(a(".a", "This is an anchor.", window.location.href).fragment);
-
-		// Details
-		document.getElementById("details").after(details(".details", "This is a summary.").fragment);
-
-		// hr
-		document.getElementById("hr").after(hr(".hr").fragment);
-
-		// ol
-		const orderedList = ol(".ol");
-		orderedList.push(listItem);
-
-		document.getElementById("ol").after(orderedList.fragment);
-
-		// ul
-		const unorderedList = ul(".ul");
-		unorderedList.push(listItem);
-
-		document.getElementById("ul").after(unorderedList.fragment);
+		document.getElementById("elements").innerHTML +=  div(".4u", typography);
 
 		// Form-associated
 
-		// meter
-		document.getElementById("meter").after(meter(".meter").fragment);
+		const formAssociated = section(".fieldset")
+			.push(h1("#formAssociated.h1", "Form-associated"));
 
-		// progress
-		document.getElementById("progress").after(progress(".progress").fragment);
+		for (const elements of [
+			[label(".label", "", "Buttons"), div(".div", [button(".button", "Button"), " ", reset(".reset", "Reset"), " ", submit(".submit", "Submit")])],
+			// [label(".label", "Checkbox", [checkbox(".checkbox", "checkbox", "checkbox", true), "Checkbox"])],
+			[label(".label", "Color", "Color"), color(".color", "color", "#000000", true)],
+			[label(".label", "Date", "Date"), date(".date", "date", "1969-04-20", true)],
+			[label(".label", "Datetime", "Datetime"), datetime(".datetime", "datetime", "1969-04-20T16:20", true)],
+			[label(".label", "Email", "Email"), email(".email", "email", "foo@bar.com", true)],
+			[fieldset(".fieldset", "Fieldset")],
+			[label(".label", "File", "File"), file(".file", "file", "image/*", true)],
+			[label(".label", "Meter", "Meter"), meter(".meter")],
+			[label(".label", "Month", "Month"), month(".month", "month", "1969-04")],
+			[label(".label", "Number", "Number"), number(".number", "number", 420, true)],
+			[label(".label", "Password", "Password"), password(".password", "password", "********", true)],
+			[label(".label", "Progress", "Progress"), progress(".progress")],
+			// [label(".label", "Radio", "Radio"), radio(".radio", "radio", "radio", true)],
+			[label(".label", "Range", "Range"), range(".range", "range", 69, true)],
+			[label(".label", "Search", "Search"), search(".search", "This is a search query.")],
+			[label(".label", "Select", "Select"), select(".select", "select", [{ "key": "Item 1", "value": [{ "key": "Item 1.1" }] }, { "key": "--", "disabled": true }, { "key": "Item 2" }], true)],
+			[label(".label", "Telephone", "Telephone"), tel(".tel", "tel", "+1 (800) 867-5309", true)],
+			[label(".label", "Text", "Text"), text(".text", "text", "The Secret lies with Charlotte.", true)],
+			[label(".label", "textarea", "Textarea"), textarea(".textarea")],
+			[label(".label", "Time", "Time"), time(".time", "time", "16:20")],
+			[label(".label", "URL", "URL"), url(".url", "url", window.location.href, true)],
+			[label(".label", "Week", "Week"), week(".week", "week", "2020-W04", true)]
+		]) {
+			formAssociated.push(form(".form", elements));
+		}
 
-		// textarea
-		document.getElementById("textarea").after(textarea(".textarea").fragment);
+		document.getElementById("elements").innerHTML += div(".4u", formAssociated);
 
-		// Field Set
-		document.getElementById("fieldset").after(fieldset(".fieldset", "fieldset").fragment);
+		// Embedded
 
-		// Form
-		document.getElementById("form").after(form(".form").fragment);
+		const embedded = section(".fieldset")
+			.push(h1("#embedded.h1", "Embedded"))
 
-		// Input
+		for (const element of [
+			audio(),
+			iframe(),
+			img(),
+			picture(),
+			video(),
+			table(".table", "This is a table.")
+		]) {
+			embedded.push(element);
+		}
 
-		// label
-		document.getElementById("label").after(label(".label", "This is a label.").fragment);
+		document.getElementById("elements").innerHTML += div(".4u", embedded);
 
-		// button[type=button]
-		document.getElementById("button").after(button(".button", "This is a button.").fragment);
+		// Navigation
 
-		// button[type=reset]
-		document.getElementById("reset").after(reset(".reset", "This is a reset button.").fragment);
+		document.getElementById("nav").innerHTML += h1("Navigation");
 
-		// button[type=submit]
-		document.getElementById("submit").after(submit(".submit", "This is a submit button.").fragment);
-
-		// input[type=search]
-		document.getElementById("search").after(search(".search", "This is a search query.").fragment);
-
-		// File
-		document.getElementById("file").after(file(".file", "image/*", true).fragment);
-
-		// input[type=checkbox]
-		document.getElementById("checkbox").after(checkbox(".checkbox", "checkbox", "checkbox", true).fragment);
-
-		// input[type=color]
-		document.getElementById("color").after(color(".color", "color", "#000000", true).fragment);
-
-		// input[type=date]
-		document.getElementById("date").after(date(".date", "date", "1969-04-20", true).fragment);
-
-		// input[type=datetime]
-		document.getElementById("datetime").after(datetime(".datetime", "datetime", "1969-04-20T16:20", true).fragment);
-
-		// input[type=email]
-		document.getElementById("email").after(email(".email", "email", "foo@bar.com", true).fragment);
-
-		// input[type=hidden]
-		document.getElementById("hidden").after(hidden(".hidden", "hidden", "The Secret lies with Charlotte.", true).fragment);
-
-		// input[type=month]
-		document.getElementById("month").after(month(".month", "month", "1969-04").fragment);
-
-		// input[type=number]
-		document.getElementById("number").after(number(".number", "number", 420, true).fragment);
-
-		// input[type=password]
-		document.getElementById("password").after(password(".password", "password", "********", true).fragment);
-
-		// input[type=radio]
-		document.getElementById("radio").after(radio(".radio", "radio", "radio", true).fragment);
-
-		// input[type=range]
-		document.getElementById("range").after(range(".range", "range", 69, true).fragment);
-
-		// input[type=tel]
-		document.getElementById("tel").after(tel(".tel", "tel", "+1 (800) 867-5309", true).fragment);
-
-		// input[type=text]
-		document.getElementById("text").after(text(".text", "text", "The Secret lies with Charlotte.", true).fragment);
-
-		// input[type=time]
-		document.getElementById("time").after(time(".time", "time", "16:20").fragment);
-
-		// input[type=url]
-		document.getElementById("url").after(url(".url", "url", window.location.href, true).fragment);
-
-		// input[type=week]
-		document.getElementById("week").after(week(".week", "week", "2004-W20", true).fragment);
-
-		// Select
-		document.getElementById("select").after(select(".select", "select", [{ "key": "Item 1", "value": [{ "key": "Item 1.1" }] }, { "key": "--", "disabled": true }, { "key": "Item 2" }], true).fragment);
-
-		// Table of Contents
-
-		const orderedList = document.getElementById("toc").innerHTML += ol("#ol");
+		const sections = ol(".ol");
 
 		for (const element of document.getElementById("elements").querySelectorAll("[id]")) {
-			document.getElementById("ol").innerHTML += li(".li", details(".details", element.innerText));
+			const section = ul(".ul");
+
+			for (const terminalNode of getTerminalNodes(element.parentElement)) {
+				section.push(li(".li", a(".a", code(".code", terminalNode), "#")));
+			}
+
+			sections.push(li(".li", details(".details", element.textContent, section)));
 		}
+
+		document.getElementById("nav").innerHTML += sections;
 
 	</script>
 

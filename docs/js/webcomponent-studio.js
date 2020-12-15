@@ -65,7 +65,12 @@ class AnchorElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -76,7 +81,7 @@ class DetailsElement extends Element {
     constructor(tagName, summary, children, attributes) {
         super(tagName);
         const summaryElement = document.createElement("summary");
-        summaryElement.append(...summary);
+        summaryElement.append(summary);
         this.children.push(summaryElement, ...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
@@ -123,7 +128,12 @@ class EmbeddedElement extends Element {
             this.template.setAttribute("src", this.sources[0]);
         }
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -144,7 +154,12 @@ class FieldSetElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -165,7 +180,12 @@ class FigureElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -183,7 +203,12 @@ class GroupingElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -235,7 +260,12 @@ class SelectElement extends Element {
             }
         })(this.options, this.template);
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -267,7 +297,12 @@ class TableElement extends Element {
         this.template.appendChild(document.createElement("tbody"));
         this.template.appendChild(document.createElement("tfoot"));
         for (const child of this.children) {
-            this.template.innerHTML += child;
+            if (child instanceof HTMLElement) {
+                this.template.append(child);
+            }
+            else {
+                this.template.innerHTML += child;
+            }
         }
         return this.template.outerHTML;
     }
@@ -499,14 +534,14 @@ function createPrimitive(tagName) {
                     attributes.action = action;
                 }
                 else {
-                    action = encoding;
+                    encoding = action;
                 }
                 // encoding
                 if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
                     attributes.enctype = action;
                 }
                 else if (encoding !== undefined && typeof encoding === "object") {
-                    attributes = Object.assign(Object.assign({}, attributes), encoding);
+                    children = encoding;
                 }
                 // children
                 if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
@@ -608,6 +643,9 @@ function createPrimitive(tagName) {
                     children = [];
                 }
                 // attributes
+                if (/button|reset|submit/i.test(tagName)) {
+                    attributes.type = tagName;
+                }
                 return ElementTagNameMap[tagName](children, attributes);
             };
         /**
@@ -755,7 +793,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
-                return ElementTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * IFrame
@@ -842,7 +880,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
-                return ElementTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Label
@@ -897,7 +935,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), value);
                 }
                 // attributes
-                return ElementTagNameMap[tagName](Object.assign(Object.assign({}, attributes), { "type": tagName }));
+                return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Select

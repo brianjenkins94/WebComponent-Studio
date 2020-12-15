@@ -152,7 +152,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
 					attributes.action = action;
 				} else {
-					action = encoding;
+					encoding = action;
 				}
 
 				// encoding
@@ -160,7 +160,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
 					attributes.enctype = action;
 				} else if (encoding !== undefined && typeof encoding === "object") {
-					attributes = { ...attributes, ...encoding };
+					children = encoding;
 				}
 
 				// children
@@ -270,6 +270,10 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
+
+				if (/button|reset|submit/i.test(tagName)) {
+					attributes.type = tagName;
+				}
 
 				return ElementTagNameMap[tagName](children, attributes);
 			};
@@ -442,7 +446,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				// attributes
 
-				return ElementTagNameMap[tagName]({ ...attributes, "type": tagName });
+				return ElementTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
 		/**
@@ -539,7 +543,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				// attributes
 
-				return ElementTagNameMap[tagName]({ ...attributes, "type": tagName });
+				return ElementTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
 		/**
@@ -602,7 +606,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 				// attributes
 
-				return ElementTagNameMap[tagName]({ ...attributes, "type": tagName });
+				return ElementTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
 		/**
