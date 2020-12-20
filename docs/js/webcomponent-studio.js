@@ -342,8 +342,8 @@ const ElementTagNameMap = {
     "b": primeConstructor(GroupingElement, "b"),
     "blockquote": primeConstructor(GroupingElement, "blockquote"),
     "button": primeConstructor(GroupingElement, "button"),
-    "reset": primeConstructor(GroupingElement, "button"),
-    "submit": primeConstructor(GroupingElement, "button"),
+    "reset": primeConstructor(GroupingElement, "reset"),
+    "submit": primeConstructor(GroupingElement, "submit"),
     "code": primeConstructor(GroupingElement, "code"),
     "del": primeConstructor(GroupingElement, "del"),
     "em": primeConstructor(GroupingElement, "em"),
@@ -379,30 +379,30 @@ const ElementTagNameMap = {
     // Figure
     "figure": primeConstructor(FigureElement, "figure"),
     // File
-    "file": primeConstructor(GroupingElement, "input"),
+    "file": primeConstructor(GroupingElement, "file"),
     // IFrame
     "iframe": primeConstructor(GroupingElement, "iframe"),
     // Search
-    "search": primeConstructor(GroupingElement, "input"),
+    "search": primeConstructor(GroupingElement, "search"),
     // Select
     "select": primeConstructor(SelectElement, "select"),
     // Input
-    "checkbox": primeConstructor(GroupingElement, "input"),
-    "color": primeConstructor(GroupingElement, "input"),
-    "date": primeConstructor(GroupingElement, "input"),
-    "datetime-local": primeConstructor(GroupingElement, "input"),
-    "email": primeConstructor(GroupingElement, "input"),
-    "hidden": primeConstructor(GroupingElement, "input"),
-    "month": primeConstructor(GroupingElement, "input"),
-    "number": primeConstructor(GroupingElement, "input"),
-    "password": primeConstructor(GroupingElement, "input"),
-    "radio": primeConstructor(GroupingElement, "input"),
-    "range": primeConstructor(GroupingElement, "input"),
-    "tel": primeConstructor(GroupingElement, "input"),
-    "text": primeConstructor(GroupingElement, "input"),
-    "time": primeConstructor(GroupingElement, "input"),
-    "url": primeConstructor(GroupingElement, "input"),
-    "week": primeConstructor(GroupingElement, "input"),
+    "checkbox": primeConstructor(GroupingElement, "checkbox"),
+    "color": primeConstructor(GroupingElement, "color"),
+    "date": primeConstructor(GroupingElement, "date"),
+    "datetime-local": primeConstructor(GroupingElement, "datetime-local"),
+    "email": primeConstructor(GroupingElement, "email"),
+    "hidden": primeConstructor(GroupingElement, "hidden"),
+    "month": primeConstructor(GroupingElement, "month"),
+    "number": primeConstructor(GroupingElement, "number"),
+    "password": primeConstructor(GroupingElement, "password"),
+    "radio": primeConstructor(GroupingElement, "radio"),
+    "range": primeConstructor(GroupingElement, "range"),
+    "tel": primeConstructor(GroupingElement, "tel"),
+    "text": primeConstructor(GroupingElement, "text"),
+    "time": primeConstructor(GroupingElement, "time"),
+    "url": primeConstructor(GroupingElement, "url"),
+    "week": primeConstructor(GroupingElement, "week"),
     // Table
     "table": primeConstructor(TableElement, "table")
 };
@@ -439,7 +439,7 @@ function createPrimitive(tagName) {
          * (selector?: string, textContent?: string, href?: string, attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "a":
-            return function (selector, textContent, href, attributes = {}) {
+            return function (selector, textContent = [], href = "#", attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
@@ -464,7 +464,6 @@ function createPrimitive(tagName) {
                 }
                 else if (href !== undefined && typeof href === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), href);
-                    href = [];
                 }
                 // attributes
                 return ElementTagNameMap[tagName](textContent, attributes);
@@ -545,6 +544,7 @@ function createPrimitive(tagName) {
                 }
                 // children
                 if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                    // @ts-expect-error reassignment
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
@@ -643,6 +643,7 @@ function createPrimitive(tagName) {
                     children = [];
                 }
                 // attributes
+                // FIXME:
                 if (/button|reset|submit/i.test(tagName)) {
                     attributes.type = tagName;
                 }
@@ -887,7 +888,7 @@ function createPrimitive(tagName) {
          *
          * (): NodeTagNameMap[NodeTagName]
          * (selector): NodeTagNameMap[NodeTagName]
-         * (selector?, forValue: string, textContent: string | (string | Node)[]): NodeTagNameMap[NodeTagName]
+         * (selector?, forValue?: string, textContent: string | (string | Node)[]): NodeTagNameMap[NodeTagName]
          * (selector?, forValue?: string, textContent?: string | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
         case "label":
@@ -896,6 +897,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
+                    // FIXME: Logic changed
                     forValue = selector;
                     textContent = forValue;
                 }

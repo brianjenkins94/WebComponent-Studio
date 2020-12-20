@@ -88,7 +88,6 @@
 		/* Body */
 
 		body {
-			margin-left: 2rem;
 			padding: 2rem;
 		}
 
@@ -111,16 +110,41 @@
 			top: 0;
 		}
 
+
+	.embed-responsive {
+		position: relative;
+		display: block;
+		width: 100%;
+		padding: 0;
+		overflow: hidden;
+	}
+	.embed-responsive::before {
+		display: block;
+		content: "";
+	}
+	.embed-responsive-item,
+	iframe,
+	embed,
+	object,
+	video {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+  	}
+
 	</style>
 
 </head>
 <body class="markdown-body">
 
-	<div class="row">
-		<nav id="nav" class="2u fieldset" style="height: 100%; position: sticky; top: 2rem;"></nav>
-		<div class="10u">
-			<div id="elements" class="row"></div>
-		</div>
+	<div id="elements" class="row">
+		<nav class="3u" style="height: 100%; position: sticky; top: 2rem;">
+			<section id="nav" class="fieldset"></section>
+		</nav>
 	</div>
 
 	<!-- Libraries -->
@@ -165,7 +189,7 @@
 			h5(".h5", "This is a fifth-level header."),
 			h6(".h6", "This is a sixth-level header."),
 			hr(".hr"),
-			p(".p", a(".a", "This is a link.", "#")),
+			p(".p", a(".a", "This is a link.")),
 			p(".p", b(".b", "This is some bold text.")),
 			blockquote(".blockquote", "This is a blockquote."),
 			p(".p", code(".code", "This is some inline code.")),
@@ -188,42 +212,42 @@
 			typography.push(element);
 		}
 
-		document.getElementById("elements").innerHTML +=  div(".4u", typography);
+		document.getElementById("elements").innerHTML +=  div(".div.3u", typography);
 
 		// Form-associated
 
-		const formAssociated = section(".fieldset")
+		const formAssociated = section(".section.fieldset")
 			.push(h1("#formAssociated.h1", "Form-associated"));
 
 		for (const elements of [
 			[label(".label", "", "Buttons"), div(".div", [button(".button", "Button"), " ", reset(".reset", "Reset"), " ", submit(".submit", "Submit")])],
-			// [label(".label", "Checkbox", [checkbox(".checkbox", "checkbox", "checkbox", true), "Checkbox"])],
-			[label(".label", "Color", "Color"), color(".color", "color", "#000000", true)],
-			[label(".label", "Date", "Date"), date(".date", "date", "1969-04-20", true)],
-			[label(".label", "Datetime", "Datetime"), datetime(".datetime", "datetime", "1969-04-20T16:20", true)],
-			[label(".label", "Email", "Email"), email(".email", "email", "foo@bar.com", true)],
+			// [label(".label", "checkbox", [checkbox(".checkbox", "checkbox", "checkbox", true), "Checkbox"])],
+			[label(".label", "color", "Color"), color(".color", "color", "#000000", true)],
+			[label(".label", "date", "Date"), date(".date", "date", "1969-04-20", true)],
+			[label(".label", "datetime", "Datetime"), datetime(".datetime", "datetime", "1969-04-20T16:20", true)],
+			[label(".label", "email", "Email"), email(".email", "email", "foo@bar.com", true)],
 			[fieldset(".fieldset", "Fieldset")],
-			[label(".label", "File", "File"), file(".file", "file", "image/*", true)],
-			[label(".label", "Meter", "Meter"), meter(".meter")],
-			[label(".label", "Month", "Month"), month(".month", "month", "1969-04")],
-			[label(".label", "Number", "Number"), number(".number", "number", 420, true)],
-			[label(".label", "Password", "Password"), password(".password", "password", "********", true)],
-			[label(".label", "Progress", "Progress"), progress(".progress")],
-			// [label(".label", "Radio", "Radio"), radio(".radio", "radio", "radio", true)],
-			[label(".label", "Range", "Range"), range(".range", "range", 69, true)],
-			[label(".label", "Search", "Search"), search(".search", "This is a search query.")],
-			[label(".label", "Select", "Select"), select(".select", "select", [{ "key": "Item 1", "value": [{ "key": "Item 1.1" }] }, { "key": "--", "disabled": true }, { "key": "Item 2" }], true)],
-			[label(".label", "Telephone", "Telephone"), tel(".tel", "tel", "+1 (800) 867-5309", true)],
-			[label(".label", "Text", "Text"), text(".text", "text", "The Secret lies with Charlotte.", true)],
+			[label(".label", "file", "File"), file(".file", "file", "image/*", true)],
+			[label(".label", "meter", "Meter"), meter(".meter")],
+			[label(".label", "month", "Month"), month(".month", "month", "1969-04")],
+			[label(".label", "number", "Number"), number(".number", "number", 420, true)],
+			[label(".label", "password", "Password"), password(".password", "password", "********", true)],
+			[label(".label", "progress", "Progress"), progress(".progress")],
+			// [label(".label", "radio", "Radio"), radio(".radio", "radio", "radio", true)],
+			[label(".label", "range", "Range"), range(".range", "range", 69, true)],
+			[label(".label", "search", "Search"), search(".search", "This is a search query.")],
+			[label(".label", "select", "Select"), select(".select", "select", [{ "key": "Item 1", "value": [{ "key": "Item 1.1" }] }, { "key": "--", "disabled": true }, { "key": "Item 2" }], true)],
+			[label(".label", "telephone", "Telephone"), tel(".tel", "tel", "+1 (800) 867-5309", true)],
+			[label(".label", "text", "Text"), text(".text", "text", "The Secret lies with Charlotte.", true)],
 			[label(".label", "textarea", "Textarea"), textarea(".textarea")],
-			[label(".label", "Time", "Time"), time(".time", "time", "16:20")],
-			[label(".label", "URL", "URL"), url(".url", "url", window.location.href, true)],
-			[label(".label", "Week", "Week"), week(".week", "week", "2020-W04", true)]
+			[label(".label", "time", "Time"), time(".time", "time", "16:20")],
+			[label(".label", "url", "URL"), url(".url", "url", window.location.href, true)],
+			[label(".label", "week", "Week"), week(".week", "week", "2020-W04", true)]
 		]) {
 			formAssociated.push(form(".form", elements));
 		}
 
-		document.getElementById("elements").innerHTML += div(".4u", formAssociated);
+		document.getElementById("elements").innerHTML += div(".3u", formAssociated);
 
 		// Embedded
 
@@ -231,25 +255,25 @@
 			.push(h1("#embedded.h1", "Embedded"))
 
 		for (const element of [
-			audio(),
-			iframe(),
-			img(),
-			picture(),
-			video(),
-			table(".table", "This is a table.")
+			[audio(".audio")],
+			[label(".label", "iframe", "iframe"), figure(".figure", "Random photo by unsplash.com.", iframe(".iframe.embed-responsive", "https://source.unsplash.com/random/300x300"))],
+			[label(".label", "image", "Image"), figure(".figure", "Random photo by unsplash.com.", img(".img", "https://source.unsplash.com/random/300x300"))],
+			[picture(".picture")],
+			[video(".video")],
+			[table(".table", "This is a table.", ["fe", "fi"])] /* .push(tr(".tr", [th(".th", "fo"), td(".td", "fum")])) */
 		]) {
-			embedded.push(element);
+			embedded.push(...element);
 		}
 
-		document.getElementById("elements").innerHTML += div(".4u", embedded);
+		document.getElementById("elements").innerHTML += div(".div.3u", embedded);
 
 		// Navigation
 
-		document.getElementById("nav").innerHTML += h1("Navigation");
+		document.getElementById("nav").innerHTML += h1(".h1", "Navigation");
 
 		const sections = ol(".ol");
 
-		for (const element of document.getElementById("elements").querySelectorAll("[id]")) {
+		for (const element of document.getElementById("elements").querySelectorAll("[id]:not([id=nav])")) {
 			const section = ul(".ul");
 
 			for (const terminalNode of getTerminalNodes(element.parentElement)) {

@@ -6,7 +6,7 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 	protected template: HTMLElement;
 	protected attributes: ElementAttributesMap[TagName] = {};
 	protected readonly type: keyof TopLevelElementMap;
-	protected readonly children = [];
+	protected readonly children: (string | Node)[] = [];
 	private events = {};
 
 	public constructor(type: keyof TopLevelElementMap) {

@@ -113,6 +113,29 @@ interface TextLevelSemantics {
 	"u": HTMLElement;
 }
 
-export interface TopLevelElementMap extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics { }
+interface AbstractMeOutLater {
+	"checkbox": HTMLInputElement;
+	"color": HTMLInputElement;
+	"date": HTMLInputElement;
+	"datetime-local": HTMLInputElement;
+	"email": HTMLInputElement;
+	"file": HTMLInputElement;
+	"hidden": HTMLInputElement;
+	"month": HTMLInputElement;
+	"number": HTMLInputElement;
+	"password": HTMLInputElement;
+	"radio": HTMLInputElement;
+	"range": HTMLInputElement;
+	"reset": HTMLButtonElement;
+	"search": HTMLInputElement;
+	"submit": HTMLButtonElement;
+	"tel": HTMLInputElement;
+	"text": HTMLInputElement;
+	"time": HTMLInputElement;
+	"url": HTMLInputElement;
+	"week": HTMLInputElement;
+}
+
+export interface TopLevelElementMap extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics, AbstractMeOutLater { }
 
 export interface AbstractTopLevelElementMap extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }

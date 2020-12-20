@@ -6,6 +6,7 @@
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"moduleResolution": "Node",
+		"noErrorTruncation": true,
 		"target": "ES2015"
 	}
 }

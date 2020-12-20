@@ -3,7 +3,7 @@ import type { ElementAttributesMap } from "../types/attributes";
 import type { TopLevelElementMap } from "../types/elements";
 
 export class GroupingElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, children: (string | HTMLElement)[], attributes: ElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, children: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.children.push(...children);
