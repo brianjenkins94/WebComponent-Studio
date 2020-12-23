@@ -49,8 +49,8 @@
 
 		// Disabled
 		"@typescript-eslint/dot-notation": "off",
-		"@typescript-eslint/explicit-function-return-type": "off",
-		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/explicit-function-return-type": "warn",
+		"@typescript-eslint/explicit-module-boundary-types": "warn",
 		"@typescript-eslint/lines-between-class-members": "off",
 		"@typescript-eslint/no-dynamic-delete": "off",
 		"@typescript-eslint/no-floating-promises": "off",
@@ -65,7 +65,7 @@
 		"@typescript-eslint/require-array-sort-compare": "off",
 		"@typescript-eslint/restrict-plus-operands": "off",
 		"@typescript-eslint/strict-boolean-expressions": "off", // requires `strictNullChecks`
-		"@typescript-eslint/typedef": "off",
+		"@typescript-eslint/typedef": "warn",
 		"capitalized-comments": "off",
 		"class-methods-use-this": "off",
 		"dot-notation": "off",

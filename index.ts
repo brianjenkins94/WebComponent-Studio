@@ -9,7 +9,7 @@ const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z
 
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
-function parseSelector(selector) {
+function parseSelector(selector: string): object {
 	const selectors = {};
 
 	for (const match of selector.split(/(?=#|\.)/)) {
@@ -27,6 +27,7 @@ function parseSelector(selector) {
 	return selectors;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(tagName: ElementTagName) {
 	switch (tagName) {
 
@@ -72,7 +73,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](textContent, attributes);
 			};
 
@@ -114,7 +115,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](summary, children, attributes);
 			};
 
@@ -175,8 +176,47 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](children, attributes);
+			};
+
+		/**
+		 * Button
+		 * (): NodeTagNameMap[NodeTagName]
+		 * (selector: string): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
+		 * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+		 */
+		case "button":
+		case "reset":
+		case "submit":
+			return function(selector?: string | Node | (string | Node)[] | ElementAttributesMap[ElementTagName], children: Node | (string | Node)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+					attributes = { ...attributes, ...parseSelector(selector) };
+				} else {
+					// eslint-disable-next-line no-lonely-if
+					if (selector !== undefined && Array.isArray(selector)) {
+						children = selector;
+					} else if (selector !== undefined && typeof selector === "string") {
+						children = [selector];
+					}
+				}
+
+				// children
+
+				if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+					children = [children];
+				} else if (children !== undefined && Array.isArray(children)) {
+					//children = children;
+				} else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+					attributes = { ...attributes, ...children };
+
+					children = [];
+				}
+
+				// attributes
+				// @ts-expect-error microsoft/TypeScript#13995
+				return ElementTagNameMap["button"](children, { ...attributes, "type": tagName });
 			};
 
 		/**
@@ -185,28 +225,12 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 * (selector: string): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
 		 * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
-		 * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
 		 */
 		case "article":
 		case "aside":
 		case "b":
 		case "blockquote":
 		case "br":
-		case "button":
-		case "button[type=button]":
-			if (tagName === "button[type=button]") {
-				tagName = "button";
-			}
-		case "reset":
-		case "button[type=reset]":
-			if (tagName === "button[type=reset]") {
-				tagName = "reset";
-			}
-		case "submit":
-		case "button[type=submit]":
-			if (tagName === "button[type=submit]") {
-				tagName = "submit";
-			}
 		case "canvas":
 		case "code":
 		case "del":
@@ -269,12 +293,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
-				// FIXME:
-				if (/button|reset|submit/i.test(tagName)) {
-					attributes.type = tagName;
-				}
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](children, attributes);
 			};
 
@@ -313,7 +332,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](sources, attributes);
 			};
 
@@ -352,7 +371,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 					attributes = { ...attributes, ...children };
 				}
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](legend, children, attributes);
 			};
 
@@ -392,7 +411,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](figcaption, children, attributes);
 			};
 
@@ -445,7 +464,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
@@ -474,7 +493,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName]([], attributes);
 			};
 
@@ -542,7 +561,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
@@ -577,7 +596,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](textContent, attributes);
 			};
 
@@ -606,7 +625,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName]([], { ...attributes, "type": tagName });
 			};
 
@@ -651,7 +670,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](options, { ...attributes, "type": tagName });
 			};
 
@@ -689,7 +708,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				}
 
 				// attributes
-
+				// @ts-expect-error microsoft/TypeScript#13995
 				return ElementTagNameMap[tagName](caption, tableHeader, attributes);
 			};
 		default:

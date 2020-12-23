@@ -11,7 +11,7 @@ import { TableElement } from "./TableElement";
 import type { Element } from "../abstract/Element";
 import type { TopLevelElementMap } from "../types/elements";
 
-function primeConstructor<TagName extends keyof TopLevelElementMap, ArgsType extends any[]>(Node: new (type: TagName, ...args: ArgsType) => Element<TagName>, type: TagName): (...args: ArgsType) => Element<TagName> {
+function primeConstructor<TagName extends keyof TopLevelElementMap, ArgsType extends unknown[]>(Node: new (type: TagName, ...args: ArgsType) => Element<TagName>, type: TagName): (...args: ArgsType) => Element<TagName> {
 	return function(...args: ArgsType): Element<TagName> {
 		return new Node(type, ...args);
 	};
@@ -49,8 +49,8 @@ export const ElementTagNameMap = {
 	"b": primeConstructor(GroupingElement, "b"),
 	"blockquote": primeConstructor(GroupingElement, "blockquote"),
 	"button": primeConstructor(GroupingElement, "button"),
-	"reset": primeConstructor(GroupingElement, "reset"),
-	"submit": primeConstructor(GroupingElement, "submit"),
+	"reset": primeConstructor(GroupingElement, "button"),
+	"submit": primeConstructor(GroupingElement, "button"),
 	"code": primeConstructor(GroupingElement, "code"),
 	"del": primeConstructor(GroupingElement, "del"),
 	"em": primeConstructor(GroupingElement, "em"),
@@ -90,34 +90,34 @@ export const ElementTagNameMap = {
 	"figure": primeConstructor(FigureElement, "figure"),
 
 	// File
-	"file": primeConstructor(GroupingElement, "file"), // Childless
+	"file": primeConstructor(GroupingElement, "input"), // Childless
 
 	// IFrame
 	"iframe": primeConstructor(GroupingElement, "iframe"),
 
 	// Search
-	"search": primeConstructor(GroupingElement, "search"), // Childless
+	"search": primeConstructor(GroupingElement, "input"), // Childless
 
 	// Select
 	"select": primeConstructor(SelectElement, "select"),
 
 	// Input
-	"checkbox": primeConstructor(GroupingElement, "checkbox"), // Childless
-	"color": primeConstructor(GroupingElement, "color"), // Childless
-	"date": primeConstructor(GroupingElement, "date"), // Childless
-	"datetime-local": primeConstructor(GroupingElement, "datetime-local"), // Childless
-	"email": primeConstructor(GroupingElement, "email"), // Childless
-	"hidden": primeConstructor(GroupingElement, "hidden"), // Childless
-	"month": primeConstructor(GroupingElement, "month"), // Childless
-	"number": primeConstructor(GroupingElement, "number"), // Childless
-	"password": primeConstructor(GroupingElement, "password"), // Childless
-	"radio": primeConstructor(GroupingElement, "radio"), // Childless
-	"range": primeConstructor(GroupingElement, "range"), // Childless
-	"tel": primeConstructor(GroupingElement, "tel"), // Childless
-	"text": primeConstructor(GroupingElement, "text"), // Childless
-	"time": primeConstructor(GroupingElement, "time"), // Childless
-	"url": primeConstructor(GroupingElement, "url"), // Childless
-	"week": primeConstructor(GroupingElement, "week"), // Childless
+	"checkbox": primeConstructor(GroupingElement, "input"), // Childless
+	"color": primeConstructor(GroupingElement, "input"), // Childless
+	"date": primeConstructor(GroupingElement, "input"), // Childless
+	"datetime-local": primeConstructor(GroupingElement, "input"), // Childless
+	"email": primeConstructor(GroupingElement, "input"), // Childless
+	"hidden": primeConstructor(GroupingElement, "input"), // Childless
+	"month": primeConstructor(GroupingElement, "input"), // Childless
+	"number": primeConstructor(GroupingElement, "input"), // Childless
+	"password": primeConstructor(GroupingElement, "input"), // Childless
+	"radio": primeConstructor(GroupingElement, "input"), // Childless
+	"range": primeConstructor(GroupingElement, "input"), // Childless
+	"tel": primeConstructor(GroupingElement, "input"), // Childless
+	"text": primeConstructor(GroupingElement, "input"), // Childless
+	"time": primeConstructor(GroupingElement, "input"), // Childless
+	"url": primeConstructor(GroupingElement, "input"), // Childless
+	"week": primeConstructor(GroupingElement, "input"), // Childless
 
 	// Table
 	"table": primeConstructor(TableElement, "table")

@@ -21,6 +21,7 @@ interface FormAssociatedContent {
 	"button": HTMLButtonElement;
 	"fieldset": HTMLFieldSetElement;
 	"form": HTMLFormElement;
+	"input": HTMLInputElement;
 	"label": HTMLLabelElement;
 	"meter": HTMLMeterElement;
 	"progress": HTMLProgressElement;
@@ -29,7 +30,6 @@ interface FormAssociatedContent {
 }
 
 interface AbstractFormAssociatedContent {
-	"input": HTMLInputElement;
 	"legend": HTMLLegendElement;
 	"optgroup": HTMLOptGroupElement;
 	"option": HTMLOptionElement;
@@ -113,29 +113,6 @@ interface TextLevelSemantics {
 	"u": HTMLElement;
 }
 
-interface AbstractMeOutLater {
-	"checkbox": HTMLInputElement;
-	"color": HTMLInputElement;
-	"date": HTMLInputElement;
-	"datetime-local": HTMLInputElement;
-	"email": HTMLInputElement;
-	"file": HTMLInputElement;
-	"hidden": HTMLInputElement;
-	"month": HTMLInputElement;
-	"number": HTMLInputElement;
-	"password": HTMLInputElement;
-	"radio": HTMLInputElement;
-	"range": HTMLInputElement;
-	"reset": HTMLButtonElement;
-	"search": HTMLInputElement;
-	"submit": HTMLButtonElement;
-	"tel": HTMLInputElement;
-	"text": HTMLInputElement;
-	"time": HTMLInputElement;
-	"url": HTMLInputElement;
-	"week": HTMLInputElement;
-}
-
-export interface TopLevelElementMap extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics, AbstractMeOutLater { }
+export interface TopLevelElementMap extends EditingContent, EmbeddedContent, FormAssociatedContent, GroupingContent, HeadingContent, InteractiveContent, SectioningContent, TabularContent, TextLevelSemantics { }
 
 export interface AbstractTopLevelElementMap extends AbstractEmbeddedContent, AbstractFormAssociatedContent, AbstractGroupingContent, AbstractInteractiveContent, AbstractTabularContent { }

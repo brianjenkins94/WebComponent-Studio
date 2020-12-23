@@ -4,8 +4,8 @@ import type { TopLevelElementMap } from "../types/elements";
 
 // <legend> should be part of a <fieldset>
 
-export class FieldSetElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, legend: string, children: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
+export class FieldSetElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
+	public constructor(tagName: ElementTagName, legend: string, children: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
 		const legendElement = document.createElement("legend");
@@ -24,7 +24,7 @@ export class FieldSetElement<TagName extends keyof TopLevelElementMap> extends E
 		}
 
 		for (const child of this.children) {
-			if (child instanceof HTMLElement) {
+			if (child instanceof Node) {
 				this.template.append(child);
 			} else {
 				this.template.innerHTML += child;

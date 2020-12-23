@@ -2,8 +2,8 @@ import { Element } from "../abstract/Element";
 import type { ElementAttributesMap } from "../types/attributes";
 import type { TopLevelElementMap } from "../types/elements";
 
-export class GroupingElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, children: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
+export class GroupingElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
+	public constructor(tagName: ElementTagName, children: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
 		this.children.push(...children);
@@ -19,7 +19,7 @@ export class GroupingElement<TagName extends keyof TopLevelElementMap> extends E
 		}
 
 		for (const child of this.children) {
-			if (child instanceof HTMLElement) {
+			if (child instanceof Node) {
 				this.template.append(child);
 			} else {
 				this.template.innerHTML += child;

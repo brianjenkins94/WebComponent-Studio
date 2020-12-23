@@ -5,10 +5,10 @@ import type { TopLevelElementMap } from "../types/elements";
 // <optgroup> should be part of a <select>
 // <option> should be part of a <select> or <optgroup>
 
-export class SelectElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+export class SelectElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
 	private readonly options: object[];
 
-	public constructor(tagName: TagName, options: object[], attributes: ElementAttributesMap[TagName]) {
+	public constructor(tagName: ElementTagName, options: object[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
 		this.options = options;
@@ -64,7 +64,7 @@ export class SelectElement<TagName extends keyof TopLevelElementMap> extends Ele
 		})(this.options, this.template);
 
 		for (const child of this.children) {
-			if (child instanceof HTMLElement) {
+			if (child instanceof Node) {
 				this.template.append(child);
 			} else {
 				this.template.innerHTML += child;

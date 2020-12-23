@@ -2,9 +2,9 @@ import type { EventEmitter } from "./EventEmitter";
 import type { ElementAttributesMap } from "../types/attributes";
 import type { TopLevelElementMap } from "../types/elements";
 
-export abstract class Element<TagName extends keyof TopLevelElementMap> implements EventEmitter {
+export abstract class Element<ElementTagName extends keyof TopLevelElementMap> implements EventEmitter {
 	protected template: HTMLElement;
-	protected attributes: ElementAttributesMap[TagName] = {};
+	protected attributes: ElementAttributesMap[ElementTagName] = {};
 	protected readonly type: keyof TopLevelElementMap;
 	protected readonly children: (string | Node)[] = [];
 	private events = {};
@@ -55,13 +55,13 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 		});
 	}
 
-	public push(...items: Element<TagName>[]): this {
+	public push(...items: Element<ElementTagName>[]): this {
 		this.children.push(...items);
 
 		return this;
 	}
 
-	public unshift(...items: Element<TagName>[]): this {
+	public unshift(...items: Element<ElementTagName>[]): this {
 		this.children.unshift(...items);
 
 		return this;

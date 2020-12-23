@@ -12,8 +12,8 @@ import type { TopLevelElementMap } from "../types/elements";
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
-export class TableElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, caption: string, tableHeader: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
+export class TableElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
+	public constructor(tagName: ElementTagName, caption: string, tableHeader: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
 		const captionElement = document.createElement("caption");
@@ -36,7 +36,7 @@ export class TableElement<TagName extends keyof TopLevelElementMap> extends Elem
 		this.template.appendChild(document.createElement("tfoot"));
 
 		for (const child of this.children) {
-			if (child instanceof HTMLElement) {
+			if (child instanceof Node) {
 				this.template.append(child);
 			} else {
 				this.template.innerHTML += child;

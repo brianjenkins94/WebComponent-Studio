@@ -4,8 +4,8 @@ import type { TopLevelElementMap } from "../types/elements";
 
 // <summary> should be part of a <details>
 
-export class DetailsElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, summary: (string | Node)[], children: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
+export class DetailsElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
+	public constructor(tagName: ElementTagName, summary: (string | Node)[], children: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
 		const summaryElement = document.createElement("summary");
@@ -24,7 +24,7 @@ export class DetailsElement<TagName extends keyof TopLevelElementMap> extends El
 		}
 
 		for (const child of this.children) {
-			if (child instanceof HTMLElement) {
+			if (child instanceof Node) {
 				this.template.append(child);
 			} else {
 				this.template.innerHTML += child;

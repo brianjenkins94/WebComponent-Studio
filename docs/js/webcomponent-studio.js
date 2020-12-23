@@ -65,7 +65,7 @@ class AnchorElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -91,7 +91,7 @@ class DetailsElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -128,7 +128,7 @@ class EmbeddedElement extends Element {
             this.template.setAttribute("src", this.sources[0]);
         }
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -154,7 +154,7 @@ class FieldSetElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -180,7 +180,7 @@ class FigureElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -203,7 +203,7 @@ class GroupingElement extends Element {
             this.template.setAttribute(key, value);
         }
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -260,7 +260,7 @@ class SelectElement extends Element {
             }
         })(this.options, this.template);
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -297,7 +297,7 @@ class TableElement extends Element {
         this.template.appendChild(document.createElement("tbody"));
         this.template.appendChild(document.createElement("tfoot"));
         for (const child of this.children) {
-            if (child instanceof HTMLElement) {
+            if (child instanceof Node) {
                 this.template.append(child);
             }
             else {
@@ -342,8 +342,8 @@ const ElementTagNameMap = {
     "b": primeConstructor(GroupingElement, "b"),
     "blockquote": primeConstructor(GroupingElement, "blockquote"),
     "button": primeConstructor(GroupingElement, "button"),
-    "reset": primeConstructor(GroupingElement, "reset"),
-    "submit": primeConstructor(GroupingElement, "submit"),
+    "reset": primeConstructor(GroupingElement, "button"),
+    "submit": primeConstructor(GroupingElement, "button"),
     "code": primeConstructor(GroupingElement, "code"),
     "del": primeConstructor(GroupingElement, "del"),
     "em": primeConstructor(GroupingElement, "em"),
@@ -379,30 +379,30 @@ const ElementTagNameMap = {
     // Figure
     "figure": primeConstructor(FigureElement, "figure"),
     // File
-    "file": primeConstructor(GroupingElement, "file"),
+    "file": primeConstructor(GroupingElement, "input"),
     // IFrame
     "iframe": primeConstructor(GroupingElement, "iframe"),
     // Search
-    "search": primeConstructor(GroupingElement, "search"),
+    "search": primeConstructor(GroupingElement, "input"),
     // Select
     "select": primeConstructor(SelectElement, "select"),
     // Input
-    "checkbox": primeConstructor(GroupingElement, "checkbox"),
-    "color": primeConstructor(GroupingElement, "color"),
-    "date": primeConstructor(GroupingElement, "date"),
-    "datetime-local": primeConstructor(GroupingElement, "datetime-local"),
-    "email": primeConstructor(GroupingElement, "email"),
-    "hidden": primeConstructor(GroupingElement, "hidden"),
-    "month": primeConstructor(GroupingElement, "month"),
-    "number": primeConstructor(GroupingElement, "number"),
-    "password": primeConstructor(GroupingElement, "password"),
-    "radio": primeConstructor(GroupingElement, "radio"),
-    "range": primeConstructor(GroupingElement, "range"),
-    "tel": primeConstructor(GroupingElement, "tel"),
-    "text": primeConstructor(GroupingElement, "text"),
-    "time": primeConstructor(GroupingElement, "time"),
-    "url": primeConstructor(GroupingElement, "url"),
-    "week": primeConstructor(GroupingElement, "week"),
+    "checkbox": primeConstructor(GroupingElement, "input"),
+    "color": primeConstructor(GroupingElement, "input"),
+    "date": primeConstructor(GroupingElement, "input"),
+    "datetime-local": primeConstructor(GroupingElement, "input"),
+    "email": primeConstructor(GroupingElement, "input"),
+    "hidden": primeConstructor(GroupingElement, "input"),
+    "month": primeConstructor(GroupingElement, "input"),
+    "number": primeConstructor(GroupingElement, "input"),
+    "password": primeConstructor(GroupingElement, "input"),
+    "radio": primeConstructor(GroupingElement, "input"),
+    "range": primeConstructor(GroupingElement, "input"),
+    "tel": primeConstructor(GroupingElement, "input"),
+    "text": primeConstructor(GroupingElement, "input"),
+    "time": primeConstructor(GroupingElement, "input"),
+    "url": primeConstructor(GroupingElement, "input"),
+    "week": primeConstructor(GroupingElement, "input"),
     // Table
     "table": primeConstructor(TableElement, "table")
 };
@@ -427,6 +427,7 @@ function parseSelector(selector) {
     }
     return selectors;
 }
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createPrimitive(tagName) {
     switch (tagName) {
         /**
@@ -466,6 +467,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), href);
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](textContent, attributes);
             };
         /**
@@ -500,6 +502,7 @@ function createPrimitive(tagName) {
                     children = [];
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](summary, children, attributes);
             };
         /**
@@ -553,21 +556,16 @@ function createPrimitive(tagName) {
                     children = [];
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](children, attributes);
             };
         /**
-         * Form-associated/Grouping/Text-level
+         * Button
          * (): NodeTagNameMap[NodeTagName]
          * (selector: string): NodeTagNameMap[NodeTagName]
          * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
          * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
          */
-        case "article":
-        case "aside":
-        case "b":
-        case "blockquote":
-        case "br":
         case "button":
         case "button[type=button]":
             if (tagName === "button[type=button]") {
@@ -583,6 +581,44 @@ function createPrimitive(tagName) {
             if (tagName === "button[type=submit]") {
                 tagName = "submit";
             }
+            return function (selector, children = [], attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
+                }
+                else {
+                    // eslint-disable-next-line no-lonely-if
+                    if (selector !== undefined && Array.isArray(selector)) {
+                        children = selector;
+                    }
+                    else if (selector !== undefined && typeof selector === "string") {
+                        children = [selector];
+                    }
+                }
+                // children
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                    children = [children];
+                }
+                else if (children !== undefined && Array.isArray(children)) ;
+                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                    attributes = Object.assign(Object.assign({}, attributes), children);
+                    children = [];
+                }
+                // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
+                return ElementTagNameMap["button"](children, Object.assign(Object.assign({}, attributes), { "type": tagName }));
+            };
+        /**
+         * Form-associated/Grouping/Text-level
+         * (): NodeTagNameMap[NodeTagName]
+         * (selector: string): NodeTagNameMap[NodeTagName]
+         * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
+         * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         */
+        case "article":
+        case "aside":
+        case "b":
+        case "blockquote":
+        case "br":
         case "canvas":
         case "code":
         case "del":
@@ -643,10 +679,7 @@ function createPrimitive(tagName) {
                     children = [];
                 }
                 // attributes
-                // FIXME:
-                if (/button|reset|submit/i.test(tagName)) {
-                    attributes.type = tagName;
-                }
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](children, attributes);
             };
         /**
@@ -681,6 +714,7 @@ function createPrimitive(tagName) {
                     sources = [];
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](sources, attributes);
             };
         /**
@@ -714,6 +748,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](legend, children, attributes);
             };
         /**
@@ -747,6 +782,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](figcaption, children, attributes);
             };
         /**
@@ -794,6 +830,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
@@ -820,6 +857,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), source);
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], attributes);
             };
         /**
@@ -881,6 +919,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
@@ -911,6 +950,7 @@ function createPrimitive(tagName) {
                     textContent = [];
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](textContent, attributes);
             };
         /**
@@ -937,6 +977,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), value);
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
@@ -974,6 +1015,7 @@ function createPrimitive(tagName) {
                     attributes.required = required;
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](options, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
@@ -1004,6 +1046,7 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), tableHeader);
                 }
                 // attributes
+                // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](caption, tableHeader, attributes);
             };
         default:

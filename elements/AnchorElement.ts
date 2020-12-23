@@ -2,8 +2,8 @@ import { Element } from "../abstract/Element";
 import type { ElementAttributesMap } from "../types/attributes";
 import type { TopLevelElementMap } from "../types/elements";
 
-export class AnchorElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, textContent: (string | Node)[], attributes: ElementAttributesMap[TagName]) {
+export class AnchorElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
+	public constructor(tagName: ElementTagName, textContent: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
 		this.children.push(...textContent);
@@ -19,7 +19,7 @@ export class AnchorElement<TagName extends keyof TopLevelElementMap> extends Ele
 		}
 
 		for (const child of this.children) {
-			if (child instanceof HTMLElement) {
+			if (child instanceof Node) {
 				this.template.append(child);
 			} else {
 				this.template.innerHTML += child;
