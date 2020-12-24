@@ -379,30 +379,30 @@ const ElementTagNameMap = {
     // Figure
     "figure": primeConstructor(FigureElement, "figure"),
     // File
-    "file": primeConstructor(GroupingElement, "input"),
+    "file": primeConstructor(GroupingElement, "file"),
     // IFrame
     "iframe": primeConstructor(GroupingElement, "iframe"),
     // Search
-    "search": primeConstructor(GroupingElement, "input"),
+    "search": primeConstructor(GroupingElement, "search"),
     // Select
     "select": primeConstructor(SelectElement, "select"),
     // Input
-    "checkbox": primeConstructor(GroupingElement, "input"),
-    "color": primeConstructor(GroupingElement, "input"),
-    "date": primeConstructor(GroupingElement, "input"),
-    "datetime-local": primeConstructor(GroupingElement, "input"),
-    "email": primeConstructor(GroupingElement, "input"),
-    "hidden": primeConstructor(GroupingElement, "input"),
-    "month": primeConstructor(GroupingElement, "input"),
-    "number": primeConstructor(GroupingElement, "input"),
-    "password": primeConstructor(GroupingElement, "input"),
-    "radio": primeConstructor(GroupingElement, "input"),
-    "range": primeConstructor(GroupingElement, "input"),
-    "tel": primeConstructor(GroupingElement, "input"),
-    "text": primeConstructor(GroupingElement, "input"),
-    "time": primeConstructor(GroupingElement, "input"),
-    "url": primeConstructor(GroupingElement, "input"),
-    "week": primeConstructor(GroupingElement, "input"),
+    "checkbox": primeConstructor(GroupingElement, "checkbox"),
+    "color": primeConstructor(GroupingElement, "color"),
+    "date": primeConstructor(GroupingElement, "date"),
+    "datetime-local": primeConstructor(GroupingElement, "datetime-local"),
+    "email": primeConstructor(GroupingElement, "email"),
+    "hidden": primeConstructor(GroupingElement, "hidden"),
+    "month": primeConstructor(GroupingElement, "month"),
+    "number": primeConstructor(GroupingElement, "number"),
+    "password": primeConstructor(GroupingElement, "password"),
+    "radio": primeConstructor(GroupingElement, "radio"),
+    "range": primeConstructor(GroupingElement, "range"),
+    "tel": primeConstructor(GroupingElement, "tel"),
+    "text": primeConstructor(GroupingElement, "text"),
+    "time": primeConstructor(GroupingElement, "time"),
+    "url": primeConstructor(GroupingElement, "url"),
+    "week": primeConstructor(GroupingElement, "week"),
     // Table
     "table": primeConstructor(TableElement, "table")
 };
@@ -466,7 +466,6 @@ function createPrimitive(tagName) {
                 else if (href !== undefined && typeof href === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), href);
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](textContent, attributes);
             };
@@ -501,7 +500,6 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](summary, children, attributes);
             };
@@ -555,57 +553,8 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](children, attributes);
-            };
-        /**
-         * Button
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
-         */
-        case "button":
-        case "button[type=button]":
-            if (tagName === "button[type=button]") {
-                tagName = "button";
-            }
-        case "reset":
-        case "button[type=reset]":
-            if (tagName === "button[type=reset]") {
-                tagName = "reset";
-            }
-        case "submit":
-        case "button[type=submit]":
-            if (tagName === "button[type=submit]") {
-                tagName = "submit";
-            }
-            return function (selector, children = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
-                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
-                }
-                else {
-                    // eslint-disable-next-line no-lonely-if
-                    if (selector !== undefined && Array.isArray(selector)) {
-                        children = selector;
-                    }
-                    else if (selector !== undefined && typeof selector === "string") {
-                        children = [selector];
-                    }
-                }
-                // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
-                    children = [children];
-                }
-                else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
-                    attributes = Object.assign(Object.assign({}, attributes), children);
-                    children = [];
-                }
-                // attributes
-                // @ts-expect-error microsoft/TypeScript#13995
-                return ElementTagNameMap["button"](children, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Form-associated/Grouping/Text-level
@@ -678,9 +627,36 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](children, attributes);
+            };
+        case "button":
+        case "reset":
+        case "submit":
+            return function (selector, children = [], attributes = {}) {
+                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                    attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
+                }
+                else {
+                    // eslint-disable-next-line no-lonely-if
+                    if (selector !== undefined && Array.isArray(selector)) {
+                        children = selector;
+                    }
+                    else if (selector !== undefined && typeof selector === "string") {
+                        children = [selector];
+                    }
+                }
+                // children
+                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                    children = [children];
+                }
+                else if (children !== undefined && Array.isArray(children)) ;
+                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                    attributes = Object.assign(Object.assign({}, attributes), children);
+                    children = [];
+                }
+                // @ts-expect-error microsoft/TypeScript#13995
+                return ElementTagNameMap["button"](children, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Embedded
@@ -713,7 +689,6 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), sources);
                     sources = [];
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](sources, attributes);
             };
@@ -747,7 +722,6 @@ function createPrimitive(tagName) {
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](legend, children, attributes);
             };
@@ -781,7 +755,6 @@ function createPrimitive(tagName) {
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](figcaption, children, attributes);
             };
@@ -829,7 +802,6 @@ function createPrimitive(tagName) {
                 if (required !== undefined && typeof required === "boolean") {
                     attributes.required = required;
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
@@ -856,7 +828,6 @@ function createPrimitive(tagName) {
                 else if (source !== undefined && typeof source === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), source);
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], attributes);
             };
@@ -918,7 +889,6 @@ function createPrimitive(tagName) {
                 if (required !== undefined && typeof required === "boolean") {
                     attributes.required = required;
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
@@ -949,7 +919,6 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), textContent);
                     textContent = [];
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](textContent, attributes);
             };
@@ -976,7 +945,6 @@ function createPrimitive(tagName) {
                 else if (value !== undefined && typeof value === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), value);
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
@@ -1014,7 +982,6 @@ function createPrimitive(tagName) {
                 if (required !== undefined && typeof required === "boolean") {
                     attributes.required = required;
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](options, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
@@ -1045,7 +1012,6 @@ function createPrimitive(tagName) {
                 else if (tableHeader !== undefined && typeof tableHeader === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), tableHeader);
                 }
-                // attributes
                 // @ts-expect-error microsoft/TypeScript#13995
                 return ElementTagNameMap[tagName](caption, tableHeader, attributes);
             };

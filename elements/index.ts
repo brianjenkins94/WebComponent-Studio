@@ -90,34 +90,34 @@ export const ElementTagNameMap = {
 	"figure": primeConstructor(FigureElement, "figure"),
 
 	// File
-	"file": primeConstructor(GroupingElement, "input"), // Childless
+	"file": primeConstructor(GroupingElement, "file"), // Childless
 
 	// IFrame
 	"iframe": primeConstructor(GroupingElement, "iframe"),
 
 	// Search
-	"search": primeConstructor(GroupingElement, "input"), // Childless
+	"search": primeConstructor(GroupingElement, "search"), // Childless
 
 	// Select
 	"select": primeConstructor(SelectElement, "select"),
 
 	// Input
-	"checkbox": primeConstructor(GroupingElement, "input"), // Childless
-	"color": primeConstructor(GroupingElement, "input"), // Childless
-	"date": primeConstructor(GroupingElement, "input"), // Childless
-	"datetime-local": primeConstructor(GroupingElement, "input"), // Childless
-	"email": primeConstructor(GroupingElement, "input"), // Childless
-	"hidden": primeConstructor(GroupingElement, "input"), // Childless
-	"month": primeConstructor(GroupingElement, "input"), // Childless
-	"number": primeConstructor(GroupingElement, "input"), // Childless
-	"password": primeConstructor(GroupingElement, "input"), // Childless
-	"radio": primeConstructor(GroupingElement, "input"), // Childless
-	"range": primeConstructor(GroupingElement, "input"), // Childless
-	"tel": primeConstructor(GroupingElement, "input"), // Childless
-	"text": primeConstructor(GroupingElement, "input"), // Childless
-	"time": primeConstructor(GroupingElement, "input"), // Childless
-	"url": primeConstructor(GroupingElement, "input"), // Childless
-	"week": primeConstructor(GroupingElement, "input"), // Childless
+	"checkbox": primeConstructor(GroupingElement, "checkbox"), // Childless
+	"color": primeConstructor(GroupingElement, "color"), // Childless
+	"date": primeConstructor(GroupingElement, "date"), // Childless
+	"datetime-local": primeConstructor(GroupingElement, "datetime-local"), // Childless
+	"email": primeConstructor(GroupingElement, "email"), // Childless
+	"hidden": primeConstructor(GroupingElement, "hidden"), // Childless
+	"month": primeConstructor(GroupingElement, "month"), // Childless
+	"number": primeConstructor(GroupingElement, "number"), // Childless
+	"password": primeConstructor(GroupingElement, "password"), // Childless
+	"radio": primeConstructor(GroupingElement, "radio"), // Childless
+	"range": primeConstructor(GroupingElement, "range"), // Childless
+	"tel": primeConstructor(GroupingElement, "tel"), // Childless
+	"text": primeConstructor(GroupingElement, "text"), // Childless
+	"time": primeConstructor(GroupingElement, "time"), // Childless
+	"url": primeConstructor(GroupingElement, "url"), // Childless
+	"week": primeConstructor(GroupingElement, "week"), // Childless
 
 	// Table
 	"table": primeConstructor(TableElement, "table")

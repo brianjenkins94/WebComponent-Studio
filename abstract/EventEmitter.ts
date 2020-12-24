@@ -1,4 +1,11 @@
-export abstract class EventEmitter {
+export interface IEventEmitter {
+	on: (event: string, listener: () => void) => () => void;
+	off: (event?: string, listener?: () => void) => void;
+	emit: (event: string, ...args: unknown[]) => void;
+	once: (event: string, listener: () => void) => () => void;
+}
+
+export abstract class EventEmitter implements IEventEmitter {
 	private events = {};
 
 	public on(event: string, listener: () => void): () => void {

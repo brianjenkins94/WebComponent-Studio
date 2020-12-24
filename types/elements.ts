@@ -19,17 +19,37 @@ interface AbstractEmbeddedContent {
 
 interface FormAssociatedContent {
 	"button": HTMLButtonElement;
+	"checkbox": HTMLInputElement;
+	"color": HTMLInputElement;
+	"date": HTMLInputElement;
+	"datetime-local": HTMLInputElement;
+	"email": HTMLInputElement;
 	"fieldset": HTMLFieldSetElement;
+	"file": HTMLInputElement;
 	"form": HTMLFormElement;
-	"input": HTMLInputElement;
+	"hidden": HTMLInputElement;
 	"label": HTMLLabelElement;
 	"meter": HTMLMeterElement;
+	"month": HTMLInputElement;
+	"number": HTMLInputElement;
+	"password": HTMLInputElement;
 	"progress": HTMLProgressElement;
+	"radio": HTMLInputElement;
+	"range": HTMLInputElement;
+	"reset": HTMLButtonElement;
+	"search": HTMLInputElement;
 	"select": HTMLSelectElement;
+	"submit": HTMLButtonElement;
+	"tel": HTMLInputElement;
+	"text": HTMLInputElement;
 	"textarea": HTMLTextAreaElement;
+	"time": HTMLInputElement;
+	"url": HTMLInputElement;
+	"week": HTMLInputElement;
 }
 
 interface AbstractFormAssociatedContent {
+	"input": HTMLInputElement;
 	"legend": HTMLLegendElement;
 	"optgroup": HTMLOptGroupElement;
 	"option": HTMLOptionElement;
