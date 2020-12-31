@@ -1,8 +1,8 @@
-import type { EventEmitter } from "./EventEmitter";
+import type { IEventEmitter } from "./EventEmitter";
 import type { ElementAttributesMap } from "../types/attributes";
 import type { TopLevelElementMap } from "../types/elements";
 
-export abstract class Element<ElementTagName extends keyof TopLevelElementMap> implements EventEmitter {
+export abstract class Element<ElementTagName extends keyof TopLevelElementMap> implements IEventEmitter {
 	protected template: HTMLElement;
 	protected attributes: ElementAttributesMap[ElementTagName] = {};
 	protected readonly type: keyof TopLevelElementMap;

@@ -358,7 +358,6 @@ const ElementTagNameMap = {
     "ins": primeConstructor(GroupingElement, "ins"),
     "kbd": primeConstructor(GroupingElement, "kbd"),
     "label": primeConstructor(GroupingElement, "label"),
-    "li": primeConstructor(GroupingElement, "li"),
     "mark": primeConstructor(GroupingElement, "mark"),
     "p": primeConstructor(GroupingElement, "p"),
     "pre": primeConstructor(GroupingElement, "pre"),
@@ -380,30 +379,30 @@ const ElementTagNameMap = {
     // Figure
     "figure": primeConstructor(FigureElement, "figure"),
     // File
-    "file": primeConstructor(GroupingElement, "file"),
+    "file": primeConstructor(GroupingElement, "input"),
     // IFrame
     "iframe": primeConstructor(GroupingElement, "iframe"),
     // Search
-    "search": primeConstructor(GroupingElement, "search"),
+    "search": primeConstructor(GroupingElement, "input"),
     // Select
     "select": primeConstructor(SelectElement, "select"),
     // Input
-    "checkbox": primeConstructor(GroupingElement, "checkbox"),
-    "color": primeConstructor(GroupingElement, "color"),
-    "date": primeConstructor(GroupingElement, "date"),
-    "datetime-local": primeConstructor(GroupingElement, "datetime-local"),
-    "email": primeConstructor(GroupingElement, "email"),
-    "hidden": primeConstructor(GroupingElement, "hidden"),
-    "month": primeConstructor(GroupingElement, "month"),
-    "number": primeConstructor(GroupingElement, "number"),
-    "password": primeConstructor(GroupingElement, "password"),
-    "radio": primeConstructor(GroupingElement, "radio"),
-    "range": primeConstructor(GroupingElement, "range"),
-    "tel": primeConstructor(GroupingElement, "tel"),
-    "text": primeConstructor(GroupingElement, "text"),
-    "time": primeConstructor(GroupingElement, "time"),
-    "url": primeConstructor(GroupingElement, "url"),
-    "week": primeConstructor(GroupingElement, "week"),
+    "checkbox": primeConstructor(GroupingElement, "input"),
+    "color": primeConstructor(GroupingElement, "input"),
+    "date": primeConstructor(GroupingElement, "input"),
+    "datetime-local": primeConstructor(GroupingElement, "input"),
+    "email": primeConstructor(GroupingElement, "input"),
+    "hidden": primeConstructor(GroupingElement, "input"),
+    "month": primeConstructor(GroupingElement, "input"),
+    "number": primeConstructor(GroupingElement, "input"),
+    "password": primeConstructor(GroupingElement, "input"),
+    "radio": primeConstructor(GroupingElement, "input"),
+    "range": primeConstructor(GroupingElement, "input"),
+    "tel": primeConstructor(GroupingElement, "input"),
+    "text": primeConstructor(GroupingElement, "input"),
+    "time": primeConstructor(GroupingElement, "input"),
+    "url": primeConstructor(GroupingElement, "input"),
+    "week": primeConstructor(GroupingElement, "input"),
     // Table
     "table": primeConstructor(TableElement, "table")
 };
@@ -1081,7 +1080,6 @@ const img = createPrimitive("img");
 const ins = createPrimitive("ins");
 const kbd = createPrimitive("kbd");
 const label = createPrimitive("label");
-const li = createPrimitive("li");
 const main = createPrimitive("main");
 const mark = createPrimitive("mark");
 const meter = createPrimitive("meter");
@@ -1157,7 +1155,6 @@ globalThis.img = img;
 globalThis.ins = ins;
 globalThis.kbd = kbd;
 globalThis.label = label;
-globalThis.li = li;
 globalThis.main = main;
 globalThis.mark = mark;
 globalThis.meter = meter;
@@ -1268,4 +1265,4 @@ function createTemplate(tagName, options) {
 }
 globalThis.createTemplate = createTemplate;
 
-//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, createTemplate, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, img, ins, kbd, label, li, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };
+//export { a, article, aside, audio, b, blockquote, br, button, canvas, checkbox, code, color, createTemplate, date, datetime, del, details, div, em, email, fieldset, figure, file, footer, form, h1, h2, h3, h4, h5, h6, header, hidden, hr, i, iframe, img, ins, kbd, label, main, mark, meter, month, nav, number, ol, p, password, picture, pre, progress, q, radio, range, reset, s, search, section, select, small, span, strong, sub, submit, sup, table, tel, text, textarea, time, u, ul, url, video, week };

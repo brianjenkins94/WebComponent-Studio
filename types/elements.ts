@@ -28,6 +28,7 @@ interface FormAssociatedContent {
 	"file": HTMLInputElement;
 	"form": HTMLFormElement;
 	"hidden": HTMLInputElement;
+	"input": HTMLInputElement;
 	"label": HTMLLabelElement;
 	"meter": HTMLMeterElement;
 	"month": HTMLInputElement;
@@ -49,7 +50,6 @@ interface FormAssociatedContent {
 }
 
 interface AbstractFormAssociatedContent {
-	"input": HTMLInputElement;
 	"legend": HTMLLegendElement;
 	"optgroup": HTMLOptGroupElement;
 	"option": HTMLOptionElement;
@@ -60,7 +60,6 @@ interface GroupingContent {
 	"div": HTMLDivElement;
 	"figure": HTMLElement;
 	"hr": HTMLHRElement;
-	"li": HTMLLIElement;
 	"ol": HTMLOListElement;
 	"p": HTMLParagraphElement;
 	"pre": HTMLPreElement;
@@ -69,6 +68,7 @@ interface GroupingContent {
 
 interface AbstractGroupingContent {
 	"figcaption": HTMLElement;
+	"li": HTMLLIElement;
 }
 
 interface HeadingContent {
