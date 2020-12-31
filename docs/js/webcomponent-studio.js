@@ -169,7 +169,7 @@ class FieldSetElement extends Element {
 class FigureElement extends Element {
     constructor(tagName, caption, children, attributes) {
         super(tagName);
-        const captionElement = document.createElement("caption");
+        const captionElement = document.createElement("figcaption");
         captionElement.append(caption);
         this.children.push(captionElement, ...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
@@ -283,6 +283,9 @@ class SelectElement extends Element {
 class TableElement extends Element {
     constructor(tagName, caption, tableHeader, attributes) {
         super(tagName);
+        this.thead = [];
+        this.tbody = [];
+        this.tfoot = [];
         const captionElement = document.createElement("caption");
         captionElement.append(caption);
         this.children.push(captionElement);
@@ -293,9 +296,7 @@ class TableElement extends Element {
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        this.template.appendChild(document.createElement("thead"));
-        this.template.appendChild(document.createElement("tbody"));
-        this.template.appendChild(document.createElement("tfoot"));
+        // TODO: Probably not this.
         for (const child of this.children) {
             if (child instanceof Node) {
                 this.template.append(child);
@@ -407,7 +408,7 @@ const ElementTagNameMap = {
     "table": primeConstructor(TableElement, "table")
 };
 
-/* eslint-disable complexity */
+/* eslint-disable complexity, max-params, no-param-reassign */
 const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z0-9-]|[\240-\377]|[0-9a-f]{1,6})*)+$/i;
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 function parseSelector(selector) {
@@ -433,11 +434,11 @@ function createPrimitive(tagName) {
         /**
          * Anchor
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, href): NodeTagNameMap[NodeTagName]
-         * (selector?: string, textContent?: string, href: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, textContent?: string, href?: string, attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, href): ElementTagNameMap[ElementTagName]
+         * (selector?: string, textContent?: string, href: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, textContent?: string, href?: string, attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "a":
             return function (selector, textContent = [], href = "#", attributes = {}) {
@@ -466,17 +467,18 @@ function createPrimitive(tagName) {
                 else if (href !== undefined && typeof href === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), href);
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](textContent, attributes);
             };
         /**
          * Details
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, summary: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, summary?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, summary?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, summary: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, summary?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, summary?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "details":
             return function (selector, summary, children = [], attributes = {}) {
@@ -500,19 +502,20 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](summary, children, attributes);
             };
         /**
          * Form
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method?: string, action: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method?: string, action?: string, encoding: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, method: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, method?: string, action: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, method?: string, action?: string, encoding: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "form":
             return function (selector, method, action, encoding, children = [], attributes = {}) {
@@ -545,7 +548,6 @@ function createPrimitive(tagName) {
                 }
                 // children
                 if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
-                    // @ts-expect-error reassignment
                     children = [children];
                 }
                 else if (children !== undefined && Array.isArray(children)) ;
@@ -553,15 +555,16 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](children, attributes);
             };
         /**
          * Form-associated/Grouping/Text-level
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children: Node | (string | Node)[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, children: Node | (string | Node)[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "article":
         case "aside":
@@ -627,7 +630,8 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](children, attributes);
             };
         case "button":
@@ -655,16 +659,17 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap["button"](children, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Embedded
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, sources: string | string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, sources?: string | string[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, sources: string | string[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, sources?: string | string[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "audio":
         case "img":
@@ -684,22 +689,26 @@ function createPrimitive(tagName) {
                     }
                 }
                 // sources
-                if (sources !== undefined && Array.isArray(sources)) ;
+                if (sources !== undefined && typeof sources === "string") {
+                    sources = [sources];
+                }
+                else if (sources !== undefined && Array.isArray(sources)) ;
                 else if (sources !== undefined && typeof sources === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), sources);
                     sources = [];
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](sources, attributes);
             };
         /**
          * Field Set
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, legend: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, legend?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, legend?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, legend: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, legend?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, legend?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "fieldset":
             return function (selector, legend, children = [], attributes = {}) {
@@ -722,17 +731,18 @@ function createPrimitive(tagName) {
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](legend, children, attributes);
             };
         /**
          * Figure
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector): NodeTagNameMap[NodeTagName]
-         * (selector?: string, figcaption: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, figcaption?: string, children: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
-         * (selector?: string, figcaption?: string, children?: Node | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector): ElementTagNameMap[ElementTagName]
+         * (selector?: string, figcaption: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, figcaption?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, figcaption?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "figure":
             return function (selector, figcaption, children = [], attributes = {}) {
@@ -755,18 +765,19 @@ function createPrimitive(tagName) {
                 else if (children !== undefined && typeof children === "object" && children instanceof Element) {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](figcaption, children, attributes);
             };
         /**
          * File
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, accept: string | string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, accept?: string | string[], required: boolean): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, accept: string | string[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, accept?: string | string[], required: boolean): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "file":
             return function (selector, name, accept, required, attributes = {}) {
@@ -802,16 +813,17 @@ function createPrimitive(tagName) {
                 if (required !== undefined && typeof required === "boolean") {
                     attributes.required = required;
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * IFrame
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, source: string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, source?: string[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, source: string[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, source?: string[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "iframe":
             return function (selector, source, attributes = {}) {
@@ -828,18 +840,19 @@ function createPrimitive(tagName) {
                 else if (source !== undefined && typeof source === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), source);
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName]([], attributes);
             };
         /**
          * Input
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, value: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, value?: string, required: boolean): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, value: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, value?: string, required: boolean): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "checkbox":
         case "color":
@@ -889,26 +902,32 @@ function createPrimitive(tagName) {
                 if (required !== undefined && typeof required === "boolean") {
                     attributes.required = required;
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Label
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector): NodeTagNameMap[NodeTagName]
-         * (selector?, forValue?: string, textContent: string | (string | Node)[]): NodeTagNameMap[NodeTagName]
-         * (selector?, forValue?: string, textContent?: string | (string | Node)[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, textContent: string | (string | Node)[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, textContent: string | (string | Node)[], attributes?: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, forValue: string, textContent: string | (string | Node)[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, forValue?: string, textContent?: string | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "label":
             return function (selector, forValue, textContent = [], attributes = {}) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
-                else {
-                    // FIXME: Logic changed
-                    forValue = selector;
-                    textContent = forValue;
+                if (forValue !== undefined && typeof forValue === "string") {
+                    if (Array.isArray(textContent)) {
+                        textContent = forValue;
+                    }
+                    else {
+                        attributes.for = forValue;
+                    }
                 }
                 // children
                 if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
@@ -919,16 +938,17 @@ function createPrimitive(tagName) {
                     attributes = Object.assign(Object.assign({}, attributes), textContent);
                     textContent = [];
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](textContent, attributes);
             };
         /**
          * Search
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, value: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, value?: string, attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, value: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, value?: string, attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "search":
             return function (selector, value, attributes = {}) {
@@ -945,18 +965,19 @@ function createPrimitive(tagName) {
                 else if (value !== undefined && typeof value === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), value);
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName]([], Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Select
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector: string, name: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, options: object[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, options?: object[], required: boolean): NodeTagNameMap[NodeTagName]
-         * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector: string, name: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, options: object[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, options?: object[], required: boolean): ElementTagNameMap[ElementTagName]
+         * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "select":
             return function (selector, name, options, required, attributes = {}) {
@@ -982,17 +1003,18 @@ function createPrimitive(tagName) {
                 if (required !== undefined && typeof required === "boolean") {
                     attributes.required = required;
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](options, Object.assign(Object.assign({}, attributes), { "type": tagName }));
             };
         /**
          * Table
          *
-         * (): NodeTagNameMap[NodeTagName]
-         * (selector: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, caption: string): NodeTagNameMap[NodeTagName]
-         * (selector?: string, caption?: string, tableHeader: string[]): NodeTagNameMap[NodeTagName]
-         * (selector?: string, caption?: string, tableHeader: string[], attributes: object): NodeTagNameMap[NodeTagName]
+         * (): ElementTagNameMap[ElementTagName]
+         * (selector: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, caption: string): ElementTagNameMap[ElementTagName]
+         * (selector?: string, caption?: string, tableHeader: string[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, caption?: string, tableHeader: string[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "table":
             return function (selector, caption, tableHeader = [], attributes = {}) {
@@ -1012,7 +1034,8 @@ function createPrimitive(tagName) {
                 else if (tableHeader !== undefined && typeof tableHeader === "object") {
                     attributes = Object.assign(Object.assign({}, attributes), tableHeader);
                 }
-                // @ts-expect-error microsoft/TypeScript#13995
+                // @ts-expect-error Generics extending unions cannot be narrowed
+                // https://github.com/microsoft/TypeScript/issues/13995
                 return ElementTagNameMap[tagName](caption, tableHeader, attributes);
             };
         default:

@@ -8,7 +8,7 @@ export class FigureElement<ElementTagName extends keyof TopLevelElementMap> exte
 	public constructor(tagName: ElementTagName, caption: string, children: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
-		const captionElement = document.createElement("caption");
+		const captionElement = document.createElement("figcaption");
 		captionElement.append(caption);
 
 		this.children.push(captionElement, ...children);

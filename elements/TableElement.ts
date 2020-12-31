@@ -13,6 +13,10 @@ import type { TopLevelElementMap } from "../types/elements";
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
 export class TableElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
+	public thead: (string | Node)[] = [];
+	public tbody: (string | Node)[] = [];
+	public tfoot: (string | Node)[] = [];
+
 	public constructor(tagName: ElementTagName, caption: string, tableHeader: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
@@ -31,10 +35,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 			this.template.setAttribute(key, value);
 		}
 
-		this.template.appendChild(document.createElement("thead"));
-		this.template.appendChild(document.createElement("tbody"));
-		this.template.appendChild(document.createElement("tfoot"));
-
+		// TODO: Probably not this.
 		for (const child of this.children) {
 			if (child instanceof Node) {
 				this.template.append(child);
