@@ -277,10 +277,10 @@
 			const section = ul(".ul");
 
 			for (const terminalNode of getTerminalNodes(element.parentElement)) {
-				section.push(li(".li", a(".a", code(".code", terminalNode), "#")));
+				section.push(a(".a", code(".code", terminalNode), "#"));
 			}
 
-			sections.push(li(".li", details(".details", element.textContent, section)));
+			sections.push(details(".details", element.textContent, section));
 		}
 
 		document.getElementById("nav").innerHTML += sections;

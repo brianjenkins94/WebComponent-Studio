@@ -214,6 +214,31 @@ class GroupingElement extends Element {
     }
 }
 
+class ListElement extends Element {
+    constructor(tagName, children, attributes) {
+        super(tagName);
+        this.children.push(...children);
+        this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
+    }
+    toString() {
+        this.template = document.createElement(this.type);
+        for (const [key, value] of Object.entries(this.attributes)) {
+            this.template.setAttribute(key, value);
+        }
+        for (const child of this.children) {
+            const listItemElement = document.createElement("li");
+            if (child instanceof Node) {
+                listItemElement.append(child);
+            }
+            else {
+                listItemElement.innerHTML += child;
+            }
+            this.template.appendChild(listItemElement);
+        }
+        return this.template.outerHTML;
+    }
+}
+
 // <optgroup> should be part of a <select>
 // <option> should be part of a <select> or <optgroup>
 class SelectElement extends Element {
@@ -336,9 +361,9 @@ const ElementTagNameMap = {
     "hr": primeConstructor(GroupingElement, "hr"),
     "main": primeConstructor(GroupingElement, "main"),
     "nav": primeConstructor(GroupingElement, "nav"),
-    "ol": primeConstructor(GroupingElement, "ol"),
+    "ol": primeConstructor(ListElement, "ol"),
     "section": primeConstructor(GroupingElement, "section"),
-    "ul": primeConstructor(GroupingElement, "ul"),
+    "ul": primeConstructor(ListElement, "ul"),
     // Text-Level
     "b": primeConstructor(GroupingElement, "b"),
     "blockquote": primeConstructor(GroupingElement, "blockquote"),

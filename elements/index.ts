@@ -6,6 +6,7 @@ import { EmbeddedElement } from "./EmbeddedElement";
 import { FieldSetElement } from "./FieldSetElement";
 import { FigureElement } from "./FigureElement";
 import { GroupingElement } from "./GroupingElement";
+import { ListElement } from "./ListElement";
 import { SelectElement } from "./SelectElement";
 import { TableElement } from "./TableElement";
 import type { Element } from "../abstract/Element";
@@ -41,9 +42,9 @@ export const ElementTagNameMap = {
 	"hr": primeConstructor(GroupingElement, "hr"), // Childless
 	"main": primeConstructor(GroupingElement, "main"),
 	"nav": primeConstructor(GroupingElement, "nav"),
-	"ol": primeConstructor(GroupingElement, "ol"),
+	"ol": primeConstructor(ListElement, "ol"),
 	"section": primeConstructor(GroupingElement, "section"),
-	"ul": primeConstructor(GroupingElement, "ul"),
+	"ul": primeConstructor(ListElement, "ul"),
 
 	// Text-Level
 	"b": primeConstructor(GroupingElement, "b"),
