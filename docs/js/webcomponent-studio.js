@@ -116,7 +116,7 @@ class EmbeddedElement extends Element {
             this.template.setAttribute(key, value);
         }
         if (/^audio|picture|video$/i.test(this.type)) {
-            // TODO: Handle type
+            // TODO: Support `<track>`s
             for (const source of this.sources) {
                 const sourceElement = document.createElement("source");
                 sourceElement.setAttribute("src", source);
@@ -169,9 +169,12 @@ class FieldSetElement extends Element {
 class FigureElement extends Element {
     constructor(tagName, caption, children, attributes) {
         super(tagName);
-        const captionElement = document.createElement("figcaption");
-        captionElement.append(caption);
-        this.children.push(captionElement, ...children);
+        this.children.push(...children);
+        if (caption !== undefined) {
+            const captionElement = document.createElement("figcaption");
+            captionElement.append(caption);
+            this.children.push(captionElement);
+        }
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -313,22 +316,79 @@ class TableElement extends Element {
         this.tfoot = [];
         const captionElement = document.createElement("caption");
         captionElement.append(caption);
+        this.thead.push(tableHeader);
         this.children.push(captionElement);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
+    }
+    push(...items) {
+        this.tbody.push(items);
+        return this;
+    }
+    unshift(...items) {
+        this.tbody.unshift(items);
+        return this;
     }
     toString() {
         this.template = document.createElement(this.type);
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        // TODO: Probably not this.
+        if (this.thead.length > 0) {
+            const tableHeadElement = document.createElement("thead");
+            for (const row of this.thead) {
+                const tableRow = document.createElement("tr");
+                for (const cellContent of row) {
+                    const tableCell = document.createElement("th");
+                    if (cellContent instanceof Node) {
+                        tableCell.append(cellContent);
+                    }
+                    else {
+                        tableCell.innerHTML += cellContent;
+                    }
+                    tableRow.appendChild(tableCell);
+                }
+                tableHeadElement.appendChild(tableRow);
+            }
+            this.children.push(tableHeadElement);
+        }
+        if (this.tbody.length > 0) {
+            const tableBodyElement = document.createElement("tbody");
+            for (const row of this.tbody) {
+                const tableRow = document.createElement("tr");
+                for (const cellContent of row) {
+                    const tableCell = document.createElement("td");
+                    if (cellContent instanceof Node) {
+                        tableCell.append(cellContent);
+                    }
+                    else {
+                        tableCell.innerHTML += cellContent;
+                    }
+                    tableRow.appendChild(tableCell);
+                }
+                tableBodyElement.appendChild(tableRow);
+            }
+            this.children.push(tableBodyElement);
+        }
+        if (this.tfoot.length > 0) {
+            const tableFootElement = document.createElement("tfoot");
+            for (const row of this.tfoot) {
+                const tableRow = document.createElement("tr");
+                for (const cellContent of row) {
+                    const tableCell = document.createElement("td");
+                    if (cellContent instanceof Node) {
+                        tableCell.append(cellContent);
+                    }
+                    else {
+                        tableCell.innerHTML += cellContent;
+                    }
+                    tableRow.appendChild(tableCell);
+                }
+                tableFootElement.appendChild(tableRow);
+            }
+            this.children.push(tableFootElement);
+        }
         for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
+            this.template.append(child);
         }
         return this.template.outerHTML;
     }
@@ -361,8 +421,9 @@ const ElementTagNameMap = {
     "hr": primeConstructor(GroupingElement, "hr"),
     "main": primeConstructor(GroupingElement, "main"),
     "nav": primeConstructor(GroupingElement, "nav"),
-    "ol": primeConstructor(ListElement, "ol"),
     "section": primeConstructor(GroupingElement, "section"),
+    // List
+    "ol": primeConstructor(ListElement, "ol"),
     "ul": primeConstructor(ListElement, "ul"),
     // Text-Level
     "b": primeConstructor(GroupingElement, "b"),
@@ -460,7 +521,7 @@ function createPrimitive(tagName) {
          *
          * (): ElementTagNameMap[ElementTagName]
          * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, href): ElementTagNameMap[ElementTagName]
+         * (selector?: string, href: string): ElementTagNameMap[ElementTagName]
          * (selector?: string, textContent?: string, href: string): ElementTagNameMap[ElementTagName]
          * (selector?: string, textContent?: string, href?: string, attributes: object): ElementTagNameMap[ElementTagName]
          */
@@ -779,7 +840,8 @@ function createPrimitive(tagName) {
                 // figcaption
                 if (figcaption !== undefined && typeof figcaption === "string") ;
                 else if (typeof figcaption === "object") {
-                    attributes = Object.assign(Object.assign({}, attributes), figcaption);
+                    children = figcaption;
+                    figcaption = undefined;
                 }
                 // children
                 if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
@@ -881,10 +943,6 @@ function createPrimitive(tagName) {
         case "checkbox":
         case "color":
         case "date":
-        case "datetime":
-            if (tagName === "datetime") {
-                tagName = "datetime-local";
-            }
         case "datetime-local":
         case "email":
         case "hidden":
@@ -945,6 +1003,7 @@ function createPrimitive(tagName) {
                 if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
+                // forValue
                 if (forValue !== undefined && typeof forValue === "string") {
                     if (Array.isArray(textContent)) {
                         textContent = forValue;
@@ -953,7 +1012,7 @@ function createPrimitive(tagName) {
                         attributes.for = forValue;
                     }
                 }
-                // children
+                // textContent
                 if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
                     textContent = [textContent];
                 }

@@ -24,7 +24,7 @@ export class EmbeddedElement<ElementTagName extends keyof TopLevelElementMap> ex
 		}
 
 		if (/^audio|picture|video$/i.test(this.type)) {
-			// TODO: Handle type
+			// TODO: Support `<track>`s
 			for (const source of this.sources) {
 				const sourceElement = document.createElement("source");
 				sourceElement.setAttribute("src", source);

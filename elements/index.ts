@@ -42,8 +42,10 @@ export const ElementTagNameMap = {
 	"hr": primeConstructor(GroupingElement, "hr"), // Childless
 	"main": primeConstructor(GroupingElement, "main"),
 	"nav": primeConstructor(GroupingElement, "nav"),
-	"ol": primeConstructor(ListElement, "ol"),
 	"section": primeConstructor(GroupingElement, "section"),
+
+	// List
+	"ol": primeConstructor(ListElement, "ol"),
 	"ul": primeConstructor(ListElement, "ul"),
 
 	// Text-Level

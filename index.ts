@@ -9,7 +9,7 @@ const CSS_SELECTOR = /^(?:(?:#|\.)-?(?:[_a-z]|[\240-\377]|[0-9a-f]{1,6})(?:[_a-z
 
 const URL_PATHNAME = /(?:[^?#]*)(?:\\?(?:[^#]*))?(?:#(?:.*))?$/i;
 
-function parseSelector(selector: string): object {
+function parseSelector(selector: string): { id?: string; class?: string } {
 	const selectors = {};
 
 	for (const match of selector.split(/(?=#|\.)/)) {
@@ -36,7 +36,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		 *
 		 * (): ElementTagNameMap[ElementTagName]
 		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, href): ElementTagNameMap[ElementTagName]
+		 * (selector?: string, href: string): ElementTagNameMap[ElementTagName]
 		 * (selector?: string, textContent?: string, href: string): ElementTagNameMap[ElementTagName]
 		 * (selector?: string, textContent?: string, href?: string, attributes: object): ElementTagNameMap[ElementTagName]
 		 */
@@ -392,7 +392,9 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 				if (figcaption !== undefined && typeof figcaption === "string") {
 					//figcaption = figcaption;
 				} else if (typeof figcaption === "object") {
-					attributes = { ...attributes, ...figcaption };
+					children = figcaption;
+
+					figcaption = undefined;
 				}
 
 				// children
@@ -505,10 +507,6 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "checkbox":
 		case "color":
 		case "date":
-		case "datetime":
-			if (tagName === "datetime") {
-				tagName = "datetime-local";
-			}
 		case "datetime-local":
 		case "email":
 		case "hidden":
@@ -576,6 +574,8 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 					attributes = { ...attributes, ...parseSelector(selector) };
 				}
 
+				// forValue
+
 				if (forValue !== undefined && typeof forValue === "string") {
 					if (Array.isArray(textContent)) {
 						textContent = forValue;
@@ -584,7 +584,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 					}
 				}
 
-				// children
+				// textContent
 
 				if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
 					textContent = [textContent];

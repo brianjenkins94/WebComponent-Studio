@@ -1611,3 +1611,31 @@ input:not([type=file])[disabled],select[disabled],textarea[disabled] {
     color: #959da5;
     background-color: #f3f4f6
 }
+
+/* */
+
+audio, video {
+    width: 100%;
+}
+figure {
+    margin: 0 0 1rem 0;
+}
+iframe {
+    border: 0;
+}
+.embed-responsive {
+    position: relative;
+    width: 100%;
+}
+.embed-responsive::before {
+    display: block;
+    padding-top: 100%;
+    content: "";
+}
+.embed-responsive > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}

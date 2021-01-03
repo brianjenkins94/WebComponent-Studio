@@ -13,9 +13,9 @@ import type { TopLevelElementMap } from "../types/elements";
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
 export class TableElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public thead: (string | Node)[] = [];
-	public tbody: (string | Node)[] = [];
-	public tfoot: (string | Node)[] = [];
+	public thead: (string | Node)[][] = [];
+	public tbody: (string | Node)[][] = [];
+	public tfoot: (string | Node)[][] = [];
 
 	public constructor(tagName: ElementTagName, caption: string, tableHeader: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
@@ -23,9 +23,23 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 		const captionElement = document.createElement("caption");
 		captionElement.append(caption);
 
+		this.thead.push(tableHeader);
+
 		this.children.push(captionElement);
 
 		this.attributes = { ...attributes, ...this.attributes };
+	}
+
+	public push(...items: (string | Node)[]): this {
+		this.tbody.push(items);
+
+		return this;
+	}
+
+	public unshift(...items: (string | Node)[]): this {
+		this.tbody.unshift(items);
+
+		return this;
 	}
 
 	public toString(): string {
@@ -35,13 +49,80 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 			this.template.setAttribute(key, value);
 		}
 
-		// TODO: Probably not this.
-		for (const child of this.children) {
-			if (child instanceof Node) {
-				this.template.append(child);
-			} else {
-				this.template.innerHTML += child;
+		if (this.thead.length > 0) {
+			const tableHeadElement = document.createElement("thead");
+
+			for (const row of this.thead) {
+				const tableRow = document.createElement("tr");
+
+				for (const cellContent of row) {
+					const tableCell = document.createElement("th");
+
+					if (cellContent instanceof Node) {
+						tableCell.append(cellContent);
+					} else {
+						tableCell.innerHTML += cellContent;
+					}
+
+					tableRow.appendChild(tableCell);
+				}
+
+				tableHeadElement.appendChild(tableRow);
 			}
+
+			this.children.push(tableHeadElement);
+		}
+
+		if (this.tbody.length > 0) {
+			const tableBodyElement = document.createElement("tbody");
+
+			for (const row of this.tbody) {
+				const tableRow = document.createElement("tr");
+
+				for (const cellContent of row) {
+					const tableCell = document.createElement("td");
+
+					if (cellContent instanceof Node) {
+						tableCell.append(cellContent);
+					} else {
+						tableCell.innerHTML += cellContent;
+					}
+
+					tableRow.appendChild(tableCell);
+				}
+
+				tableBodyElement.appendChild(tableRow);
+			}
+
+			this.children.push(tableBodyElement);
+		}
+
+		if (this.tfoot.length > 0) {
+			const tableFootElement = document.createElement("tfoot");
+
+			for (const row of this.tfoot) {
+				const tableRow = document.createElement("tr");
+
+				for (const cellContent of row) {
+					const tableCell = document.createElement("td");
+
+					if (cellContent instanceof Node) {
+						tableCell.append(cellContent);
+					} else {
+						tableCell.innerHTML += cellContent;
+					}
+
+					tableRow.appendChild(tableCell);
+				}
+
+				tableFootElement.appendChild(tableRow);
+			}
+
+			this.children.push(tableFootElement);
+		}
+
+		for (const child of this.children) {
+			this.template.append(child);
 		}
 
 		return this.template.outerHTML;
