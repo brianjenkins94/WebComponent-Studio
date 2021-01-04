@@ -50,7 +50,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// textContent
 
-				if ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element)) {
+				if (typeof textContent === "string" || (typeof textContent === "object" && textContent instanceof Element)) {
 					textContent = [textContent];
 				} else if (Array.isArray(textContent)) {
 					//textContent = textContent;
@@ -105,7 +105,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// children
 
-				if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+				if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
 					children = [children];
 				} else if (Array.isArray(children)) {
 					//children = children;
@@ -165,7 +165,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// children
 
-				if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+				if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
 					children = [children];
 				} else if (Array.isArray(children)) {
 					//children = children;
@@ -245,7 +245,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// children
 
-				if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+				if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
 					children = [children];
 				} else if (Array.isArray(children)) {
 					//children = children;
@@ -270,7 +270,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 					// eslint-disable-next-line no-lonely-if
 					if (Array.isArray(selector)) {
 						children = selector;
-					} else if ((typeof selector === "string" || (typeof selector === "object" && selector instanceof Element))) {
+					} else if (typeof selector === "string" || (typeof selector === "object" && selector instanceof Element)) {
 						children = [selector];
 					} else {
 						children = selector;
@@ -279,7 +279,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// children
 
-				if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
+				if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
 					children = [children];
 				} else if (Array.isArray(children)) {
 					//children = children;
@@ -364,7 +364,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// children
 
-				if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
+				if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
 					children = [children];
 				} else if (Array.isArray(children)) {
 					//children = children;
@@ -407,7 +407,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// children
 
-				if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
+				if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
 					children = [children];
 				} else if (Array.isArray(children)) {
 					//children = children;
@@ -594,7 +594,7 @@ function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName
 
 				// textContent
 
-				if ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element)) {
+				if (typeof textContent === "string" || (typeof textContent === "object" && textContent instanceof Element)) {
 					textContent = [textContent];
 				} else if (Array.isArray(textContent)) {
 					//children = children;

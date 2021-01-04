@@ -480,7 +480,7 @@ function createPrimitive(tagName) {
                     textContent = selector;
                 }
                 // textContent
-                if ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element)) {
+                if (typeof textContent === "string" || (typeof textContent === "object" && textContent instanceof Element)) {
                     textContent = [textContent];
                 }
                 else if (Array.isArray(textContent)) ;
@@ -525,7 +525,7 @@ function createPrimitive(tagName) {
                     children = summary;
                 }
                 // children
-                if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
                 else if (Array.isArray(children)) ;
@@ -578,7 +578,7 @@ function createPrimitive(tagName) {
                     children = encoding;
                 }
                 // children
-                if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
                 else if (Array.isArray(children)) ;
@@ -656,7 +656,7 @@ function createPrimitive(tagName) {
                     }
                 }
                 // children
-                if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
                 else if (Array.isArray(children)) ;
@@ -680,7 +680,7 @@ function createPrimitive(tagName) {
                     if (Array.isArray(selector)) {
                         children = selector;
                     }
-                    else if ((typeof selector === "string" || (typeof selector === "object" && selector instanceof Element))) {
+                    else if (typeof selector === "string" || (typeof selector === "object" && selector instanceof Element)) {
                         children = [selector];
                     }
                     else {
@@ -688,7 +688,7 @@ function createPrimitive(tagName) {
                     }
                 }
                 // children
-                if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
+                if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
                 else if (Array.isArray(children)) ;
@@ -764,7 +764,7 @@ function createPrimitive(tagName) {
                     children = legend;
                 }
                 // children
-                if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
+                if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
                 else if (Array.isArray(children)) ;
@@ -799,7 +799,7 @@ function createPrimitive(tagName) {
                     figcaption = undefined;
                 }
                 // children
-                if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
+                if (typeof children === "string" || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
                 else if (Array.isArray(children)) ;
@@ -968,7 +968,7 @@ function createPrimitive(tagName) {
                     }
                 }
                 // textContent
-                if ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element)) {
+                if (typeof textContent === "string" || (typeof textContent === "object" && textContent instanceof Element)) {
                     textContent = [textContent];
                 }
                 else if (Array.isArray(textContent)) ;
