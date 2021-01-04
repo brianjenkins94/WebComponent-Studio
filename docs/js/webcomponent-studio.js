@@ -510,11 +510,11 @@ function createPrimitive(tagName) {
         /**
          * Anchor
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, href: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, textContent?: string, href: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, textContent?: string, href?: string, attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, href: string): Element<TagName>
+         * (selector?: string, textContent?: string, href: string): Element<TagName>
+         * (selector?: string, textContent?: string, href?: string, attributes: object): Element<TagName>
          */
         case "a":
             return function (selector, textContent = [], href = "#", attributes = {}) {
@@ -550,11 +550,11 @@ function createPrimitive(tagName) {
         /**
          * Details
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, summary: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, summary?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, summary?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, summary: string): Element<TagName>
+         * (selector?: string, summary?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+         * (selector?: string, summary?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
          */
         case "details":
             return function (selector, summary, children = [], attributes = {}) {
@@ -585,13 +585,13 @@ function createPrimitive(tagName) {
         /**
          * Form
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, method: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, method?: string, action: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, method?: string, action?: string, encoding: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, method: string): Element<TagName>
+         * (selector?: string, method?: string, action: string): Element<TagName>
+         * (selector?: string, method?: string, action?: string, encoding: string): Element<TagName>
+         * (selector?: string, method?: string, action?: string, encoding?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+         * (selector?: string, method?: string, action?: string, encoding?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
          */
         case "form":
             return function (selector, method, action, encoding, children = [], attributes = {}) {
@@ -637,10 +637,10 @@ function createPrimitive(tagName) {
             };
         /**
          * Form-associated/Grouping/Text-level
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, children: Element<TagName> | (string | Element<TagName>)[]): Element<TagName>
+         * (selector?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
          */
         case "article":
         case "aside":
@@ -742,10 +742,10 @@ function createPrimitive(tagName) {
         /**
          * Embedded
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, sources: string | string[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, sources?: string | string[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, sources: string | string[]): Element<TagName>
+         * (selector?: string, sources?: string | string[], attributes: object): Element<TagName>
          */
         case "audio":
         case "img":
@@ -780,11 +780,11 @@ function createPrimitive(tagName) {
         /**
          * Field Set
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, legend: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, legend?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, legend?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, legend: string): Element<TagName>
+         * (selector?: string, legend?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+         * (selector?: string, legend?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
          */
         case "fieldset":
             return function (selector, legend, children = [], attributes = {}) {
@@ -814,11 +814,11 @@ function createPrimitive(tagName) {
         /**
          * Figure
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector): ElementTagNameMap[ElementTagName]
-         * (selector?: string, figcaption: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, figcaption?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, figcaption?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector): Element<TagName>
+         * (selector?: string, figcaption: string): Element<TagName>
+         * (selector?: string, figcaption?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+         * (selector?: string, figcaption?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
          */
         case "figure":
             return function (selector, figcaption, children = [], attributes = {}) {
@@ -849,12 +849,12 @@ function createPrimitive(tagName) {
         /**
          * File
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, accept: string | string[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, accept?: string | string[], required: boolean): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, name: string): Element<TagName>
+         * (selector?: string, name?: string, accept: string | string[]): Element<TagName>
+         * (selector?: string, name?: string, accept?: string | string[], required: boolean): Element<TagName>
+         * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): Element<TagName>
          */
         case "file":
             return function (selector, name, accept, required, attributes = {}) {
@@ -897,10 +897,10 @@ function createPrimitive(tagName) {
         /**
          * IFrame
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, source: string[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, source?: string[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, source: string[]): Element<TagName>
+         * (selector?: string, source?: string[], attributes: object): Element<TagName>
          */
         case "iframe":
             return function (selector, source, attributes = {}) {
@@ -924,12 +924,12 @@ function createPrimitive(tagName) {
         /**
          * Input
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, value: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, value?: string, required: boolean): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, name: string): Element<TagName>
+         * (selector?: string, name?: string, value: string): Element<TagName>
+         * (selector?: string, name?: string, value?: string, required: boolean): Element<TagName>
+         * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): Element<TagName>
          */
         case "checkbox":
         case "color":
@@ -982,12 +982,12 @@ function createPrimitive(tagName) {
         /**
          * Label
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, textContent: string | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, textContent: string | (string | Element<ElementTagName>)[], attributes?: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, forValue: string, textContent: string | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, forValue?: string, textContent?: string | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, textContent: string | (string | Element<TagName>)[]): Element<TagName>
+         * (selector?: string, textContent: string | (string | Element<TagName>)[], attributes?: object): Element<TagName>
+         * (selector?: string, forValue: string, textContent: string | (string | Element<TagName>)[]): Element<TagName>
+         * (selector?: string, forValue?: string, textContent?: string | (string | Element<TagName>)[], attributes: object): Element<TagName>
          */
         case "label":
             return function (selector, forValue, textContent = [], attributes = {}) {
@@ -1019,10 +1019,10 @@ function createPrimitive(tagName) {
         /**
          * Search
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, value: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, value?: string, attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, value: string): Element<TagName>
+         * (selector?: string, value?: string, attributes: object): Element<TagName>
          */
         case "search":
             return function (selector, value, attributes = {}) {
@@ -1046,12 +1046,12 @@ function createPrimitive(tagName) {
         /**
          * Select
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector: string, name: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, options: object[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, options?: object[], required: boolean): ElementTagNameMap[ElementTagName]
-         * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector: string, name: string): Element<TagName>
+         * (selector?: string, name?: string, options: object[]): Element<TagName>
+         * (selector?: string, name?: string, options?: object[], required: boolean): Element<TagName>
+         * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): Element<TagName>
          */
         case "select":
             return function (selector, name, options, required, attributes = {}) {
@@ -1084,11 +1084,11 @@ function createPrimitive(tagName) {
         /**
          * Table
          *
-         * (): ElementTagNameMap[ElementTagName]
-         * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, caption: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, caption?: string, tableHeader: string[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, caption?: string, tableHeader: string[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (): Element<TagName>
+         * (selector: string): Element<TagName>
+         * (selector?: string, caption: string): Element<TagName>
+         * (selector?: string, caption?: string, tableHeader: string[]): Element<TagName>
+         * (selector?: string, caption?: string, tableHeader: string[], attributes: object): Element<TagName>
          */
         case "table":
             return function (selector, caption, tableHeader = [], attributes = {}) {

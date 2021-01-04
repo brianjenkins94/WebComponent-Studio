@@ -5,10 +5,10 @@ import type { TopLevelElementMap } from "../types/elements";
 // <source> should be a part of a <picture>, <audio> or <video>
 // <track> should be a part of a <audio> or <video>
 
-export class EmbeddedElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
+export class EmbeddedElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
 	private readonly sources: string[];
 
-	public constructor(tagName: ElementTagName, sources: string[], attributes: ElementAttributesMap[ElementTagName]) {
+	public constructor(tagName: TagName, sources: string[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.sources = sources;

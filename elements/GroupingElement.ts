@@ -2,8 +2,8 @@ import { Element } from "../abstract/Element";
 import type { ElementAttributesMap } from "../types/attributes";
 import type { TopLevelElementMap } from "../types/elements";
 
-export class GroupingElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public constructor(tagName: ElementTagName, children: (string | Element<ElementTagName>)[], attributes: ElementAttributesMap[ElementTagName]) {
+export class GroupingElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, children: (string | Element<TagName>)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.push(...children);

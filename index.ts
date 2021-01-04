@@ -28,20 +28,20 @@ function parseSelector(selector: string): { id?: string; class?: string } {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(tagName: ElementTagName) {
+function createPrimitive<TagName extends keyof typeof ElementTagNameMap>(tagName: TagName) {
 	switch (tagName) {
 
 		/**
 		 * Anchor
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, href: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, textContent?: string, href: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, textContent?: string, href?: string, attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, href: string): Element<TagName>
+		 * (selector?: string, textContent?: string, href: string): Element<TagName>
+		 * (selector?: string, textContent?: string, href?: string, attributes: object): Element<TagName>
 		 */
 		case "a":
-			return function(selector?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], textContent: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName] = [], href: string | ElementAttributesMap[ElementTagName] = "#", attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], textContent: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName] = [], href: string | ElementAttributesMap[TagName] = "#", attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -80,14 +80,14 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Details
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, summary: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, summary?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, summary?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, summary: string): Element<TagName>
+		 * (selector?: string, summary?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+		 * (selector?: string, summary?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
 		 */
 		case "details":
-			return function(selector?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], summary?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], children: Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], summary?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], children: Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -122,16 +122,16 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Form
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, method: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, method?: string, action: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, method?: string, action?: string, encoding: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, method: string): Element<TagName>
+		 * (selector?: string, method?: string, action: string): Element<TagName>
+		 * (selector?: string, method?: string, action?: string, encoding: string): Element<TagName>
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+		 * (selector?: string, method?: string, action?: string, encoding?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
 		 */
 		case "form":
-			return function(selector?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], method?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], action?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], encoding?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], children: Element<ElementTagName> | (string | Element<ElementTagName>)[] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], method?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], action?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], encoding?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], children: Element<TagName> | (string | Element<TagName>)[] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -181,10 +181,10 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 
 		/**
 		 * Form-associated/Grouping/Text-level
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, children: Element<TagName> | (string | Element<TagName>)[]): Element<TagName>
+		 * (selector?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
 		 */
 		case "article":
 		case "aside":
@@ -228,7 +228,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "textarea":
 		case "u":
 		case "ul":
-			return function(selector?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], children: Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], children: Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -260,7 +260,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "button":
 		case "reset":
 		case "submit":
-			return function(selector?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], children: Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], children: Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -292,16 +292,16 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Embedded
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, sources: string | string[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, sources?: string | string[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, sources: string | string[]): Element<TagName>
+		 * (selector?: string, sources?: string | string[], attributes: object): Element<TagName>
 		 */
 		case "audio":
 		case "img":
 		case "picture":
 		case "video":
-			return function(selector?: string | string[] | ElementAttributesMap[ElementTagName], sources: string | string[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | string[] | ElementAttributesMap[TagName], sources: string | string[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -333,14 +333,14 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Field Set
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, legend: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, legend?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, legend?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, legend: string): Element<TagName>
+		 * (selector?: string, legend?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+		 * (selector?: string, legend?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
 		 */
 		case "fieldset":
-			return function(selector?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], legend?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], children: Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], legend?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], children: Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -373,14 +373,14 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Figure
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, figcaption: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, figcaption?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, figcaption?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector): Element<TagName>
+		 * (selector?: string, figcaption: string): Element<TagName>
+		 * (selector?: string, figcaption?: string, children: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
+		 * (selector?: string, figcaption?: string, children?: Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
 		 */
 		case "figure":
-			return function(selector?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], figcaption?: string | Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], children: Element<ElementTagName> | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], figcaption?: string | Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName], children: Element<TagName> | (string | Element<TagName>)[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -415,15 +415,15 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * File
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, accept: string | string[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, accept?: string | string[], required: boolean): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, name: string): Element<TagName>
+		 * (selector?: string, name?: string, accept: string | string[]): Element<TagName>
+		 * (selector?: string, name?: string, accept?: string | string[], required: boolean): Element<TagName>
+		 * (selector?: string, name?: string, accept?: string | string[], required?: boolean, attributes: object): Element<TagName>
 		 */
 		case "file":
-			return function(selector?: string | boolean | ElementAttributesMap[ElementTagName], name?: string | boolean | ElementAttributesMap[ElementTagName], accept?: string | boolean | ElementAttributesMap[ElementTagName], required?: string | boolean | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | boolean | ElementAttributesMap[TagName], name?: string | boolean | ElementAttributesMap[TagName], accept?: string | boolean | ElementAttributesMap[TagName], required?: string | boolean | ElementAttributesMap[TagName], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 
@@ -468,13 +468,13 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * IFrame
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, source: string[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, source?: string[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, source: string[]): Element<TagName>
+		 * (selector?: string, source?: string[], attributes: object): Element<TagName>
 		 */
 		case "iframe":
-			return function(selector?: string | ElementAttributesMap[ElementTagName], source?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | ElementAttributesMap[TagName], source?: string | ElementAttributesMap[TagName], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -497,12 +497,12 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Input
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, value: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, value?: string, required: boolean): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, name: string): Element<TagName>
+		 * (selector?: string, name?: string, value: string): Element<TagName>
+		 * (selector?: string, name?: string, value?: string, required: boolean): Element<TagName>
+		 * (selector?: string, name?: string, value?: string, required?: boolean, attributes: object): Element<TagName>
 		 */
 		case "checkbox":
 		case "color":
@@ -520,7 +520,7 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		case "time":
 		case "url":
 		case "week":
-			return function(selector?: string | ElementAttributesMap[ElementTagName], name?: string | ElementAttributesMap[ElementTagName], value?: string | ElementAttributesMap[ElementTagName], required?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | ElementAttributesMap[TagName], name?: string | ElementAttributesMap[TagName], value?: string | ElementAttributesMap[TagName], required?: string | ElementAttributesMap[TagName], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 
@@ -561,15 +561,15 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Label
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, textContent: string | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, textContent: string | (string | Element<ElementTagName>)[], attributes?: object): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, forValue: string, textContent: string | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, forValue?: string, textContent?: string | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, textContent: string | (string | Element<TagName>)[]): Element<TagName>
+		 * (selector?: string, textContent: string | (string | Element<TagName>)[], attributes?: object): Element<TagName>
+		 * (selector?: string, forValue: string, textContent: string | (string | Element<TagName>)[]): Element<TagName>
+		 * (selector?: string, forValue?: string, textContent?: string | (string | Element<TagName>)[], attributes: object): Element<TagName>
 		 */
 		case "label":
-			return function(selector?: string | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], forValue?: string | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName], textContent: string | (string | Element<ElementTagName>)[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | (string | Element<TagName>)[] | ElementAttributesMap[TagName], forValue?: string | (string | Element<TagName>)[] | ElementAttributesMap[TagName], textContent: string | (string | Element<TagName>)[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				}
@@ -604,13 +604,13 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Search
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, value: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, value?: string, attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, value: string): Element<TagName>
+		 * (selector?: string, value?: string, attributes: object): Element<TagName>
 		 */
 		case "search":
-			return function(selector?: string | ElementAttributesMap[ElementTagName], value?: string | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | ElementAttributesMap[TagName], value?: string | ElementAttributesMap[TagName], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -633,15 +633,15 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Select
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector: string, name: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, options: object[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, options?: object[], required: boolean): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector: string, name: string): Element<TagName>
+		 * (selector?: string, name?: string, options: object[]): Element<TagName>
+		 * (selector?: string, name?: string, options?: object[], required: boolean): Element<TagName>
+		 * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): Element<TagName>
 		 */
 		case "select":
-			return function(selector?: string | string[] | boolean | ElementAttributesMap[ElementTagName], name?: string | string[] | boolean | ElementAttributesMap[ElementTagName], options?: string[] | boolean | ElementAttributesMap[ElementTagName], required?: boolean | ElementAttributesMap[ElementTagName], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | string[] | boolean | ElementAttributesMap[TagName], name?: string | string[] | boolean | ElementAttributesMap[TagName], options?: string[] | boolean | ElementAttributesMap[TagName], required?: boolean | ElementAttributesMap[TagName], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {
@@ -678,14 +678,14 @@ function createPrimitive<ElementTagName extends keyof typeof ElementTagNameMap>(
 		/**
 		 * Table
 		 *
-		 * (): ElementTagNameMap[ElementTagName]
-		 * (selector: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, caption: string): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, caption?: string, tableHeader: string[]): ElementTagNameMap[ElementTagName]
-		 * (selector?: string, caption?: string, tableHeader: string[], attributes: object): ElementTagNameMap[ElementTagName]
+		 * (): Element<TagName>
+		 * (selector: string): Element<TagName>
+		 * (selector?: string, caption: string): Element<TagName>
+		 * (selector?: string, caption?: string, tableHeader: string[]): Element<TagName>
+		 * (selector?: string, caption?: string, tableHeader: string[], attributes: object): Element<TagName>
 		 */
 		case "table":
-			return function(selector?: string | string[] | ElementAttributesMap[ElementTagName], caption?: string | string[] | ElementAttributesMap[ElementTagName], tableHeader: string[] | ElementAttributesMap[ElementTagName] = [], attributes: ElementAttributesMap[ElementTagName] = {}): typeof ElementTagNameMap[ElementTagName] {
+			return function(selector?: string | string[] | ElementAttributesMap[TagName], caption?: string | string[] | ElementAttributesMap[TagName], tableHeader: string[] | ElementAttributesMap[TagName] = [], attributes: ElementAttributesMap[TagName] = {}): Element<TagName> {
 				if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
 					attributes = { ...attributes, ...parseSelector(selector) };
 				} else {

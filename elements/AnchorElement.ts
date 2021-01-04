@@ -2,8 +2,8 @@ import { Element } from "../abstract/Element";
 import type { ElementAttributesMap } from "../types/attributes";
 import type { TopLevelElementMap } from "../types/elements";
 
-export class AnchorElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public constructor(tagName: ElementTagName, textContent: (string | Element<ElementTagName>)[], attributes: ElementAttributesMap[ElementTagName]) {
+export class AnchorElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, textContent: (string | Element<TagName>)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.push(...textContent);

@@ -4,8 +4,8 @@ import type { TopLevelElementMap } from "../types/elements";
 
 // <figcaption> should be part of a <figure>
 
-export class FigureElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public constructor(tagName: ElementTagName, caption: string, children: (string | Element<ElementTagName>)[], attributes: ElementAttributesMap[ElementTagName]) {
+export class FigureElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public constructor(tagName: TagName, caption: string, children: (string | Element<TagName>)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.push(...children);

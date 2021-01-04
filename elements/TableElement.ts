@@ -12,12 +12,12 @@ import type { TopLevelElementMap } from "../types/elements";
 // <thead> should be part of a <table>
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
-export class TableElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public thead: (string | Element<ElementTagName>)[][] = [];
-	public tbody: (string | Element<ElementTagName>)[][] = [];
-	public tfoot: (string | Element<ElementTagName>)[][] = [];
+export class TableElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
+	public thead: (string | Element<TagName>)[][] = [];
+	public tbody: (string | Element<TagName>)[][] = [];
+	public tfoot: (string | Element<TagName>)[][] = [];
 
-	public constructor(tagName: ElementTagName, caption: string, tableHeader: (string | Element<ElementTagName>)[], attributes: ElementAttributesMap[ElementTagName]) {
+	public constructor(tagName: TagName, caption: string, tableHeader: (string | Element<TagName>)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		if (tableHeader.length > 0) {
@@ -34,7 +34,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 		this.attributes = { ...attributes, ...this.attributes };
 	}
 
-	public push(...items: (string | Element<ElementTagName>)[]): this {
+	public push(...items: (string | Element<TagName>)[]): this {
 		const row = [];
 
 		for (const item of items) {
@@ -50,7 +50,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 		return this;
 	}
 
-	public unshift(...items: (string | Element<ElementTagName>)[]): this {
+	public unshift(...items: (string | Element<TagName>)[]): this {
 		const row = [];
 
 		for (const item of items) {
