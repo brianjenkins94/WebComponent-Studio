@@ -6,7 +6,7 @@ export abstract class Element<ElementTagName extends keyof TopLevelElementMap> i
 	protected template: HTMLElement;
 	protected attributes: ElementAttributesMap[ElementTagName] = {};
 	protected readonly type: keyof TopLevelElementMap;
-	protected readonly children: (string | Node)[] = [];
+	protected readonly children: string[] = [];
 	private events = {};
 
 	public constructor(type: keyof TopLevelElementMap) {
@@ -55,14 +55,26 @@ export abstract class Element<ElementTagName extends keyof TopLevelElementMap> i
 		});
 	}
 
-	public push(...items: Element<ElementTagName>[]): this {
-		this.children.push(...items);
+	public push(...items: (string | Element<ElementTagName>)[]): this {
+		for (const item of items) {
+			if (item instanceof Element) {
+				this.children.push(item.toString());
+			} else {
+				this.children.push(item);
+			}
+		}
 
 		return this;
 	}
 
-	public unshift(...items: Element<ElementTagName>[]): this {
-		this.children.unshift(...items);
+	public unshift(...items: (string | Element<ElementTagName>)[]): this {
+		for (const item of items) {
+			if (item instanceof Element) {
+				this.children.unshift(item.toString());
+			} else {
+				this.children.unshift(item);
+			}
+		}
 
 		return this;
 	}

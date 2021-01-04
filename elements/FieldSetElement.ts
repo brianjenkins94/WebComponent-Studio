@@ -5,13 +5,13 @@ import type { TopLevelElementMap } from "../types/elements";
 // <legend> should be part of a <fieldset>
 
 export class FieldSetElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public constructor(tagName: ElementTagName, legend: string, children: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
+	public constructor(tagName: ElementTagName, legend: string, children: (string | Element<ElementTagName>)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
 		const legendElement = document.createElement("legend");
 		legendElement.append(legend);
 
-		this.children.push(legendElement, ...children);
+		this.push(...children, legendElement.outerHTML);
 
 		this.attributes = { ...attributes, ...this.attributes };
 	}
@@ -23,13 +23,7 @@ export class FieldSetElement<ElementTagName extends keyof TopLevelElementMap> ex
 			this.template.setAttribute(key, value);
 		}
 
-		for (const child of this.children) {
-			if (child instanceof Node) {
-				this.template.append(child);
-			} else {
-				this.template.innerHTML += child;
-			}
-		}
+		this.template.innerHTML = this.children.join("");
 
 		return this.template.outerHTML;
 	}

@@ -41,11 +41,25 @@ class Element {
         });
     }
     push(...items) {
-        this.children.push(...items);
+        for (const item of items) {
+            if (item instanceof Element) {
+                this.children.push(item.toString());
+            }
+            else {
+                this.children.push(item);
+            }
+        }
         return this;
     }
     unshift(...items) {
-        this.children.unshift(...items);
+        for (const item of items) {
+            if (item instanceof Element) {
+                this.children.unshift(item.toString());
+            }
+            else {
+                this.children.unshift(item);
+            }
+        }
         return this;
     }
     [Symbol.iterator]() {
@@ -56,7 +70,7 @@ class Element {
 class AnchorElement extends Element {
     constructor(tagName, textContent, attributes) {
         super(tagName);
-        this.children.push(...textContent);
+        this.push(...textContent);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -64,14 +78,7 @@ class AnchorElement extends Element {
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -80,9 +87,17 @@ class AnchorElement extends Element {
 class DetailsElement extends Element {
     constructor(tagName, summary, children, attributes) {
         super(tagName);
-        const summaryElement = document.createElement("summary");
-        summaryElement.append(summary);
-        this.children.push(summaryElement, ...children);
+        if (summary !== undefined) {
+            const summaryElement = document.createElement("summary");
+            if (summary instanceof Element) {
+                summaryElement.append(summary.toString());
+            }
+            else if (typeof summary === "string") {
+                summaryElement.append(summary);
+            }
+            this.push(summaryElement.outerHTML);
+        }
+        this.push(...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -90,14 +105,7 @@ class DetailsElement extends Element {
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -127,14 +135,7 @@ class EmbeddedElement extends Element {
             // TODO: Handle multiple `src`s
             this.template.setAttribute("src", this.sources[0]);
         }
-        for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -145,7 +146,7 @@ class FieldSetElement extends Element {
         super(tagName);
         const legendElement = document.createElement("legend");
         legendElement.append(legend);
-        this.children.push(legendElement, ...children);
+        this.push(...children, legendElement.outerHTML);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -153,14 +154,7 @@ class FieldSetElement extends Element {
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -169,11 +163,11 @@ class FieldSetElement extends Element {
 class FigureElement extends Element {
     constructor(tagName, caption, children, attributes) {
         super(tagName);
-        this.children.push(...children);
+        this.push(...children);
         if (caption !== undefined) {
             const captionElement = document.createElement("figcaption");
             captionElement.append(caption);
-            this.children.push(captionElement);
+            this.push(captionElement.outerHTML);
         }
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
@@ -182,14 +176,7 @@ class FigureElement extends Element {
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -197,7 +184,7 @@ class FigureElement extends Element {
 class GroupingElement extends Element {
     constructor(tagName, children, attributes) {
         super(tagName);
-        this.children.push(...children);
+        this.push(...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -205,14 +192,7 @@ class GroupingElement extends Element {
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -220,7 +200,7 @@ class GroupingElement extends Element {
 class ListElement extends Element {
     constructor(tagName, children, attributes) {
         super(tagName);
-        this.children.push(...children);
+        this.push(...children);
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     toString() {
@@ -230,12 +210,7 @@ class ListElement extends Element {
         }
         for (const child of this.children) {
             const listItemElement = document.createElement("li");
-            if (child instanceof Node) {
-                listItemElement.append(child);
-            }
-            else {
-                listItemElement.innerHTML += child;
-            }
+            listItemElement.innerHTML += child;
             this.template.appendChild(listItemElement);
         }
         return this.template.outerHTML;
@@ -287,14 +262,7 @@ class SelectElement extends Element {
                 parent.appendChild(element);
             }
         })(this.options, this.template);
-        for (const child of this.children) {
-            if (child instanceof Node) {
-                this.template.append(child);
-            }
-            else {
-                this.template.innerHTML += child;
-            }
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -314,19 +282,44 @@ class TableElement extends Element {
         this.thead = [];
         this.tbody = [];
         this.tfoot = [];
-        const captionElement = document.createElement("caption");
-        captionElement.append(caption);
-        this.thead.push(tableHeader);
-        this.children.push(captionElement);
+        if (tableHeader.length > 0) {
+            this.thead.push(tableHeader);
+        }
+        if (caption !== undefined) {
+            const captionElement = document.createElement("caption");
+            captionElement.append(caption);
+            this.children.push(captionElement.outerHTML);
+        }
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
     }
     push(...items) {
-        this.tbody.push(items);
+        const row = [];
+        for (const item of items) {
+            if (item instanceof Element) {
+                row.push(item.toString());
+            }
+            else {
+                row.push(item);
+            }
+        }
+        this.tbody.push(row);
         return this;
     }
     unshift(...items) {
-        this.tbody.unshift(items);
+        const row = [];
+        for (const item of items) {
+            if (item instanceof Element) {
+                row.unshift(item.toString());
+            }
+            else {
+                row.unshift(item);
+            }
+        }
+        this.tbody.push(row);
         return this;
+    }
+    [Symbol.iterator]() {
+        // TODO
     }
     toString() {
         this.template = document.createElement(this.type);
@@ -342,14 +335,14 @@ class TableElement extends Element {
                     if (cellContent instanceof Node) {
                         tableCell.append(cellContent);
                     }
-                    else {
+                    else if (typeof cellContent === "string") {
                         tableCell.innerHTML += cellContent;
                     }
                     tableRow.appendChild(tableCell);
                 }
                 tableHeadElement.appendChild(tableRow);
             }
-            this.children.push(tableHeadElement);
+            this.children.push(tableHeadElement.outerHTML);
         }
         if (this.tbody.length > 0) {
             const tableBodyElement = document.createElement("tbody");
@@ -360,14 +353,14 @@ class TableElement extends Element {
                     if (cellContent instanceof Node) {
                         tableCell.append(cellContent);
                     }
-                    else {
+                    else if (typeof cellContent === "string") {
                         tableCell.innerHTML += cellContent;
                     }
                     tableRow.appendChild(tableCell);
                 }
                 tableBodyElement.appendChild(tableRow);
             }
-            this.children.push(tableBodyElement);
+            this.children.push(tableBodyElement.outerHTML);
         }
         if (this.tfoot.length > 0) {
             const tableFootElement = document.createElement("tfoot");
@@ -378,18 +371,16 @@ class TableElement extends Element {
                     if (cellContent instanceof Node) {
                         tableCell.append(cellContent);
                     }
-                    else {
+                    else if (typeof cellContent === "string") {
                         tableCell.innerHTML += cellContent;
                     }
                     tableRow.appendChild(tableCell);
                 }
                 tableFootElement.appendChild(tableRow);
             }
-            this.children.push(tableFootElement);
+            this.children.push(tableFootElement.outerHTML);
         }
-        for (const child of this.children) {
-            this.template.append(child);
-        }
+        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -562,8 +553,8 @@ function createPrimitive(tagName) {
          * (): ElementTagNameMap[ElementTagName]
          * (selector: string): ElementTagNameMap[ElementTagName]
          * (selector?: string, summary: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, summary?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, summary?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, summary?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, summary?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "details":
             return function (selector, summary, children = [], attributes = {}) {
@@ -599,8 +590,8 @@ function createPrimitive(tagName) {
          * (selector?: string, method: string): ElementTagNameMap[ElementTagName]
          * (selector?: string, method?: string, action: string): ElementTagNameMap[ElementTagName]
          * (selector?: string, method?: string, action?: string, encoding: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, method?: string, action?: string, encoding?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, method?: string, action?: string, encoding?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "form":
             return function (selector, method, action, encoding, children = [], attributes = {}) {
@@ -648,8 +639,8 @@ function createPrimitive(tagName) {
          * Form-associated/Grouping/Text-level
          * (): ElementTagNameMap[ElementTagName]
          * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, children: Node | (string | Node)[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "article":
         case "aside":
@@ -792,8 +783,8 @@ function createPrimitive(tagName) {
          * (): ElementTagNameMap[ElementTagName]
          * (selector: string): ElementTagNameMap[ElementTagName]
          * (selector?: string, legend: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, legend?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, legend?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, legend?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, legend?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "fieldset":
             return function (selector, legend, children = [], attributes = {}) {
@@ -826,8 +817,8 @@ function createPrimitive(tagName) {
          * (): ElementTagNameMap[ElementTagName]
          * (selector): ElementTagNameMap[ElementTagName]
          * (selector?: string, figcaption: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, figcaption?: string, children: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, figcaption?: string, children?: Node | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, figcaption?: string, children: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, figcaption?: string, children?: Element<ElementTagName> | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "figure":
             return function (selector, figcaption, children = [], attributes = {}) {
@@ -993,10 +984,10 @@ function createPrimitive(tagName) {
          *
          * (): ElementTagNameMap[ElementTagName]
          * (selector: string): ElementTagNameMap[ElementTagName]
-         * (selector?: string, textContent: string | (string | Node)[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, textContent: string | (string | Node)[], attributes?: object): ElementTagNameMap[ElementTagName]
-         * (selector?: string, forValue: string, textContent: string | (string | Node)[]): ElementTagNameMap[ElementTagName]
-         * (selector?: string, forValue?: string, textContent?: string | (string | Node)[], attributes: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, textContent: string | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, textContent: string | (string | Element<ElementTagName>)[], attributes?: object): ElementTagNameMap[ElementTagName]
+         * (selector?: string, forValue: string, textContent: string | (string | Element<ElementTagName>)[]): ElementTagNameMap[ElementTagName]
+         * (selector?: string, forValue?: string, textContent?: string | (string | Element<ElementTagName>)[], attributes: object): ElementTagNameMap[ElementTagName]
          */
         case "label":
             return function (selector, forValue, textContent = [], attributes = {}) {

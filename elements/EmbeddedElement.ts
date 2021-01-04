@@ -36,13 +36,7 @@ export class EmbeddedElement<ElementTagName extends keyof TopLevelElementMap> ex
 			this.template.setAttribute("src", this.sources[0]);
 		}
 
-		for (const child of this.children) {
-			if (child instanceof Node) {
-				this.template.append(child);
-			} else {
-				this.template.innerHTML += child;
-			}
-		}
+		this.template.innerHTML = this.children.join("");
 
 		return this.template.outerHTML;
 	}

@@ -5,13 +5,22 @@ import type { TopLevelElementMap } from "../types/elements";
 // <summary> should be part of a <details>
 
 export class DetailsElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public constructor(tagName: ElementTagName, summary: (string | Node)[], children: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
+	public constructor(tagName: ElementTagName, summary: (string | Element<ElementTagName>)[], children: (string | Element<ElementTagName>)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
-		const summaryElement = document.createElement("summary");
-		summaryElement.append(summary);
+		if (summary !== undefined) {
+			const summaryElement = document.createElement("summary");
 
-		this.children.push(summaryElement, ...children);
+			if (summary instanceof Element) {
+				summaryElement.append(summary.toString());
+			} else if (typeof summary === "string") {
+				summaryElement.append(summary);
+			}
+
+			this.push(summaryElement.outerHTML);
+		}
+
+		this.push(...children);
 
 		this.attributes = { ...attributes, ...this.attributes };
 	}
@@ -23,13 +32,7 @@ export class DetailsElement<ElementTagName extends keyof TopLevelElementMap> ext
 			this.template.setAttribute(key, value);
 		}
 
-		for (const child of this.children) {
-			if (child instanceof Node) {
-				this.template.append(child);
-			} else {
-				this.template.innerHTML += child;
-			}
-		}
+		this.template.innerHTML = this.children.join("");
 
 		return this.template.outerHTML;
 	}

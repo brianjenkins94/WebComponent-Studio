@@ -63,13 +63,7 @@ export class SelectElement<ElementTagName extends keyof TopLevelElementMap> exte
 			}
 		})(this.options, this.template);
 
-		for (const child of this.children) {
-			if (child instanceof Node) {
-				this.template.append(child);
-			} else {
-				this.template.innerHTML += child;
-			}
-		}
+		this.template.innerHTML = this.children.join("");
 
 		return this.template.outerHTML;
 	}

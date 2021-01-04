@@ -13,33 +13,61 @@ import type { TopLevelElementMap } from "../types/elements";
 // <tr> should be part of a <tbody>, <tfoot> or <thead>
 
 export class TableElement<ElementTagName extends keyof TopLevelElementMap> extends Element<ElementTagName> {
-	public thead: (string | Node)[][] = [];
-	public tbody: (string | Node)[][] = [];
-	public tfoot: (string | Node)[][] = [];
+	public thead: (string | Element<ElementTagName>)[][] = [];
+	public tbody: (string | Element<ElementTagName>)[][] = [];
+	public tfoot: (string | Element<ElementTagName>)[][] = [];
 
-	public constructor(tagName: ElementTagName, caption: string, tableHeader: (string | Node)[], attributes: ElementAttributesMap[ElementTagName]) {
+	public constructor(tagName: ElementTagName, caption: string, tableHeader: (string | Element<ElementTagName>)[], attributes: ElementAttributesMap[ElementTagName]) {
 		super(tagName);
 
-		const captionElement = document.createElement("caption");
-		captionElement.append(caption);
+		if (tableHeader.length > 0) {
+			this.thead.push(tableHeader);
+		}
 
-		this.thead.push(tableHeader);
+		if (caption !== undefined) {
+			const captionElement = document.createElement("caption");
+			captionElement.append(caption);
 
-		this.children.push(captionElement);
+			this.children.push(captionElement.outerHTML);
+		}
 
 		this.attributes = { ...attributes, ...this.attributes };
 	}
 
-	public push(...items: (string | Node)[]): this {
-		this.tbody.push(items);
+	public push(...items: (string | Element<ElementTagName>)[]): this {
+		const row = [];
+
+		for (const item of items) {
+			if (item instanceof Element) {
+				row.push(item.toString());
+			} else {
+				row.push(item);
+			}
+		}
+
+		this.tbody.push(row);
 
 		return this;
 	}
 
-	public unshift(...items: (string | Node)[]): this {
-		this.tbody.unshift(items);
+	public unshift(...items: (string | Element<ElementTagName>)[]): this {
+		const row = [];
+
+		for (const item of items) {
+			if (item instanceof Element) {
+				row.unshift(item.toString());
+			} else {
+				row.unshift(item);
+			}
+		}
+
+		this.tbody.push(row);
 
 		return this;
+	}
+
+	public [Symbol.iterator]() {
+		// TODO
 	}
 
 	public toString(): string {
@@ -60,7 +88,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 
 					if (cellContent instanceof Node) {
 						tableCell.append(cellContent);
-					} else {
+					} else if (typeof cellContent === "string") {
 						tableCell.innerHTML += cellContent;
 					}
 
@@ -70,7 +98,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 				tableHeadElement.appendChild(tableRow);
 			}
 
-			this.children.push(tableHeadElement);
+			this.children.push(tableHeadElement.outerHTML);
 		}
 
 		if (this.tbody.length > 0) {
@@ -84,7 +112,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 
 					if (cellContent instanceof Node) {
 						tableCell.append(cellContent);
-					} else {
+					} else if (typeof cellContent === "string") {
 						tableCell.innerHTML += cellContent;
 					}
 
@@ -94,7 +122,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 				tableBodyElement.appendChild(tableRow);
 			}
 
-			this.children.push(tableBodyElement);
+			this.children.push(tableBodyElement.outerHTML);
 		}
 
 		if (this.tfoot.length > 0) {
@@ -108,7 +136,7 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 
 					if (cellContent instanceof Node) {
 						tableCell.append(cellContent);
-					} else {
+					} else if (typeof cellContent === "string") {
 						tableCell.innerHTML += cellContent;
 					}
 
@@ -118,12 +146,10 @@ export class TableElement<ElementTagName extends keyof TopLevelElementMap> exten
 				tableFootElement.appendChild(tableRow);
 			}
 
-			this.children.push(tableFootElement);
+			this.children.push(tableFootElement.outerHTML);
 		}
 
-		for (const child of this.children) {
-			this.template.append(child);
-		}
+		this.template.innerHTML = this.children.join("");
 
 		return this.template.outerHTML;
 	}
