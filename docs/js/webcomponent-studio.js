@@ -262,7 +262,6 @@ class SelectElement extends Element {
                 parent.appendChild(element);
             }
         })(this.options, this.template);
-        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }

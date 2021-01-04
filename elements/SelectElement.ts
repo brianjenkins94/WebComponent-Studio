@@ -63,8 +63,6 @@ export class SelectElement<TagName extends keyof TopLevelElementMap> extends Ele
 			}
 		})(this.options, this.template);
 
-		this.template.innerHTML = this.children.join("");
-
 		return this.template.outerHTML;
 	}
 }
