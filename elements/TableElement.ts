@@ -38,10 +38,10 @@ export class TableElement<TagName extends keyof TopLevelElementMap> extends Elem
 		const row = [];
 
 		for (const item of items) {
-			if (item instanceof Element) {
-				row.push(item.toString());
-			} else {
+			if (typeof item === "string") {
 				row.push(item);
+			} else {
+				row.push(item.toString());
 			}
 		}
 
@@ -77,76 +77,26 @@ export class TableElement<TagName extends keyof TopLevelElementMap> extends Elem
 			this.template.setAttribute(key, value);
 		}
 
-		if (this.thead.length > 0) {
-			const tableHeadElement = document.createElement("thead");
+		for (const [key, rows] of Object.entries({ "thead": this.thead, "tbody": this.tbody, "tfoot": this.tfoot })) {
+			if (rows.length > 0) {
+				const tableHeadElement = document.createElement(key);
 
-			for (const row of this.thead) {
-				const tableRow = document.createElement("tr");
+				for (const row of rows) {
+					const tableRow = document.createElement("tr");
 
-				for (const cellContent of row) {
-					const tableCell = document.createElement("th");
+					for (const cellContent of row) {
+						const tableCell = document.createElement(key === "thead" ? "th" : "td");
 
-					if (cellContent instanceof Node) {
-						tableCell.append(cellContent);
-					} else if (typeof cellContent === "string") {
 						tableCell.innerHTML += cellContent;
+
+						tableRow.appendChild(tableCell);
 					}
 
-					tableRow.appendChild(tableCell);
+					tableHeadElement.appendChild(tableRow);
 				}
 
-				tableHeadElement.appendChild(tableRow);
+				this.children.push(tableHeadElement.outerHTML);
 			}
-
-			this.children.push(tableHeadElement.outerHTML);
-		}
-
-		if (this.tbody.length > 0) {
-			const tableBodyElement = document.createElement("tbody");
-
-			for (const row of this.tbody) {
-				const tableRow = document.createElement("tr");
-
-				for (const cellContent of row) {
-					const tableCell = document.createElement("td");
-
-					if (cellContent instanceof Node) {
-						tableCell.append(cellContent);
-					} else if (typeof cellContent === "string") {
-						tableCell.innerHTML += cellContent;
-					}
-
-					tableRow.appendChild(tableCell);
-				}
-
-				tableBodyElement.appendChild(tableRow);
-			}
-
-			this.children.push(tableBodyElement.outerHTML);
-		}
-
-		if (this.tfoot.length > 0) {
-			const tableFootElement = document.createElement("tfoot");
-
-			for (const row of this.tfoot) {
-				const tableRow = document.createElement("tr");
-
-				for (const cellContent of row) {
-					const tableCell = document.createElement("td");
-
-					if (cellContent instanceof Node) {
-						tableCell.append(cellContent);
-					} else if (typeof cellContent === "string") {
-						tableCell.innerHTML += cellContent;
-					}
-
-					tableRow.appendChild(tableCell);
-				}
-
-				tableFootElement.appendChild(tableRow);
-			}
-
-			this.children.push(tableFootElement.outerHTML);
 		}
 
 		this.template.innerHTML = this.children.join("");

@@ -57,10 +57,10 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 
 	public push(...items: (string | Element<TagName>)[]): this {
 		for (const item of items) {
-			if (item instanceof Element) {
-				this.children.push(item.toString());
-			} else {
+			if (typeof item === "string") {
 				this.children.push(item);
+			} else {
+				this.children.push(item.toString());
 			}
 		}
 
@@ -69,10 +69,10 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 
 	public unshift(...items: (string | Element<TagName>)[]): this {
 		for (const item of items) {
-			if (item instanceof Element) {
-				this.children.unshift(item.toString());
-			} else {
+			if (typeof item === "string") {
 				this.children.unshift(item);
+			} else {
+				this.children.unshift(item.toString());
 			}
 		}
 

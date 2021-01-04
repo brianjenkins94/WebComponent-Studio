@@ -31,12 +31,12 @@ export class EmbeddedElement<TagName extends keyof TopLevelElementMap> extends E
 
 				this.template.appendChild(sourceElement);
 			}
+
+			this.template.innerHTML = this.children.join("");
 		} else {
 			// TODO: Handle multiple `src`s
 			this.template.setAttribute("src", this.sources[0]);
 		}
-
-		this.template.innerHTML = this.children.join("");
 
 		return this.template.outerHTML;
 	}

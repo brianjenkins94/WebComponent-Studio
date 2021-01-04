@@ -5,14 +5,14 @@ import type { TopLevelElementMap } from "../types/elements";
 // <figcaption> should be part of a <figure>
 
 export class FigureElement<TagName extends keyof TopLevelElementMap> extends Element<TagName> {
-	public constructor(tagName: TagName, caption: string, children: (string | Element<TagName>)[], attributes: ElementAttributesMap[TagName]) {
+	public constructor(tagName: TagName, caption: (string | Element<TagName>)[], children: (string | Element<TagName>)[], attributes: ElementAttributesMap[TagName]) {
 		super(tagName);
 
 		this.push(...children);
 
 		if (caption !== undefined) {
 			const captionElement = document.createElement("figcaption");
-			captionElement.append(caption);
+			captionElement.append(caption.toString());
 
 			this.push(captionElement.outerHTML);
 		}

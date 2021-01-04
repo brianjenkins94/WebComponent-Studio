@@ -10,12 +10,7 @@ export class DetailsElement<TagName extends keyof TopLevelElementMap> extends El
 
 		if (summary !== undefined) {
 			const summaryElement = document.createElement("summary");
-
-			if (summary instanceof Element) {
-				summaryElement.append(summary.toString());
-			} else if (typeof summary === "string") {
-				summaryElement.append(summary);
-			}
+			summaryElement.append(summary.toString());
 
 			this.push(summaryElement.outerHTML);
 		}

@@ -42,22 +42,22 @@ class Element {
     }
     push(...items) {
         for (const item of items) {
-            if (item instanceof Element) {
-                this.children.push(item.toString());
+            if (typeof item === "string") {
+                this.children.push(item);
             }
             else {
-                this.children.push(item);
+                this.children.push(item.toString());
             }
         }
         return this;
     }
     unshift(...items) {
         for (const item of items) {
-            if (item instanceof Element) {
-                this.children.unshift(item.toString());
+            if (typeof item === "string") {
+                this.children.unshift(item);
             }
             else {
-                this.children.unshift(item);
+                this.children.unshift(item.toString());
             }
         }
         return this;
@@ -89,12 +89,7 @@ class DetailsElement extends Element {
         super(tagName);
         if (summary !== undefined) {
             const summaryElement = document.createElement("summary");
-            if (summary instanceof Element) {
-                summaryElement.append(summary.toString());
-            }
-            else if (typeof summary === "string") {
-                summaryElement.append(summary);
-            }
+            summaryElement.append(summary.toString());
             this.push(summaryElement.outerHTML);
         }
         this.push(...children);
@@ -130,12 +125,12 @@ class EmbeddedElement extends Element {
                 sourceElement.setAttribute("src", source);
                 this.template.appendChild(sourceElement);
             }
+            this.template.innerHTML = this.children.join("");
         }
         else {
             // TODO: Handle multiple `src`s
             this.template.setAttribute("src", this.sources[0]);
         }
-        this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
     }
 }
@@ -166,7 +161,7 @@ class FigureElement extends Element {
         this.push(...children);
         if (caption !== undefined) {
             const captionElement = document.createElement("figcaption");
-            captionElement.append(caption);
+            captionElement.append(caption.toString());
             this.push(captionElement.outerHTML);
         }
         this.attributes = Object.assign(Object.assign({}, attributes), this.attributes);
@@ -294,11 +289,11 @@ class TableElement extends Element {
     push(...items) {
         const row = [];
         for (const item of items) {
-            if (item instanceof Element) {
-                row.push(item.toString());
+            if (typeof item === "string") {
+                row.push(item);
             }
             else {
-                row.push(item);
+                row.push(item.toString());
             }
         }
         this.tbody.push(row);
@@ -325,59 +320,20 @@ class TableElement extends Element {
         for (const [key, value] of Object.entries(this.attributes)) {
             this.template.setAttribute(key, value);
         }
-        if (this.thead.length > 0) {
-            const tableHeadElement = document.createElement("thead");
-            for (const row of this.thead) {
-                const tableRow = document.createElement("tr");
-                for (const cellContent of row) {
-                    const tableCell = document.createElement("th");
-                    if (cellContent instanceof Node) {
-                        tableCell.append(cellContent);
-                    }
-                    else if (typeof cellContent === "string") {
+        for (const [key, rows] of Object.entries({ "thead": this.thead, "tbody": this.tbody, "tfoot": this.tfoot })) {
+            if (rows.length > 0) {
+                const tableHeadElement = document.createElement(key);
+                for (const row of rows) {
+                    const tableRow = document.createElement("tr");
+                    for (const cellContent of row) {
+                        const tableCell = document.createElement(key === "thead" ? "th" : "td");
                         tableCell.innerHTML += cellContent;
+                        tableRow.appendChild(tableCell);
                     }
-                    tableRow.appendChild(tableCell);
+                    tableHeadElement.appendChild(tableRow);
                 }
-                tableHeadElement.appendChild(tableRow);
+                this.children.push(tableHeadElement.outerHTML);
             }
-            this.children.push(tableHeadElement.outerHTML);
-        }
-        if (this.tbody.length > 0) {
-            const tableBodyElement = document.createElement("tbody");
-            for (const row of this.tbody) {
-                const tableRow = document.createElement("tr");
-                for (const cellContent of row) {
-                    const tableCell = document.createElement("td");
-                    if (cellContent instanceof Node) {
-                        tableCell.append(cellContent);
-                    }
-                    else if (typeof cellContent === "string") {
-                        tableCell.innerHTML += cellContent;
-                    }
-                    tableRow.appendChild(tableCell);
-                }
-                tableBodyElement.appendChild(tableRow);
-            }
-            this.children.push(tableBodyElement.outerHTML);
-        }
-        if (this.tfoot.length > 0) {
-            const tableFootElement = document.createElement("tfoot");
-            for (const row of this.tfoot) {
-                const tableRow = document.createElement("tr");
-                for (const cellContent of row) {
-                    const tableCell = document.createElement("td");
-                    if (cellContent instanceof Node) {
-                        tableCell.append(cellContent);
-                    }
-                    else if (typeof cellContent === "string") {
-                        tableCell.innerHTML += cellContent;
-                    }
-                    tableRow.appendChild(tableCell);
-                }
-                tableFootElement.appendChild(tableRow);
-            }
-            this.children.push(tableFootElement.outerHTML);
         }
         this.template.innerHTML = this.children.join("");
         return this.template.outerHTML;
@@ -512,34 +468,34 @@ function createPrimitive(tagName) {
          * (): Element<TagName>
          * (selector: string): Element<TagName>
          * (selector?: string, href: string): Element<TagName>
-         * (selector?: string, textContent?: string, href: string): Element<TagName>
-         * (selector?: string, textContent?: string, href?: string, attributes: object): Element<TagName>
+         * (selector?: string, textContent?: string | Element<TagName> | (string | Element<TagName>)[], href: string): Element<TagName>
+         * (selector?: string, textContent?: string | Element<TagName> | (string | Element<TagName>)[], href?: string, attributes: object): Element<TagName>
          */
         case "a":
             return function (selector, textContent = [], href = "#", attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     textContent = selector;
                 }
                 // textContent
-                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
+                if ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element)) {
                     textContent = [textContent];
                 }
-                else if (textContent !== undefined && Array.isArray(textContent)) ;
+                else if (Array.isArray(textContent)) ;
                 else {
                     href = textContent;
                     textContent = undefined;
                 }
                 // href
-                if (href !== undefined && typeof href === "string" && URL_PATHNAME.test(href)) {
+                if (typeof href === "string" && URL_PATHNAME.test(href)) {
                     attributes.href = href;
                     if (textContent === undefined) {
                         textContent = [href];
                     }
                 }
-                else if (href !== undefined && typeof href === "object") {
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), href);
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -557,23 +513,23 @@ function createPrimitive(tagName) {
          */
         case "details":
             return function (selector, summary, children = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     summary = selector;
                 }
                 // summary
-                if (summary !== undefined && typeof summary === "string") ;
+                if (typeof summary === "string") ;
                 else {
                     children = summary;
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
-                else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                else if (Array.isArray(children)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
@@ -594,39 +550,39 @@ function createPrimitive(tagName) {
          */
         case "form":
             return function (selector, method, action, encoding, children = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     method = selector;
                 }
                 // method
-                if (method !== undefined && typeof method === "string" && /^post|get|dialog$/i.test(method)) {
+                if (typeof method === "string" && /^post|get|dialog$/i.test(method)) {
                     attributes.method = method;
                 }
                 else {
                     action = method;
                 }
                 // action
-                if (action !== undefined && typeof action === "string" && URL_PATHNAME.test(action)) {
+                if (typeof action === "string" && URL_PATHNAME.test(action)) {
                     attributes.action = action;
                 }
                 else {
                     encoding = action;
                 }
                 // encoding
-                if (encoding !== undefined && typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
+                if (typeof encoding === "string" && /^application\/x-www-form-urlencoded|multipart\/form-data|text\/plain$/i.test(encoding)) {
                     attributes.enctype = action;
                 }
-                else if (encoding !== undefined && typeof encoding === "object") {
+                else {
                     children = encoding;
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
-                else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                else if (Array.isArray(children)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
@@ -684,24 +640,27 @@ function createPrimitive(tagName) {
         case "u":
         case "ul":
             return function (selector, children = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     // eslint-disable-next-line no-lonely-if
-                    if (selector !== undefined && Array.isArray(selector)) {
+                    if (Array.isArray(selector)) {
                         children = selector;
                     }
-                    else if (selector !== undefined && typeof selector === "string") {
+                    else if (typeof selector === "string" || (typeof selector === "object" && selector instanceof Element)) {
                         children = [selector];
+                    }
+                    else {
+                        children = selector;
                     }
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if (((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
                     children = [children];
                 }
-                else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                else if (Array.isArray(children)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
@@ -713,24 +672,27 @@ function createPrimitive(tagName) {
         case "reset":
         case "submit":
             return function (selector, children = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     // eslint-disable-next-line no-lonely-if
-                    if (selector !== undefined && Array.isArray(selector)) {
+                    if (Array.isArray(selector)) {
                         children = selector;
                     }
-                    else if (selector !== undefined && typeof selector === "string") {
+                    else if ((typeof selector === "string" || (typeof selector === "object" && selector instanceof Element))) {
                         children = [selector];
+                    }
+                    else {
+                        children = selector;
                     }
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
-                else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                else if (Array.isArray(children)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                     children = [];
                 }
@@ -751,24 +713,27 @@ function createPrimitive(tagName) {
         case "picture":
         case "video":
             return function (selector, sources = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     // eslint-disable-next-line no-lonely-if
-                    if (selector !== undefined && Array.isArray(selector)) {
+                    if (Array.isArray(selector)) {
                         sources = selector;
                     }
-                    else if (selector !== undefined && typeof selector === "string") {
+                    else if (typeof selector === "string") {
                         sources = [selector];
+                    }
+                    else {
+                        sources = selector;
                     }
                 }
                 // sources
-                if (sources !== undefined && typeof sources === "string") {
+                if (typeof sources === "string") {
                     sources = [sources];
                 }
-                else if (sources !== undefined && Array.isArray(sources)) ;
-                else if (sources !== undefined && typeof sources === "object") {
+                else if (Array.isArray(sources)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), sources);
                     sources = [];
                 }
@@ -787,23 +752,23 @@ function createPrimitive(tagName) {
          */
         case "fieldset":
             return function (selector, legend, children = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     legend = selector;
                 }
                 // legend
-                if (legend !== undefined && typeof legend === "string") ;
+                if (typeof legend === "string") ;
                 else {
                     children = legend;
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
-                else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                else if (Array.isArray(children)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -821,24 +786,24 @@ function createPrimitive(tagName) {
          */
         case "figure":
             return function (selector, figcaption, children = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     figcaption = selector;
                 }
                 // figcaption
-                if (figcaption !== undefined && typeof figcaption === "string") ;
-                else if (typeof figcaption === "object") {
+                if (typeof figcaption === "string") ;
+                else {
                     children = figcaption;
                     figcaption = undefined;
                 }
                 // children
-                if (children !== undefined && ((typeof children === "string") || (typeof children === "object" && children instanceof Element))) {
+                if ((typeof children === "string") || (typeof children === "object" && children instanceof Element)) {
                     children = [children];
                 }
-                else if (children !== undefined && Array.isArray(children)) ;
-                else if (children !== undefined && typeof children === "object" && children instanceof Element) {
+                else if (Array.isArray(children)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), children);
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -857,7 +822,7 @@ function createPrimitive(tagName) {
          */
         case "file":
             return function (selector, name, accept, required, attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                     if (attributes.id !== undefined) {
                         attributes.name = attributes.id;
@@ -867,7 +832,7 @@ function createPrimitive(tagName) {
                     name = selector;
                 }
                 // name
-                if (name !== undefined && typeof name === "string") {
+                if (typeof name === "string") {
                     if (/\w+/i.test(name)) {
                         attributes.name = name;
                     }
@@ -875,18 +840,18 @@ function createPrimitive(tagName) {
                         accept = name;
                     }
                 }
-                else if (typeof name === "boolean") {
+                else {
                     required = name;
                 }
                 // accept
-                if (accept !== undefined && typeof accept === "string") {
+                if (typeof accept === "string") {
                     attributes.accept = accept;
                 }
                 else {
                     required = accept;
                 }
                 // required
-                if (required !== undefined && typeof required === "boolean") {
+                if (typeof required === "boolean") {
                     attributes.required = required;
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -903,17 +868,17 @@ function createPrimitive(tagName) {
          */
         case "iframe":
             return function (selector, source, attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     source = selector;
                 }
                 // source
-                if (source !== undefined && typeof source === "string" && URL_PATHNAME.test(source)) {
+                if (typeof source === "string" && URL_PATHNAME.test(source)) {
                     attributes.src = source;
                 }
-                else if (source !== undefined && typeof source === "object") {
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), source);
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -947,7 +912,7 @@ function createPrimitive(tagName) {
         case "url":
         case "week":
             return function (selector, name, value, required, attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                     if (attributes.id !== undefined) {
                         attributes.name = attributes.id;
@@ -957,21 +922,21 @@ function createPrimitive(tagName) {
                     name = selector;
                 }
                 // name
-                if (name !== undefined && typeof name === "string" && typeof value !== "string") {
+                if (typeof name === "string" && typeof value !== "string") {
                     attributes.name = name;
                 }
                 else if (typeof name === "boolean") {
                     value = name;
                 }
                 // value
-                if (value !== undefined && typeof value === "string" || !isNaN(Number(value))) {
+                if (typeof value === "string" || !isNaN(Number(value))) {
                     attributes.value = value;
                 }
                 else {
                     required = value;
                 }
                 // required
-                if (required !== undefined && typeof required === "boolean") {
+                if (typeof required === "boolean") {
                     attributes.required = required;
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -983,18 +948,18 @@ function createPrimitive(tagName) {
          *
          * (): Element<TagName>
          * (selector: string): Element<TagName>
-         * (selector?: string, textContent: string | (string | Element<TagName>)[]): Element<TagName>
-         * (selector?: string, textContent: string | (string | Element<TagName>)[], attributes?: object): Element<TagName>
-         * (selector?: string, forValue: string, textContent: string | (string | Element<TagName>)[]): Element<TagName>
-         * (selector?: string, forValue?: string, textContent?: string | (string | Element<TagName>)[], attributes: object): Element<TagName>
+         * (selector?: string, textContent: string | Element<TagName> | (string | Element<TagName>)[]): Element<TagName>
+         * (selector?: string, textContent: string | Element<TagName> | (string | Element<TagName>)[], attributes?: object): Element<TagName>
+         * (selector?: string, forValue: string, textContent: string | Element<TagName> | (string | Element<TagName>)[]): Element<TagName>
+         * (selector?: string, forValue?: string, textContent?: string | Element<TagName> | (string | Element<TagName>)[], attributes: object): Element<TagName>
          */
         case "label":
             return function (selector, forValue, textContent = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 // forValue
-                if (forValue !== undefined && typeof forValue === "string") {
+                if (typeof forValue === "string") {
                     if (Array.isArray(textContent)) {
                         textContent = forValue;
                     }
@@ -1003,11 +968,11 @@ function createPrimitive(tagName) {
                     }
                 }
                 // textContent
-                if (textContent !== undefined && ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element))) {
+                if ((typeof textContent === "string") || (typeof textContent === "object" && textContent instanceof Element)) {
                     textContent = [textContent];
                 }
-                else if (textContent !== undefined && Array.isArray(textContent)) ;
-                else if (textContent !== undefined && typeof textContent === "object") {
+                else if (Array.isArray(textContent)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), textContent);
                     textContent = [];
                 }
@@ -1025,17 +990,17 @@ function createPrimitive(tagName) {
          */
         case "search":
             return function (selector, value, attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     value = selector;
                 }
                 // value
-                if (value !== undefined && typeof value === "string") {
+                if (typeof value === "string") {
                     attributes.value = value;
                 }
-                else if (value !== undefined && typeof value === "object") {
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), value);
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -1047,33 +1012,33 @@ function createPrimitive(tagName) {
          *
          * (): Element<TagName>
          * (selector: string): Element<TagName>
-         * (selector: string, name: string): Element<TagName>
+         * (selector?: string, name: string): Element<TagName>
          * (selector?: string, name?: string, options: object[]): Element<TagName>
          * (selector?: string, name?: string, options?: object[], required: boolean): Element<TagName>
          * (selector?: string, name?: string, options?: object[], required?: boolean, attributes: object): Element<TagName>
          */
         case "select":
             return function (selector, name, options, required, attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     options = selector;
                 }
                 // name
-                if (name !== undefined && typeof name === "string" && typeof options !== "string") {
+                if (typeof name === "string" && typeof options !== "string") {
                     attributes.name = name;
                 }
-                else if (Array.isArray(name)) {
+                else {
                     options = name;
                 }
                 // options
-                if (options !== undefined && Array.isArray(options)) ;
-                else if (typeof options === "boolean") {
+                if (Array.isArray(options)) ;
+                else {
                     required = options;
                 }
                 // required
-                if (required !== undefined && typeof required === "boolean") {
+                if (typeof required === "boolean") {
                     attributes.required = required;
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
@@ -1091,20 +1056,20 @@ function createPrimitive(tagName) {
          */
         case "table":
             return function (selector, caption, tableHeader = [], attributes = {}) {
-                if (selector !== undefined && typeof selector === "string" && CSS_SELECTOR.test(selector)) {
+                if (typeof selector === "string" && CSS_SELECTOR.test(selector)) {
                     attributes = Object.assign(Object.assign({}, attributes), parseSelector(selector));
                 }
                 else {
                     caption = selector;
                 }
                 // caption
-                if (caption !== undefined && typeof caption === "string") ;
-                else if (caption !== undefined && Array.isArray(caption)) {
+                if (typeof caption === "string") ;
+                else {
                     tableHeader = caption;
                 }
                 // tableHeader
-                if (tableHeader !== undefined && Array.isArray(tableHeader)) ;
-                else if (tableHeader !== undefined && typeof tableHeader === "object") {
+                if (Array.isArray(tableHeader)) ;
+                else {
                     attributes = Object.assign(Object.assign({}, attributes), tableHeader);
                 }
                 // @ts-expect-error Generics extending unions cannot be narrowed
