@@ -6,7 +6,7 @@
     "build": "rollup --config --watch",
     "serve": "npx http-server docs/ -c-1 -o",
     "start": "ts-node index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cypress run --spec cypress/integration/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "@types/node": "latest",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
+    "cypress": "latest",
     "eslint": "latest",
     "rollup": "latest",
     "rollup-plugin-postprocess": "github:brettz9/rollup-plugin-postprocess#update",

@@ -934,21 +934,21 @@ export function createTemplate(tagName: string, options: ElementDefinitionOption
 		 * will happen each time the node is moved, and may happen before the element's contents
 		 * have been fully parsed.
 		 */
-		public connectedCallback() {
+		public connectedCallback(): void {
 
 		}
 
 		/**
 		 * Invoked each time the custom element is disconnected from the document's DOM.
 		 */
-		public disconnectedCallback() {
+		public disconnectedCallback(): void {
 
 		}
 
 		/**
 		 * Invoked each time the custom element is moved to a new document.
 		 */
-		public adoptedCallback() {
+		public adoptedCallback(): void {
 
 		}
 
@@ -957,7 +957,7 @@ export function createTemplate(tagName: string, options: ElementDefinitionOption
 		 * Which attributes to notice change for is specified in a static get `observedAttributes`
 		 * method.
 		 */
-		public attributeChangedCallback() {
+		public attributeChangedCallback(): void {
 
 		}
 	}, options);
