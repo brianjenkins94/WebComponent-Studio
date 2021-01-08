@@ -1,3 +1,105 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+const SectioningContent = [
+    "article",
+    "aside",
+    "footer",
+    "header",
+    "nav",
+    "section"
+];
+const HeadingContent = [
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6"
+];
+const PhrasingContent = [
+    "a",
+    "audio",
+    "b",
+    "br",
+    "button",
+    "canvas",
+    "code",
+    "del",
+    "em",
+    "i",
+    "iframe",
+    "img",
+    "input",
+    "ins",
+    "kbd",
+    "label",
+    "mark",
+    "meter",
+    "picture",
+    "progress",
+    "q",
+    "s",
+    "select",
+    "small",
+    "span",
+    "strong",
+    "sub",
+    "sup",
+    "textarea",
+    "u",
+    "video"
+];
+const EmbeddedContent = [
+    "audio",
+    "canvas",
+    "iframe",
+    "img",
+    "picture",
+    "video"
+];
+const InteractiveContent = [
+    "a",
+    "audio",
+    "button",
+    "details",
+    "iframe",
+    "img",
+    "input",
+    "label",
+    "select",
+    "textarea",
+    "video"
+];
+const FormAssociatedContent = [
+    "button",
+    "fieldset",
+    "form",
+    "input",
+    "label",
+    "meter",
+    "progress",
+    "select",
+    "textarea"
+];
+const FlowContent = [
+    ...EmbeddedContent,
+    ...FormAssociatedContent,
+    ...HeadingContent,
+    ...InteractiveContent,
+    ...PhrasingContent,
+    ...SectioningContent,
+    "blockquote",
+    "div",
+    "figure",
+    "hr",
+    "main",
+    "ol",
+    "p",
+    "pre",
+    "s",
+    "table",
+    "ul"
+];
+
 class Element {
     constructor(type) {
         this.attributes = {};
@@ -40,12 +142,108 @@ class Element {
             this.off(event, listener);
         });
     }
+    // eslint-disable-next-line complexity
     push(...items) {
         for (const item of items) {
             if (typeof item === "string") {
                 this.children.push(item);
             }
             else {
+                switch (this.type) {
+                    // Flow content
+                    // excluding self
+                    case "form":
+                        if (this.type === item.type) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                    // excluding <header> and <footer>
+                    case "footer":
+                    case "header":
+                        if ((this.type === "header" || this.type === "footer") && (item.type === "header" || item.type === "footer")) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                    // (excluding interactive content) or phrasing content
+                    case "a":
+                        if (this.type === "a" && (InteractiveContent.includes(item.type) || !PhrasingContent.includes(item.type))) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                    case "article":
+                    case "aside":
+                    case "blockquote":
+                    case "details":
+                    case "div":
+                    case "fieldset":
+                    case "figure":
+                    case "main":
+                    case "nav":
+                    case "section":
+                        if (!FlowContent.includes(item.type)) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                        break;
+                    // Phrasing content
+                    // excluding self
+                    case "label":
+                    case "meter":
+                    case "progress":
+                        if (this.type === item.type) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                    // excluding Interactive content
+                    case "button":
+                        if (this.type === "button" && InteractiveContent.includes(item.type)) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                    case "b":
+                    case "code":
+                    case "em":
+                    case "h1":
+                    case "h2":
+                    case "h3":
+                    case "h4":
+                    case "h5":
+                    case "h6":
+                    case "i":
+                    case "kbd":
+                    case "mark":
+                    case "p":
+                    case "pre":
+                    case "q":
+                    case "s":
+                    case "small":
+                    case "span":
+                    case "strong":
+                    case "sub":
+                    case "sup":
+                    case "u":
+                        if (!PhrasingContent.includes(item.type)) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                        break;
+                    // No content
+                    case "br":
+                    case "hr":
+                    case "iframe":
+                    case "img":
+                    case "input":
+                        throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                    // `<img>`-only
+                    case "picture":
+                        if (item.type !== "img") {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                    // No <audio> or <video>
+                    case "audio":
+                    case "video":
+                        if ((this.type === "audio" || this.type === "video") && (item.type === "audio" || item.type === "video")) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                    // No interactive content except for <a>, <button>, and <input> elements whose type attribute is checkbox, radio, or button
+                    case "canvas":
+                        if (InteractiveContent.includes(item.type) && !(item.type === "a" || item.type === "button" || item.type === "input")) {
+                            throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
+                        }
+                }
                 this.children.push(item.toString());
             }
         }

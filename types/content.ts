@@ -40,6 +40,7 @@ export const PhrasingContent = [
 	"picture",
 	"progress",
 	"q",
+	"s",
 	"select",
 	"small",
 	"span",

@@ -165,7 +165,7 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 
 					// No interactive content except for <a>, <button>, and <input> elements whose type attribute is checkbox, radio, or button
 					case "canvas":
-						if (!InteractiveContent.includes(item.type) && (item.type === "a" || item.type === "button" || item.type === "input")) {
+						if (InteractiveContent.includes(item.type) && !(item.type === "a" || item.type === "button" || item.type === "input")) {
 							throw new Error("<" + item.type + "> is not a permitted child of <" + this.type + ">.");
 						}
 
