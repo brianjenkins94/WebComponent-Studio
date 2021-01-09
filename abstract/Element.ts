@@ -10,11 +10,15 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 	protected readonly children: string[] = [];
 	private events = {};
 
+	// Initialization
+
 	public constructor(type: keyof TopLevelElementMap) {
 		this.type = type;
 
 		this.template = document.createElement(this.type);
 	}
+
+	// Event Emitter
 
 	public on(event: string, listener: () => void): () => void {
 		if (this.events[event] === undefined) {
@@ -54,6 +58,24 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 
 			this.off(event, listener);
 		});
+	}
+
+	// Array-like
+
+	public length(): number {
+		return this.children.length;
+	}
+
+	public toString(): string {
+		throw new Error("Method not implemented.");
+	}
+
+	public toLocaleString(): string {
+		throw new Error("Method not implemented.");
+	}
+
+	public pop(): string {
+		throw new Error("Method not implemented.");
 	}
 
 	// eslint-disable-next-line complexity
@@ -181,19 +203,127 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 		return this;
 	}
 
-	public unshift(...items: (string | Element<TagName>)[]): this {
-		for (const item of items) {
-			if (typeof item === "string") {
-				this.children.unshift(item);
-			} else {
-				this.children.unshift(item.toString());
-			}
-		}
+	public concat(...items: ConcatArray<string>[]): string[];
+	public concat(...items: (string | ConcatArray<string>)[]): string[];
+	public concat(...items?: any[]) {
+		throw new Error("Method not implemented.");
+	}
 
-		return this;
+	public join(separator?: string): string {
+		throw new Error("Method not implemented.");
+	}
+
+	public reverse(): string[] {
+		throw new Error("Method not implemented.");
+	}
+
+	public shift(): string {
+		throw new Error("Method not implemented.");
+	}
+
+	public slice(start?: number, end?: number): string[] {
+		throw new Error("Method not implemented.");
+	}
+
+	public sort(compareFn?: (a: string, b: string) => number): this {
+		throw new Error("Method not implemented.");
+	}
+
+	public splice(start: number, deleteCount?: number): string[];
+	public splice(start: number, deleteCount: number, ...items: string[]): string[];
+	public splice(start: any, deleteCount?: any, ...rest?: any[]) {
+		throw new Error("Method not implemented.");
+	}
+
+	public unshift(...items: string[]): this {
+		throw new Error("Method not implemented.");
+	}
+
+	public indexOf(searchElement: string, fromIndex?: number): number {
+		throw new Error("Method not implemented.");
+	}
+
+	public lastIndexOf(searchElement: string, fromIndex?: number): number {
+		throw new Error("Method not implemented.");
+	}
+
+	public every<S extends string>(predicate: (value: string, index: number, array: string[]) => value is S, thisArg?: any): this is S[];
+	public every(predicate: (value: string, index: number, array: string[]) => unknown, thisArg?: any): boolean;
+	public every(predicate: any, thisArg?: any) {
+		throw new Error("Method not implemented.");
+	}
+
+	public some(predicate: (value: string, index: number, array: string[]) => unknown, thisArg?: any): boolean {
+		throw new Error("Method not implemented.");
+	}
+
+	public forEach(callbackfn: (value: string, index: number, array: string[]) => void, thisArg?: any): void {
+		throw new Error("Method not implemented.");
+	}
+
+	public map<U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any): U[] {
+		throw new Error("Method not implemented.");
+	}
+
+	public filter<S extends string>(predicate: (value: string, index: number, array: string[]) => value is S, thisArg?: any): S[];
+	public filter(predicate: (value: string, index: number, array: string[]) => unknown, thisArg?: any): string[];
+	public filter(predicate: any, thisArg?: any) {
+		throw new Error("Method not implemented.");
+	}
+
+	public reduce(callbackfn: (previousValue: string, currentValue: string, currentIndex: number, array: string[]) => string): string;
+	public reduce(callbackfn: (previousValue: string, currentValue: string, currentIndex: number, array: string[]) => string, initialValue: string): string;
+	public reduce<U>(callbackfn: (previousValue: U, currentValue: string, currentIndex: number, array: string[]) => U, initialValue: U): U;
+	public reduce(callbackfn: any, initialValue?: any) {
+		throw new Error("Method not implemented.");
+	}
+
+	public reduceRight(callbackfn: (previousValue: string, currentValue: string, currentIndex: number, array: string[]) => string): string;
+	public reduceRight(callbackfn: (previousValue: string, currentValue: string, currentIndex: number, array: string[]) => string, initialValue: string): string;
+	public reduceRight<U>(callbackfn: (previousValue: U, currentValue: string, currentIndex: number, array: string[]) => U, initialValue: U): U;
+	public reduceRight(callbackfn: any, initialValue?: any) {
+		throw new Error("Method not implemented.");
+	}
+
+	public find<S extends string>(predicate: (this: void, value: string, index: number, obj: string[]) => value is S, thisArg?: any): S;
+	public find(predicate: (value: string, index: number, obj: string[]) => unknown, thisArg?: any): string;
+	public find(predicate: any, thisArg?: any) {
+		throw new Error("Method not implemented.");
+	}
+
+	public findIndex(predicate: (value: string, index: number, obj: string[]) => unknown, thisArg?: any): number {
+		throw new Error("Method not implemented.");
+	}
+
+	public fill(value: string, start?: number, end?: number): this {
+		throw new Error("Method not implemented.");
+	}
+
+	public copyWithin(target: number, start: number, end?: number): this {
+		throw new Error("Method not implemented.");
 	}
 
 	public [Symbol.iterator]() {
-		// TODO
+		throw new Error("Method not implemented.");
+	}
+
+	public entries(): IterableIterator<[number, string]> {
+		throw new Error("Method not implemented.");
+	}
+
+	public keys(): IterableIterator<number> {
+		throw new Error("Method not implemented.");
+	}
+
+	public values(): IterableIterator<string> {
+		throw new Error("Method not implemented.");
+	}
+
+	public [Symbol.unscopables](): { copyWithin: boolean; entries: boolean; fill: boolean; find: boolean; findIndex: boolean; keys: boolean; values: boolean; } {
+		throw new Error("Method not implemented.");
+	}
+
+	public includes(searchElement: string, fromIndex?: number): boolean {
+		throw new Error("Method not implemented.");
 	}
 }

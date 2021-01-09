@@ -101,6 +101,7 @@ const FlowContent = [
 ];
 
 class Element {
+    // Initialization
     constructor(type) {
         this.attributes = {};
         this.children = [];
@@ -108,6 +109,7 @@ class Element {
         this.type = type;
         this.template = document.createElement(this.type);
     }
+    // Event Emitter
     on(event, listener) {
         if (this.events[event] === undefined) {
             this.events[event] = [];
@@ -141,6 +143,19 @@ class Element {
             this.emit(event);
             this.off(event, listener);
         });
+    }
+    // Array-like
+    length() {
+        return this.children.length;
+    }
+    toString() {
+        throw new Error("Method not implemented.");
+    }
+    toLocaleString() {
+        throw new Error("Method not implemented.");
+    }
+    pop() {
+        throw new Error("Method not implemented.");
     }
     // eslint-disable-next-line complexity
     push(...items) {
@@ -249,19 +264,86 @@ class Element {
         }
         return this;
     }
+    concat(...items) {
+        throw new Error("Method not implemented.");
+    }
+    join(separator) {
+        throw new Error("Method not implemented.");
+    }
+    reverse() {
+        throw new Error("Method not implemented.");
+    }
+    shift() {
+        throw new Error("Method not implemented.");
+    }
+    slice(start, end) {
+        throw new Error("Method not implemented.");
+    }
+    sort(compareFn) {
+        throw new Error("Method not implemented.");
+    }
+    splice(start, deleteCount, ...rest) {
+        throw new Error("Method not implemented.");
+    }
     unshift(...items) {
-        for (const item of items) {
-            if (typeof item === "string") {
-                this.children.unshift(item);
-            }
-            else {
-                this.children.unshift(item.toString());
-            }
-        }
-        return this;
+        throw new Error("Method not implemented.");
+    }
+    indexOf(searchElement, fromIndex) {
+        throw new Error("Method not implemented.");
+    }
+    lastIndexOf(searchElement, fromIndex) {
+        throw new Error("Method not implemented.");
+    }
+    every(predicate, thisArg) {
+        throw new Error("Method not implemented.");
+    }
+    some(predicate, thisArg) {
+        throw new Error("Method not implemented.");
+    }
+    forEach(callbackfn, thisArg) {
+        throw new Error("Method not implemented.");
+    }
+    map(callbackfn, thisArg) {
+        throw new Error("Method not implemented.");
+    }
+    filter(predicate, thisArg) {
+        throw new Error("Method not implemented.");
+    }
+    reduce(callbackfn, initialValue) {
+        throw new Error("Method not implemented.");
+    }
+    reduceRight(callbackfn, initialValue) {
+        throw new Error("Method not implemented.");
+    }
+    find(predicate, thisArg) {
+        throw new Error("Method not implemented.");
+    }
+    findIndex(predicate, thisArg) {
+        throw new Error("Method not implemented.");
+    }
+    fill(value, start, end) {
+        throw new Error("Method not implemented.");
+    }
+    copyWithin(target, start, end) {
+        throw new Error("Method not implemented.");
     }
     [Symbol.iterator]() {
-        // TODO
+        throw new Error("Method not implemented.");
+    }
+    entries() {
+        throw new Error("Method not implemented.");
+    }
+    keys() {
+        throw new Error("Method not implemented.");
+    }
+    values() {
+        throw new Error("Method not implemented.");
+    }
+    [Symbol.unscopables]() {
+        throw new Error("Method not implemented.");
+    }
+    includes(searchElement, fromIndex) {
+        throw new Error("Method not implemented.");
     }
 }
 
@@ -490,6 +572,9 @@ class TableElement extends Element {
             if (typeof item === "string") {
                 row.push(item);
             }
+            else if (Array.isArray(item)) {
+                this.push(...item);
+            }
             else {
                 row.push(item.toString());
             }
@@ -502,6 +587,9 @@ class TableElement extends Element {
         for (const item of items) {
             if (item instanceof Element) {
                 row.unshift(item.toString());
+            }
+            else if (Array.isArray(item)) {
+                this.unshift(...item);
             }
             else {
                 row.unshift(item);

@@ -34,12 +34,14 @@ export class TableElement<TagName extends keyof TopLevelElementMap> extends Elem
 		this.attributes = { ...attributes, ...this.attributes };
 	}
 
-	public push(...items: (string | Element<TagName>)[]): this {
+	public push(...items: (string | string[] | Element<TagName>)[]): this {
 		const row = [];
 
 		for (const item of items) {
 			if (typeof item === "string") {
 				row.push(item);
+			} else if (Array.isArray(item)) {
+				this.push(...item);
 			} else {
 				row.push(item.toString());
 			}
@@ -50,12 +52,14 @@ export class TableElement<TagName extends keyof TopLevelElementMap> extends Elem
 		return this;
 	}
 
-	public unshift(...items: (string | Element<TagName>)[]): this {
+	public unshift(...items: (string | string[] | Element<TagName>)[]): this {
 		const row = [];
 
 		for (const item of items) {
 			if (item instanceof Element) {
 				row.unshift(item.toString());
+			} else if (Array.isArray(item)) {
+				this.unshift(...item);
 			} else {
 				row.unshift(item);
 			}
