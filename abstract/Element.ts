@@ -205,7 +205,7 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 
 	public concat(...items: ConcatArray<string>[]): string[];
 	public concat(...items: (string | ConcatArray<string>)[]): string[];
-	public concat(...items?: any[]) {
+	public concat(...items: any[]) {
 		throw new Error("Method not implemented.");
 	}
 
@@ -231,7 +231,7 @@ export abstract class Element<TagName extends keyof TopLevelElementMap> implemen
 
 	public splice(start: number, deleteCount?: number): string[];
 	public splice(start: number, deleteCount: number, ...items: string[]): string[];
-	public splice(start: any, deleteCount?: any, ...rest?: any[]) {
+	public splice(start: any, deleteCount?: any, ...rest: any[]) {
 		throw new Error("Method not implemented.");
 	}
 

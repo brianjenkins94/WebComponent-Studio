@@ -19,7 +19,10 @@ export default {
 		//nodeGlobals(),
 		typescript(),
 		postProcess([
-			[/^(?:import|export) .*$/gm, "//$0"]
+			[/^(?:import|export) .*$/gm, "//$0"],
+			[/^( {4})+/gm, function(match) {
+				return "\t".repeat(match.length / 4);
+			}]
 		])
 	],
 	"watch": {

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<!-- Metadata -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="" />
+
+	<!-- Title -->
+	<title>WebComponent Studio | Courier Component</title>
+
+	<!-- Thumbnails -->
+	<link rel="shortcut icon" href="images/favicon.png" />
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.icns" />
+
+	<!-- Libraries -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.0.0/modern-normalize.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/grid.css" />
+	<link rel="stylesheet" href="css/style.css" />
+
+	<!-- Inline Stylesheet -->
+	<style>
+		/* Body */
+
+		body {
+			border: 1px solid #eaecef;
+			margin: 10rem 15rem;
+		}
+
+		courier-component {
+			display: block;
+			height: calc(100vh - 20rem);
+			background-color: #262626;
+		}
+
+	</style>
+
+</head>
+<body class="markdown-body">
+
+	<!-- Libraries -->
+	<script src="js/webcomponent-studio.js" type="module"></script>
+
+	<!-- Scripts -->
+	<!-- <script src="js/main.js" type="module"></script> -->
+
+	<!-- Inline Script -->
+	<script type="module">
+
+		const courier = createTemplate("courier");
+
+		document.body.prepend(courier());
+
+	</script>
+
+</body>
+</html>
